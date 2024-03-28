@@ -1,9 +1,10 @@
-import Login from "./components/login";
-import "./../app/style.css";
+import SignUpForm from "./components/SignUpForm";
+
 export default function Home() {
   return (
-    <div>
-      <Login />
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1>Hello Home !</h1>
+      <SignUpForm />
+    </main>
   );
 }
