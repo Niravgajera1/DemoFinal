@@ -1,10 +1,14 @@
-import SignUpForm from "./components/SignUpForm";
+import Footer from "./components/footer";
+import Navbar from "./components/navbar";
+import "./globals.css";
+import Main from "./main/page";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Hello Home !</h1>
-      <SignUpForm />
+    <main>
+      <Navbar />
+      <Main />
+      <Footer />
     </main>
   );
 }
