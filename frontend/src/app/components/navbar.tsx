@@ -18,16 +18,6 @@ const navbar = () => {
                 <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
                   <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                     <a href="#" className="flex items-center">
-                      Pages
-                    </a>
-                  </li>
-                  <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="#" className="flex items-center">
-                      Account
-                    </a>
-                  </li>
-                  <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="#" className="flex items-center">
                       Blocks
                     </a>
                   </li>
@@ -53,6 +43,14 @@ const navbar = () => {
                     type="button"
                   >
                     Sign In
+                  </button>
+                </Link>
+                <Link href="/CreateCampaign">
+                  <button
+                    className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                    type="button"
+                  >
+                    CreateCampaign
                   </button>
                 </Link>
               </div>

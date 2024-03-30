@@ -4,7 +4,7 @@ import React from "react";
 import Navbar from "./navbar";
 import bg from "./../../../public/images/banner-bg.8e3818308ba8e86b1d87.png";
 
-const SingUpForm = () => {
+const SingInForm = () => {
   const HandleOnCLick = () => {
     alert("signup click");
   };
@@ -14,7 +14,7 @@ const SingUpForm = () => {
         <Navbar />
         <div
           className="flex justify-center items-center h-screen "
-          //   style={{ backgroundImage: `url(${bg.src})` }}
+          style={{ backgroundImage: `url(${bg.src})` }}
         >
           <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/30">
             <form>
@@ -54,4 +54,4 @@ const SingUpForm = () => {
   );
 };
 
-export default SingUpForm;
+export default SingInForm;
