@@ -4,6 +4,10 @@ export class CreateCampaignDto {
   @IsNotEmpty()
   @IsString()
   yourname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  category: string;
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -14,8 +18,8 @@ export class CreateCampaignDto {
   @IsNumber()
   goal: number;
   @IsNotEmpty()
-  @IsDate()
-  enddate: Date;
+  @IsString()
+  enddate: string;
   @IsNotEmpty()
   @IsString()
   image: string;

@@ -4,11 +4,15 @@ import { Document } from 'mongoose';
 @Schema()
 export class Campaign extends Document {
   @Prop({ required: true })
-  yourname: String;
+  yourname: string;
+
+  @Prop({ required: true })
+  category: string;
+
   @Prop({ required: true })
   title: string;
   @Prop({ required: true })
-  strory: string;
+  story: string;
   @Prop({ required: true })
   goal: number;
   @Prop({ required: true })

@@ -7,6 +7,10 @@ export class UpdateCampaignDto {
 
   @IsOptional()
   @IsString()
+  category: string;
+
+  @IsOptional()
+  @IsString()
   title: string;
 
   @IsOptional()
@@ -18,7 +22,7 @@ export class UpdateCampaignDto {
   goal: number;
 
   @IsOptional()
-  @IsDate()
+  @IsString()
   enddate: Date;
 
   @IsOptional()

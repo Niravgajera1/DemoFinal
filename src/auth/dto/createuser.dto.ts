@@ -10,4 +10,7 @@ export class createuserdto {
   @IsNotEmpty()
   @IsString()
   password: string;
+  @IsNotEmpty()
+  @IsString()
+  confirmpassword:string;
 }
