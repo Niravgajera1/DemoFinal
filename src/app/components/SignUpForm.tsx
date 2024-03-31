@@ -54,43 +54,14 @@ const SignUpForm: React.FC = () => {
     confirmpassword: string;
   }
 
-  // const PostData = async (e: React.FormEvent<HTMLFormElement>, User: User) => {
-  // e.preventDefault();
-  // const { name, email, password, confirmpassword } = User;
-  // try {
-  //   const res = await fetch("http://localhost:3001/auth/signup", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name,
-  //       email,
-  //       password,
-  //       confirmpassword,
-  //     }),
-  //   });
-
-  //   if (!res.ok) {
-  //     throw new Error("Failed to post data");
-  //   }
-
-  //   const data = await res.json();
-
-  //   console.log(data); // Handle the response data here
-  // } catch (error) {
-  //   console.error("Error posting data:", error);
-  // }
-  // };
-
   return (
     <>
       <Navbar />
       <div
-        className="flex justify-center items-center h-screen "
-        style={{ backgroundImage: `url(${bg.src})` }}
+        className="flex bg-blue-200 justify-center items-center h-screen "
+        // style={{ backgroundImage: `url(${bg.src})` }}
       >
-        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/30">
+        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/50">
           <form onSubmit={handleSubmit}>
             <label
               htmlFor="username"
