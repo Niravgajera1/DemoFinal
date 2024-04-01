@@ -1,17 +1,67 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { createuserdto } from './dto/createuser.dto';
 import { Model } from 'mongoose';
 import { User } from '../Schemas/auth.Schema';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { loginuserdto } from './dto/loginuser.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
-  async createUser(CreateUserDto: createuserdto): Promise<User> {
-    const createuser = new this.userModel(CreateUserDto);
+  async SignUp(
+    CreateUserDto: createuserdto,
+  ): Promise<{ message: string; token: string }> {
+    try {
+      const { name, email, password, confirmpassword } = CreateUserDto;
+      const existingUser = await this.userModel.findOne({ email });
+      if (existingUser) {
+        throw new BadRequestException('Email already in use');
+      }
+      if (password !== confirmpassword) {
+        throw new BadRequestException(
+          'Password And Confirm Password Dose Not Match ',
+        );
+      }
 
-    return await createuser.save();
+      const hasedpassword = await bcrypt.hash(password, 10);
+      const createuser = await this.userModel.create({
+        name,
+        email,
+        password: hasedpassword,
+        confirmpassword,
+      });
+      const token = this.jwtService.sign({ id: createuser._id });
+      return { message: 'User Successfully Registered!', token };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async login(
+    LoginUserDto: loginuserdto,
+  ): Promise<{ message: string; token: string }> {
+    try {
+      const { email, password } = LoginUserDto;
+      const user = await this.userModel.findOne({ email });
+      if (user && (await bcrypt.compare(password, user.password))) {
+        const token = this.jwtService.sign({ id: user._id });
+        return { message: 'Login successful!', token };
+      } else {
+        throw new UnauthorizedException('Invalid Email Or Password');
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll(): Promise<User[]> {

@@ -7,11 +7,13 @@ import {
   Delete,
   Param,
   HttpException,
+  UseGuards,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { mongo } from 'mongoose';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('campaign')
 export class CampaignController {
@@ -70,6 +72,7 @@ export class CampaignController {
   }
 
   @Post('/new')
+  @UseGuards(AuthGuard())
   async create(@Body() createcampaigndto: CreateCampaignDto) {
     try {
       return this.campaignservice.createCampaign(createcampaigndto);
