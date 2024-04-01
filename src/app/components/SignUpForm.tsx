@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import bg from "./../../../public/images/banner-bg.8e3818308ba8e86b1d87.png";
 import Navbar from "./navbar";
+import Footer from "./footer";
 
 const SignUpForm: React.FC = () => {
   const [User, setUser] = useState({
@@ -41,7 +42,7 @@ const SignUpForm: React.FC = () => {
 
       const data = await res.json();
 
-      console.log(data); // Handle the response data here
+      alert(data.message); // Handle the response data here
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -129,6 +130,7 @@ const SignUpForm: React.FC = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
