@@ -1,10 +1,12 @@
 "use client";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import bg from "./../../../public/images/banner-bg.8e3818308ba8e86b1d87.png";
 import Navbar from "./navbar";
 import Footer from "./footer";
 
 const SignUpForm: React.FC = () => {
+  const router = useRouter();
   const [User, setUser] = useState({
     name: "",
     email: "",
@@ -12,12 +14,17 @@ const SignUpForm: React.FC = () => {
     confirmpassword: "",
   });
 
+  // const { errors } = useFormik({
+  //   validationSchema: signUpSchema,
+  // });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((pre) => ({ ...pre, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log();
     // e.preventDefault();
     // PostData(e, User);
     e.preventDefault();
@@ -41,8 +48,9 @@ const SignUpForm: React.FC = () => {
       }
 
       const data = await res.json();
-
-      alert(data.message); // Handle the response data here
+      alert(data.message);
+      console.log(data); // Handle the response data here
+      router.push("/signin");
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -59,10 +67,15 @@ const SignUpForm: React.FC = () => {
     <>
       <Navbar />
       <div
-        className="flex bg-blue-200 justify-center items-center h-screen "
+        className="relative flex bg-blue-200 justify-center items-center h-screen "
         // style={{ backgroundImage: `url(${bg.src})` }}
       >
         <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/50">
+          <div className="bg-stone-500 flex flex-col  p-1/2 rounded-lg justify-center">
+            <h4 className=" p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 m ">
+              Sign Up To Your Account
+            </h4>
+          </div>
           <form onSubmit={handleSubmit}>
             <label
               htmlFor="username"
@@ -78,7 +91,9 @@ const SignUpForm: React.FC = () => {
               placeholder="Enter UserName"
               type="text"
               className="appearance-none border-3 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
-            ></input>
+            >
+              {/* {<p className="form-error">{errors.name}</p>} */}
+            </input>
             <label
               htmlFor="UserEmail"
               className="block text-white text-xm font-bold mb-1"
