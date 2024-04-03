@@ -9,14 +9,18 @@ export class Campaign extends Document {
   @Prop({ required: true })
   category: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   title: string;
+
   @Prop({ required: true })
   story: string;
+
   @Prop({ required: true })
   goal: number;
+
   @Prop({ required: true })
   enddate: Date;
+
   @Prop({ required: true })
   image: string;
 }
