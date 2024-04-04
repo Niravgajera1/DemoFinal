@@ -33,7 +33,10 @@ const Card: React.FC = () => {
   return (
     <>
       {data.map((item) => (
-        <div key={item._id} className="flex h-full m-2 p-2">
+        <div
+          key={item._id}
+          className="flex h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
+        >
           <div className="card w-96 bg-base-100 shadow-2xl">
             <figure>
               <img
@@ -47,7 +50,7 @@ const Card: React.FC = () => {
               <h2 className="p-2">{item.enddate}</h2>
               <h3 className="p-2"> {item.category}</h3>
               <div className="card-actions justify-end mb-2 mr-2">
-                <Link href="/main/campaignDetail">
+                <Link href={`/main/${item._id}`}>
                   <button className="btn btn-primary">Show more</button>
                 </Link>
               </div>

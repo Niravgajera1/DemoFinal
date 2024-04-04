@@ -8,11 +8,9 @@ const createCampaign = () => {
   return (
     <>
       <Navbar />
-      <div
-        className="flex flex-col  justify-center items-center h-screen"
-        style={{ backgroundColor: "#aaa7cc" }}
-      >
-        <div className="flex flex-col gap-6 justify-center items-center max-w-xl w-full p-6  rounded-lg shadow-xl backdrop-blur-xm bg-black/30">
+
+      <div className="flex flex-col  justify-center items-center h-screen bg-slate-400">
+        <div className="flex flex-col gap-6 justify-center items-center  p-6  rounded-lg shadow-xl backdrop-blur-xm bg-black/30">
           <div className="bg-stone-500 flex flex-col justify-center p-1/2 rounded-lg ">
             <h4 className=" p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 m-4">
               Create A Campaign!

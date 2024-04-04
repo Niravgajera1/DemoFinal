@@ -67,10 +67,10 @@ const SignUpForm: React.FC = () => {
     <>
       <Navbar />
       <div
-        className="relative flex bg-blue-200 justify-center items-center h-screen "
+        className="relative flex bg-slate-400 justify-center items-center h-screen "
         // style={{ backgroundImage: `url(${bg.src})` }}
       >
-        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/50">
+        <div className="max-w-md w-full p-6 rounded-lg shadow-md bg-white/30 ">
           <div className="bg-stone-500 flex flex-col  p-1/2 rounded-lg justify-center">
             <h4 className=" p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 m ">
               Sign Up To Your Account
@@ -79,7 +79,7 @@ const SignUpForm: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <label
               htmlFor="username"
-              className="block text-white text-xm font-bold mb-1"
+              className="block text-black text-xm font-bold  mt-2"
             >
               UserName
             </label>
@@ -90,17 +90,18 @@ const SignUpForm: React.FC = () => {
               onChange={handleChange}
               placeholder="Enter UserName"
               type="text"
-              className="appearance-none border-3 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
+              className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
             >
               {/* {<p className="form-error">{errors.name}</p>} */}
             </input>
             <label
               htmlFor="UserEmail"
-              className="block text-white text-xm font-bold mb-1"
+              className="block text-black text-xm font-bold "
             >
               UserEmail
             </label>
             <input
+              required
               placeholder="Enter UserEmail"
               name="email"
               value={User.email}
@@ -110,11 +111,12 @@ const SignUpForm: React.FC = () => {
             ></input>
             <label
               htmlFor="Password"
-              className="block text-white text-xm font-bold mb-1"
+              className="block text-black text-xm font-bold "
             >
               Password
             </label>
             <input
+              required
               placeholder="Enter Password"
               name="password"
               value={User.password}
@@ -124,11 +126,12 @@ const SignUpForm: React.FC = () => {
             ></input>
             <label
               htmlFor="Password"
-              className="block text-white text-xm font-bold mb-1"
+              className="block text-black text-xm font-bold "
             >
               ConfirmPassword
             </label>
             <input
+              required
               placeholder="Enter ConfirmPassword"
               name="confirmpassword"
               value={User.confirmpassword}
@@ -137,7 +140,7 @@ const SignUpForm: React.FC = () => {
               className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
             ></input>
             <button
-              className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              className="bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               type="submit"
             >
               Register

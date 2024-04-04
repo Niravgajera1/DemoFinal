@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Navbar from "./navbar";
 
 import { useRouter } from "next/navigation";
+import Footer from "./footer";
 
 const SingInForm: React.FC = () => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const SingInForm: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               type="text"
-              className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blackfocus:shadow-outline my-2 -4"
+              className="appearance caret-gray-800 border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blackfocus:shadow-outline my-2 -4"
             ></input>
             <label
               htmlFor="Password"
@@ -76,7 +77,7 @@ const SingInForm: React.FC = () => {
               className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
             ></input>
             <button
-              className=" cursor-progress bg-blue-500 hover:bg-blue-650 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2"
+              className="bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               type="submit"
             >
               Register
@@ -84,6 +85,7 @@ const SingInForm: React.FC = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
