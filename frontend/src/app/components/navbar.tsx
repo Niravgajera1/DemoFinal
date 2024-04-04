@@ -3,26 +3,26 @@ import Link from "next/link";
 
 const navbar = () => {
   return (
-    <div className="grid min-h-[80px] w-full place-items-center rounded-lg p-6  ">
-      <div className="-m-6 max-h-[768px] w-[calc(100%+48px)] bg-transperent">
-        <nav className="sticky top-0 z-10 block w-full max-w-full px-2 text-black bg-white border rounded-none shadow-md h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:px-4 lg:py-4">
+    <div className="grid min-h-[80px] w-full place-items-center rounded-lg p-6 ">
+      <div className="-m-6  max-h-[768px] w-[calc(100%+48px)] bg-transperent">
+        <nav className="sticky top-0 z-10 block w-full max-w-full px-2 text-black bg-white border rounded-none shadow-xl h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:px-4 lg:py-4">
           <div className="flex items-center justify-between text-blue-gray-900 mx-2">
             <Link
               href="/"
               className="mr-4 block cursor-pointer py-1.5 font-sans text-base font-medium leading-relaxed text-inherit antialiased"
             >
-              Material Tailwind
+              FundFusion
             </Link>
             <div className="flex items-center gap-4">
               <div className="hidden mr-4 lg:block">
                 <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
                   <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="#" className="flex items-center">
+                    <a href="/" className="flex items-center">
                       Blocks
                     </a>
                   </li>
                   <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="#" className="flex items-center">
+                    <a href="/" className="flex items-center">
                       Docs
                     </a>
                   </li>
