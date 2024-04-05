@@ -46,7 +46,7 @@ const Card: React.FC = () => {
             </figure>
             <div className="card-normal">
               <h2 className="card-title p-4">{item.title}</h2>
-              <p className="p-2">{item.story}</p>
+              <p className="p-2">{item.story.slice(0, 100)}....</p>
               <h2 className="p-2">{item.enddate}</h2>
               <h3 className="p-2"> {item.category}</h3>
               <div className="card-actions justify-end mb-2 mr-2">
