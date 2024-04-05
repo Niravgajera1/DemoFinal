@@ -30,10 +30,14 @@ const SingInForm: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
+
       if (!res.ok) {
         throw new Error("Login failed");
       }
       const data = await res.json();
+      const jwt = data.token;
+      document.cookie = `jwt=${jwt}; path=/`;
+      console.log(data);
       alert(data.message);
       router.push("/main");
     } catch (error) {
