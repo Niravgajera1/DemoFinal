@@ -10,6 +10,7 @@ import { User } from '../Schemas/auth.Schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { loginuserdto } from './dto/loginuser.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -49,13 +50,15 @@ export class AuthService {
 
   async login(
     LoginUserDto: loginuserdto,
-  ): Promise<{ message: string; token: string }> {
+    res: Response,
+  ): Promise<{ message: string; token: string; user: any }> {
     try {
       const { email, password } = LoginUserDto;
       const user = await this.userModel.findOne({ email });
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = this.jwtService.sign({ id: user._id });
-        return { message: 'Login successful!', token };
+        res.cookie('token', token, { httpOnly: true });
+        return { message: 'Login successful!', token, user };
       } else {
         throw new UnauthorizedException('Invalid Email Or Password');
       }
@@ -65,6 +68,7 @@ export class AuthService {
   }
 
   async findAll(): Promise<User[]> {
+    console.log('hhh');
     return await this.userModel.find().exec();
   }
 }
