@@ -8,12 +8,16 @@ import {
   Param,
   HttpException,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { mongo } from 'mongoose';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('campaign')
 export class CampaignController {
@@ -73,8 +77,29 @@ export class CampaignController {
 
   @Post('/new')
   @UseGuards(AuthGuard())
-  async create(@Body() createcampaigndto: CreateCampaignDto) {
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/images',
+        filename: (req, file, cb) => {
+          cb(null, `${file.originalname}`);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image')) {
+          cb(null, true);
+        } else {
+          throw new Error('not a image Upload only image');
+        }
+      },
+    }),
+  )
+  async create(
+    @UploadedFile() image,
+    @Body() createcampaigndto: CreateCampaignDto,
+  ) {
     try {
+      createcampaigndto.image = image.filename;
       return this.campaignservice.createCampaign(createcampaigndto);
     } catch (error) {
       throw error.message;
