@@ -4,6 +4,8 @@ import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 import "./globals.css";
 import Link from "next/link";
+import createCampaign from "./CreateCampaign/page";
+
 const Home: React.FC = () => {
   return (
     <main className="flex flex-col h-screen">

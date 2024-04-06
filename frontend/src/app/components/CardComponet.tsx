@@ -39,10 +39,7 @@ const Card: React.FC = () => {
         >
           <div className="card w-96 bg-base-100 shadow-2xl">
             <figure>
-              <img
-                src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                alt="Shoes"
-              />
+              <img src={item.imageUrl} alt="Shoes" />
             </figure>
             <div className="card-normal">
               <h2 className="card-title p-4">{item.title}</h2>
