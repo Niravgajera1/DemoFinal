@@ -42,12 +42,12 @@ const SignUpForm: React.FC = () => {
         }),
       });
 
+      const data = await res.json();
       if (!res.ok) {
+        alert(data.message);
         throw new Error("Failed to post data");
       }
 
-      const data = await res.json();
-      alert(data.message);
       console.log(data); // Handle the response data here
       router.push("/signin");
     } catch (error) {
