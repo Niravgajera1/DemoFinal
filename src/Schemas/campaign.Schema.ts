@@ -21,8 +21,8 @@ export class Campaign extends Document {
   @Prop({ required: true })
   enddate: Date;
 
-  @Prop({ required: true })
-  image: string;
+  @Prop()
+  image: File;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

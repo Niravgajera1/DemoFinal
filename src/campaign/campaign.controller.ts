@@ -9,6 +9,7 @@ import {
   HttpException,
   UseGuards,
   UseInterceptors,
+  HttpStatus,
   UploadedFile,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
@@ -76,7 +77,6 @@ export class CampaignController {
   }
 
   @Post('/new')
-  @UseGuards(AuthGuard())
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -89,20 +89,31 @@ export class CampaignController {
         if (file.mimetype.startsWith('image')) {
           cb(null, true);
         } else {
-          throw new Error('not a image Upload only image');
+          cb(
+            new HttpException(
+              'Only image files are allowed',
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
         }
       },
     }),
   )
   async create(
-    @UploadedFile() image,
-    @Body() createcampaigndto: CreateCampaignDto,
+    @UploadedFile() image: Express.Multer.File, // Ensure the type of image is Express.Multer.File
+    @Body() createCampaignDto: CreateCampaignDto,
   ) {
     try {
-      createcampaigndto.image = image.filename;
-      return this.campaignservice.createCampaign(createcampaigndto);
+      console.log(createCampaignDto);
+      if (image) {
+        createCampaignDto.image = image.filename;
+      } else {
+        createCampaignDto.image = null;
+      }
+      return this.campaignservice.createCampaign(createCampaignDto);
     } catch (error) {
-      throw error.message;
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
