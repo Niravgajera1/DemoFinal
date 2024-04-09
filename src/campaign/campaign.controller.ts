@@ -82,7 +82,8 @@ export class CampaignController {
       storage: diskStorage({
         destination: './uploads/images',
         filename: (req, file, cb) => {
-          cb(null, `${file.originalname}`);
+          const filename = `${file.originalname}`;
+          cb(null, filename);
         },
       }),
       fileFilter: (req, file, cb) => {
@@ -105,13 +106,22 @@ export class CampaignController {
     @Body() createCampaignDto: CreateCampaignDto,
   ) {
     try {
-      console.log(createCampaignDto);
+      // console.log('Dto-----------------------', createCampaignDto);
       if (image) {
         createCampaignDto.image = image.filename;
       } else {
         createCampaignDto.image = null;
       }
-      return this.campaignservice.createCampaign(createCampaignDto);
+      const CreateCampaign =
+        await this.campaignservice.createCampaign(createCampaignDto);
+      // console.log(
+      //   'Create Campaign---------------------------------------',
+      //   CreateCampaign,
+      // );
+      return {
+        message: 'Campaign Created Successfully !',
+        campaign: CreateCampaign,
+      };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
