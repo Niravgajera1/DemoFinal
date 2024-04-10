@@ -46,9 +46,10 @@ const createCampaign = () => {
     try {
       const res = await fetch("http://localhost:3001/campaign/new", {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
       const data = await res.json();

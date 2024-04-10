@@ -123,7 +123,7 @@ const SignUpForm: React.FC = () => {
               label="Enter Your Confirm password"
             />
             <button
-              className="w-full mt-2 bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              className="w-full mt-2 bg-transparent hover:bg-blue-00 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               type="submit"
             >
               Register
