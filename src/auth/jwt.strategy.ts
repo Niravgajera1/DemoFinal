@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload;
     const user = await this.userModel.findById(id);
     if (!user) {
-      throw new UnauthorizedException('You Are Not Login Please Login ');
+      throw new UnauthorizedException();
     }
     return user;
   }

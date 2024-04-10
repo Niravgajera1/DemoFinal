@@ -19,6 +19,7 @@ import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { fileURLToPath } from 'url';
 
 @Controller('campaign')
 export class CampaignController {
@@ -77,6 +78,7 @@ export class CampaignController {
   }
 
   @Post('/new')
+  @UseGuards(AuthGuard())
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -108,6 +110,7 @@ export class CampaignController {
     try {
       // console.log('Dto-----------------------', createCampaignDto);
       if (image) {
+        console.log();
         createCampaignDto.image = image.filename;
       } else {
         createCampaignDto.image = null;
