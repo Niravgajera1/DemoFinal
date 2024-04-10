@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Navbar from "./navbar";
-
+import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import Footer from "./footer";
 
@@ -47,45 +47,46 @@ const SingInForm: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex justify-center items-center h-screen bg-blue-300 ">
-        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-black/30">
+      <div className="flex justify-center items-center h-screen bg-slate-400 ">
+        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-white/60">
+          <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
+            <h4 className="justify-center p-3 text-xl font-semibold">
+              Welcome Again
+            </h4>
+          </div>
           <form onSubmit={HandleSubmit}>
-            <label
-              htmlFor="UserEmail"
-              className="block text-white text-xm font-bold mb-1"
-            >
-              UserEmail
-            </label>
-            <input
-              required
-              placeholder="Enter UserEmail"
+            <TextField
+              margin="normal"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              type="text"
-              className="appearance caret-gray-800 border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blackfocus:shadow-outline my-2 -4"
-            ></input>
-            <label
-              htmlFor="Password"
-              className="block text-white text-xm font-bold mb-1"
-            >
-              Password
-            </label>
-            <input
               required
-              placeholder="Enter Password"
+              size="small"
+              fullWidth
+              id="outlined-basic"
+              variant="filled"
+              label="Enter Your Email"
+            />
+            <TextField
+              margin="normal"
               name="password"
+              type="password"
               value={formData.password}
               onChange={handleChange}
-              type="Password"
-              className="appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-black focus:shadow-outline my-2 -4"
-            ></input>
+              required
+              size="small"
+              fullWidth
+              id="outlined-basic"
+              variant="filled"
+              label="Enter Your Password"
+            />
             <button
-              className="bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-400 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
               type="submit"
             >
-              Register
+              SignIn
             </button>
+            <p className="mt-2">Forgot your password?</p>
           </form>
         </div>
       </div>
