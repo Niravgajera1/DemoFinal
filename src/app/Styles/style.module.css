@@ -1,0 +1,5 @@
+/* styles.css */
+.blurred-background {
+    backdrop-filter: blur(4px); /* Adjust the blur intensity as needed */
+  }
+  

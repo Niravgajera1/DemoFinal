@@ -47,7 +47,8 @@ const createCampaign = () => {
       const res = await fetch("http://localhost:3001/campaign/new", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "multipart/form-data; boundary=<calculated when request is sent>",
           // Authorization: `Bearer ${token}`,
         },
         body: formData,

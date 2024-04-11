@@ -5,6 +5,8 @@ import Navbar from "./navbar";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import Footer from "./footer";
+import ForgotPassword from "./ForgotPassword";
+import styles from "@/app/Styles/style.module.css";
 
 const SingInForm: React.FC = () => {
   const router = useRouter();
@@ -12,6 +14,8 @@ const SingInForm: React.FC = () => {
     email: "",
     password: "",
   });
+  const [showForgotPassWord, setShowForgotPassword] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     console.log(e.target);
@@ -27,6 +31,7 @@ const SingInForm: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          //  Authorization: `Bearer ${jwt}`,
         },
         body: JSON.stringify(formData),
       });
@@ -44,10 +49,19 @@ const SingInForm: React.FC = () => {
       console.error("Error logging in:", error);
     }
   };
+
+  const handleForgotPasswordClick = () => {
+    setShowForgotPassword(true);
+  };
+
+  const closeForgotPasswordPopup = () => {
+    setShowForgotPassword(false);
+  };
+
   return (
     <div>
       <Navbar />
-      <div className="flex justify-center items-center h-screen bg-slate-400 ">
+      <div className="flex justify-center items-center h-screen  bg-slate-400 ">
         <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-white/60">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
             <h4 className="justify-center p-3 text-xl font-semibold">
@@ -86,11 +100,22 @@ const SingInForm: React.FC = () => {
             >
               SignIn
             </button>
-            <p className="mt-2">Forgot your password?</p>
+            <p className="mt-2">
+              <button
+                type="button"
+                className="text-blue-600 hover:underline focus:outline-none"
+                onClick={handleForgotPasswordClick}
+              >
+                Forgot your password?
+              </button>
+            </p>
           </form>
         </div>
       </div>
       <Footer />
+      {showForgotPassWord && (
+        <ForgotPassword onClose={closeForgotPasswordPopup} />
+      )}
     </div>
   );
 };
