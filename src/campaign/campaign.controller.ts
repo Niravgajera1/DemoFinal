@@ -78,7 +78,7 @@ export class CampaignController {
   }
 
   @Post('/new')
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -108,7 +108,6 @@ export class CampaignController {
     @Body() createCampaignDto: CreateCampaignDto,
   ) {
     try {
-      // console.log('Dto-----------------------', createCampaignDto);
       if (image) {
         console.log();
         createCampaignDto.image = image.filename;
@@ -117,10 +116,6 @@ export class CampaignController {
       }
       const CreateCampaign =
         await this.campaignservice.createCampaign(createCampaignDto);
-      // console.log(
-      //   'Create Campaign---------------------------------------',
-      //   CreateCampaign,
-      // );
       return {
         message: 'Campaign Created Successfully !',
         campaign: CreateCampaign,

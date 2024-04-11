@@ -27,5 +27,5 @@ export class UpdateCampaignDto {
 
   @IsOptional()
   @IsString()
-  image: string;
+  image: File;
 }

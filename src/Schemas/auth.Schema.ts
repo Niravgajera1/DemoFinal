@@ -14,6 +14,12 @@ export class User extends Document {
 
   @Prop()
   confirmpassword: string;
+
+  @Prop()
+  PasswordReserToken: string;
+
+  @Prop()
+  PasswordExpiresIn: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

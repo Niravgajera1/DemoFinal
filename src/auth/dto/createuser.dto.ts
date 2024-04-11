@@ -18,4 +18,7 @@ export class createuserdto {
   @IsNotEmpty()
   @IsString()
   confirmpassword: string;
+
+  passwordResetToken: string;
+  passwordExpiresIn: string;
 }
