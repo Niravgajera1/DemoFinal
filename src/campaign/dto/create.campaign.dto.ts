@@ -33,7 +33,8 @@ export class CreateCampaignDto {
   goal: number;
 
   @IsNotEmpty()
-  enddate: Date;
+  @IsString()
+  enddate: string;
 
   @IsOptional()
   image?: string;

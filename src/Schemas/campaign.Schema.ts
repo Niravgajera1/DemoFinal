@@ -19,7 +19,7 @@ export class Campaign extends Document {
   goal: number;
 
   @Prop({ required: true })
-  enddate: Date;
+  enddate: string;
 
   @Prop()
   image: File;

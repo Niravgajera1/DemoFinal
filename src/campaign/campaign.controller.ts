@@ -114,6 +114,12 @@ export class CampaignController {
       } else {
         createCampaignDto.image = null;
       }
+
+      createCampaignDto.enddate = createCampaignDto.enddate
+        .split('-')
+        .reverse()
+        .join('-');
+
       const CreateCampaign =
         await this.campaignservice.createCampaign(createCampaignDto);
       return {

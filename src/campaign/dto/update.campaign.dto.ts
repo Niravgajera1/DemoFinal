@@ -23,7 +23,7 @@ export class UpdateCampaignDto {
 
   @IsOptional()
   @IsString()
-  enddate: Date;
+  enddate: string;
 
   @IsOptional()
   @IsString()
