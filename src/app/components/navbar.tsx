@@ -1,7 +1,18 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../Redux/slice/authSlice";
+
 const navbar = () => {
+  const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate);
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    dispatch(logout());
+    window.location.href = "/";
+  };
+
   return (
     <div className="grid min-h-[80px] w-full place-items-center rounded-lg p-6 ">
       <div className="-m-6  max-h-[768px] w-[calc(100%+48px)] bg-transperent">
@@ -15,18 +26,18 @@ const navbar = () => {
             </Link>
             <div className="flex items-center gap-4">
               <div className="hidden mr-4 lg:block">
-                <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-                  <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="/" className="flex items-center">
-                      Blocks
-                    </a>
-                  </li>
-                  <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                    <a href="/" className="flex items-center">
-                      Docs
-                    </a>
-                  </li>
-                </ul>
+                {/* <ul className="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+                    <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                      <a href="/" className="flex items-center">
+                        Blocks
+                      </a>
+                    </li>
+                    <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                      <a href="/" className="flex items-center">
+                        Docs
+                      </a>
+                    </li>
+                  </ul> */}
               </div>
               <div className="flex items-center gap-x-1">
                 <Link href="/signup">
@@ -37,22 +48,56 @@ const navbar = () => {
                     Sign Up
                   </button>
                 </Link>
-                <Link href="/signin">
-                  <button
-                    className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
-                    type="button"
-                  >
-                    Sign In
-                  </button>
-                </Link>
-                <Link href="/CreateCampaign">
-                  <button
-                    className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
-                    type="button"
-                  >
-                    CreateCampaign
-                  </button>
-                </Link>
+                {!isAuthenticate && (
+                  <Link href="/signin">
+                    <button
+                      className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                      type="button"
+                    >
+                      Sign In
+                    </button>
+                  </Link>
+                )}
+                {isAuthenticate && (
+                  <Link href="/CreateCampaign">
+                    <button
+                      className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                      type="button"
+                    >
+                      CreateCampaign
+                    </button>
+                  </Link>
+                )}
+                {isAuthenticate && (
+                  <div className="dropdown dropdown-end">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="btn btn-ghost btn-circle avatar"
+                    >
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt="Tailwind CSS Navbar component"
+                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                        />
+                      </div>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                    >
+                      <li>
+                        <a className="justify-between">Profile</a>
+                      </li>
+                      <li>
+                        <a>Settings</a>
+                      </li>
+                      <li>
+                        <button onClick={handleLogOut}>Logout</button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

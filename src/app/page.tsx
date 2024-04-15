@@ -5,11 +5,15 @@ import Navbar from "./components/navbar";
 import "./globals.css";
 import Link from "next/link";
 import createCampaign from "./CreateCampaign/page";
+import { Provider } from "react-redux";
+import store from "./Redux/store";
 
 const Home: React.FC = () => {
   return (
     <main className="flex flex-col h-screen">
-      <Navbar />
+      <Provider store={store}>
+        <Navbar />
+      </Provider>
       <div className="flex flex-col justify-center items-center flex-grow bg-red-200 sm:px-4">
         <h4 className="font-black text-5xl mb-4">FundFusion</h4>
         <p className="text-xl mb-8">

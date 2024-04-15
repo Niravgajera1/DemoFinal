@@ -1,10 +1,15 @@
+"use client";
 import React from "react";
 import SignInForm from "../components/SingInForm";
+import { Provider } from "react-redux";
+import store from "../Redux/store";
 
 const SigninPage = () => {
   return (
     <div>
-      <SignInForm />
+      <Provider store={store}>
+        <SignInForm />
+      </Provider>
     </div>
   );
 };
