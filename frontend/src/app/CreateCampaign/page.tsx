@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 const createCampaign = () => {
   const [data, setData] = useState({
@@ -17,8 +18,10 @@ const createCampaign = () => {
     story: "",
     goal: "",
     enddate: "",
-    image: "",
   });
+
+  const [image, setImage] = useState<File | null>();
+  const router = useRouter();
   const currentDate = new Date().toISOString().split("T")[0];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,40 +30,48 @@ const createCampaign = () => {
   };
 
   const handleDateChange = (date: any) => {
+    const formateDate = date.format("DD-MM-YYYY");
     setData((prevData) => ({
       ...prevData,
-      enddate: date.format("YYYY-MM-DD"),
+      enddate: formateDate,
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      setImage(selectedFile); // Update separate state for image
+    }
+  };
+
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const formData = new FormData();
     formData.append("yourname", data.yourname);
     formData.append("title", data.title);
     formData.append("category", data.category);
     formData.append("story", data.story);
     formData.append("goal", data.goal);
-    formData.append("enddate", data.enddate);
-    formData.append("image", data.image);
-    e.preventDefault();
+    formData.append(
+      "enddate",
+      dayjs(data.enddate, "DD-MM-YYYY").format("YYYY-MM-DD")
+    );
+    if (image) {
+      formData.append("image", image);
+    }
     try {
       const res = await fetch("http://localhost:3001/campaign/new", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
-        },
         body: formData,
       });
-      const data = await res.json();
+      const Data = await res.json();
       if (res.ok) {
-        alert(data.message);
+        alert(Data.message);
+        await router.push("/main");
+      } else {
+        alert(Data.message);
       }
-      if (!res.ok) {
-        alert(data.message);
-      }
-
-      console.log(data);
+      console.log("<<<Frn-Data>>>", Data);
     } catch (error) {
       console.error(error);
     }
@@ -169,8 +180,7 @@ const createCampaign = () => {
             <div className="relative h-11 w-full min-w-[200px] justify-items mt-2 mb-4">
               <div className="relative w-full min-w-[200px]">
                 <input
-                  value={data.image}
-                  onChange={handleChange}
+                  onChange={handleFileChange}
                   name="image"
                   type="file"
                 ></input>
