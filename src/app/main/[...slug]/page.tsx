@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface CampaignData {
   _id: string;
@@ -10,6 +11,8 @@ interface CampaignData {
   category: string;
   yourname: string;
   story: string;
+  amountDonated: number;
+  goal: number;
 }
 
 const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
@@ -37,6 +40,12 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const calculateProgress = () => {
+    if (!data) return 0;
+    const percentage = (data.amountDonated / data.goal) * 100;
+    return Math.min(percentage, 100);
   };
 
   const HandleClick = () => {
@@ -80,7 +89,27 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     </h2>
                   </div>
                   <h4>{data.yourname}</h4>
+                  <div className="card-title">
+                    <h2 className="flex flex-row font-black text-lg">
+                      Fund Raised
+                    </h2>
+                  </div>
+                  <h4>{data.amountDonated}</h4>
+                  <div className="card-title">
+                    <h2 className="flex flex-row font-black text-lg">
+                      Goal Amount
+                    </h2>
+                  </div>
+                  <h4>{data.goal}</h4>
                   <div className="card-actions justify-center mt-auto">
+                    {/* <div>
+                      Fund Raise{data.amountDonated} from {data.goal}
+                      <LinearProgress
+                        className="h-4"
+                        variant="determinate"
+                        value={calculateProgress()} // Call the function to get the progress value
+                      />
+                    </div> */}
                     <button
                       className="bg-blue-500 text-black text-xl p-2 w-full rounded-lg text-center hover:border hover:bg-blue-700 hover:border-stone-700 hover:text-white transform duration-300"
                       onClick={HandleClick}

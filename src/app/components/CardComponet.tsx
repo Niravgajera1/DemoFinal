@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface CardData {
   _id: string;
@@ -11,6 +12,8 @@ interface CardData {
   story: string;
   enddate: string;
   image: string;
+  amountDonated: number;
+  goal: number;
 }
 const Card: React.FC = () => {
   const [data, setData] = useState<CardData[]>([]);
@@ -43,6 +46,12 @@ const Card: React.FC = () => {
     }
   };
 
+  const calculateProgress = (amountDonated: number, goal: number) => {
+    if (!data) return 0;
+    const percentage = (amountDonated / goal) * 100;
+    return Math.min(percentage, 100);
+  };
+
   return (
     <>
       {data.map((item) => (
@@ -56,9 +65,17 @@ const Card: React.FC = () => {
             </figure>
             <div className="card-normal">
               <h2 className="card-title p-4">{item.title}</h2>
-              <p className="p-2">{item.story.slice(0, 50)}....</p>
-              <h2 className="p-2">{item.enddate}</h2>
-              <h3 className="p-2"> {item.category}</h3>
+              <p className="p-3">{item.story.slice(0, 50)}....</p>
+              <h2 className="p-3">{item.enddate}</h2>
+              <h3 className="p-3"> {item.category}</h3>
+              <div className="p-3">
+                Fund Raise {item.amountDonated} from {item.goal}
+                <LinearProgress
+                  aria-setsize={4}
+                  variant="determinate"
+                  value={calculateProgress(item.amountDonated, item.goal)} // Call the function to get the progress value
+                />
+              </div>
               <div className="card-actions justify-end mb-2 mr-2">
                 <button
                   className="btn btn-primary"
@@ -67,7 +84,6 @@ const Card: React.FC = () => {
                   Show more
                 </button>
               </div>
-              <div className="card-action justify-start"></div>
             </div>
           </div>
         </div>
