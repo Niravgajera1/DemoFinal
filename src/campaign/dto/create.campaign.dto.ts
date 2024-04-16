@@ -4,7 +4,6 @@ import {
   IsString,
   IsOptional,
   MinLength,
-  MIN,
 } from 'class-validator';
 
 export class CreateCampaignDto {
@@ -38,4 +37,6 @@ export class CreateCampaignDto {
 
   @IsOptional()
   image?: string;
+
+  amountDonated: number;
 }

@@ -30,8 +30,8 @@ import { JwtStrategy } from './jwt.strategy';
     ]),
     ConfigModule.forRoot(), // Import ConfigModule.forRoot()
   ],
-  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

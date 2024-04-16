@@ -6,6 +6,7 @@ import { CampaignModule } from './campaign/campaign.module';
 import passport from 'passport';
 import { PassportModule } from '@nestjs/passport';
 import { StripeModule } from './stripe/stripe.module';
+import { ConfigModule } from '@nestjs/config';
 
 const DBURL: string =
   'mongodb+srv://niravpatelpc:7359965@nest.riw7o.mongodb.net/';
@@ -13,9 +14,10 @@ const DBURL: string =
 @Module({
   imports: [
     MongooseModule.forRoot(DBURL),
+    ConfigModule.forRoot(),
     AuthModule,
     CampaignModule,
-    //PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     StripeModule,
   ],
   controllers: [],

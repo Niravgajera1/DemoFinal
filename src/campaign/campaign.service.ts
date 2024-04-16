@@ -56,4 +56,25 @@ export class CampaignService {
       throw new NotFoundException('Campaign not found');
     }
   }
+
+  async updateamountDonated(id: string, amount: number) {
+    try {
+      const campaign = await this.campaignModel.findById(id);
+      if (!campaign) {
+        throw new Error(`Campaign with ID ${id} not found`);
+      }
+
+      // if (!campaign.amountDonated) {
+      //   campaign.amountDonated = 0;
+      // }
+
+      // // Convert amountDonated to number if it's a string
+      const currentAmountDonated = Number(campaign.amountDonated);
+      campaign.amountDonated = currentAmountDonated + amount;
+      await campaign.save();
+    } catch (error) {
+      console.error('Error updating amount donated:', error);
+      throw new Error('Failed to update amount donated for campaign');
+    }
+  }
 }

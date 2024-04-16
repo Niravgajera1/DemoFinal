@@ -60,7 +60,6 @@ export class AuthService {
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = this.jwtService.sign({ id: user._id });
         res.cookie('token', token, { httpOnly: true });
-        console.log('user : ', user);
         return { token, user };
       } else {
         throw new UnauthorizedException('Invalid Email Or Password');

@@ -23,6 +23,9 @@ export class Campaign extends Document {
 
   @Prop()
   image: File;
+
+  @Prop({ default: 0 })
+  amountDonated: number;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
