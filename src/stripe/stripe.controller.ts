@@ -10,15 +10,12 @@ export class StripeController {
   ) {}
 
   @Post('payment/:id')
-  async payment(
-    @Body() body: { amount: number; currency: string },
-    @Param('id') id: string,
-  ) {
+  async payment(@Body() body: { amount: number }, @Param('id') id: string) {
     try {
-      const { amount, currency } = body;
+      const { amount } = body;
       const paymentIntent = await this.stripeService.createPayment(
         amount,
-        currency,
+        'inr',
         id,
       );
       await this.campaignService.updateamountDonated(id, amount);

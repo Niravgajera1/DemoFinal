@@ -13,8 +13,15 @@ export class CampaignService {
 
   async createCampaign(
     createcampaigndto: CreateCampaignDto,
+    // userId: string,
   ): Promise<Campaign> {
-    const newcampaign = new this.campaignModel(createcampaigndto);
+    console.log(createcampaigndto, 'createcampaigndto=======');
+    const newcampaign = new this.campaignModel({
+      ...createcampaigndto,
+      // user: userId,
+    });
+
+    console.log(newcampaign, 'newcampaign');
     return await newcampaign.save();
   }
 

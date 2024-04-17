@@ -4,6 +4,7 @@ import {
   IsString,
   IsOptional,
   MinLength,
+  IsUrl,
 } from 'class-validator';
 
 export class CreateCampaignDto {
@@ -36,7 +37,8 @@ export class CreateCampaignDto {
   enddate: string;
 
   @IsOptional()
-  image?: string;
+  // @IsUrl()
+  image: string | null;
 
   amountDonated: number;
 }

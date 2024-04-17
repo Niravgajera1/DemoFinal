@@ -15,7 +15,7 @@ export class StripeService {
       // Logic to create payment
       const paymentIntent = await this.stripe.paymentIntents.create({
         amount,
-        currency,
+        currency: 'inr',
         metadata: {
           id, // Associate the campaign ID with the payment
         },

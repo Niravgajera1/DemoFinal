@@ -10,7 +10,6 @@ import {
   UseGuards,
   UseInterceptors,
   HttpStatus,
-  UploadedFile,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
@@ -18,7 +17,6 @@ import { mongo } from 'mongoose';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 
 @Controller('campaign')
 export class CampaignController {
@@ -77,46 +75,29 @@ export class CampaignController {
   }
 
   @Post('/new')
-  @UseGuards(AuthGuard())
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/images',
-        filename: (req, file, cb) => {
-          const filename = `${file.originalname}`;
-          cb(null, filename);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image')) {
-          cb(null, true);
-        } else {
-          cb(
-            new HttpException(
-              'Only image files are allowed',
-              HttpStatus.BAD_REQUEST,
-            ),
-            false,
-          );
-        }
-      },
-    }),
-  )
   async create(
-    @UploadedFile() image: Express.Multer.File, // Ensure the type of image is Express.Multer.File
-    @Body() createCampaignDto: CreateCampaignDto,
+    // @UploadedFile() image: Express.Multer.File, // Ensure the type of image is Express.Multer.File
+    @Body() createCampaignDto,
   ) {
+    console.log(createCampaignDto, 'BODY-------');
     try {
-      if (image) {
-        createCampaignDto.image = image.filename;
-      } else {
-        createCampaignDto.image = null;
-      }
+      console.log('>>>>>>>>>>>FDDGBDHBDFGD');
+      // if (image) {
+      //   createCampaignDto.image = image.filename;
+      // } else {
+      //   createCampaignDto.image = null;
+      // }
 
       createCampaignDto.enddate = createCampaignDto.enddate
         .split('-')
         .reverse()
         .join('-');
+
+      console.log('in the controller');
+      console.log(
+        createCampaignDto,
+        'createCampaignDto=========== in controller',
+      );
 
       const CreateCampaign =
         await this.campaignservice.createCampaign(createCampaignDto);
