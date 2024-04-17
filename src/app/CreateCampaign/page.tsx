@@ -9,6 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { UploadButton } from "@/utils/uploadthing";
 
 const createCampaign = () => {
   const [data, setData] = useState({
@@ -18,9 +19,10 @@ const createCampaign = () => {
     story: "",
     goal: "",
     enddate: "",
+    image: "",
   });
 
-  const [image, setImage] = useState<File | null>();
+  const [image, setImage] = useState<string | null>("");
   const router = useRouter();
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -37,28 +39,29 @@ const createCampaign = () => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      setImage(selectedFile); // Update separate state for image
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     setImage(res[0].url); // Update separate state for image
+  //   }
+  // };
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    alert("btn clicked");
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("yourname", data.yourname);
-    formData.append("title", data.title);
-    formData.append("category", data.category);
-    formData.append("story", data.story);
-    formData.append("goal", data.goal);
-    formData.append(
-      "enddate",
-      dayjs(data.enddate, "DD-MM-YYYY").format("YYYY-MM-DD")
-    );
-    if (image) {
-      formData.append("image", image);
-    }
+    const formData = new FormData(e.currentTarget);
+    // formData.append("yourname", data.yourname);
+    // formData.append("title", data.title);
+    // formData.append("category", data.category);
+    // formData.append("story", data.story);
+    // formData.append("goal", data.goal);
+    // formData.append(
+    //   "enddate",
+    //   dayjs(data.enddate, "DD-MM-YYYY").format("YYYY-MM-DD")
+    // );
+    // if (image) {
+    //   formData.append("image", image);
+    // }
+    console.log(">>>>.formData.", formData);
     try {
       const res = await fetch("http://localhost:3001/campaign/new", {
         method: "POST",
@@ -179,11 +182,19 @@ const createCampaign = () => {
             </div>
             <div className="relative h-11 w-full min-w-[200px] justify-items mt-2 mb-4">
               <div className="relative w-full min-w-[200px]">
-                <input
-                  onChange={handleFileChange}
-                  name="image"
-                  type="file"
-                ></input>
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res: { url: string }[]) => {
+                    setImage(res[0].url);
+                    // Do something with the response
+                    console.log("Files: ", res);
+                    alert("Upload Completed");
+                  }}
+                  onUploadError={(error: Error) => {
+                    // Do something with the error.
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
               </div>
             </div>
             <button className="bg-stone-700 text-white p-2 w-full rounded-lg text-center hover:border hover:bg-stone-600 hover:border-stone-700 hover:text-stone-800 transfrom duration-300">

@@ -64,11 +64,11 @@ const Card: React.FC = () => {
               <img src={item.image} alt="Shoes" />
             </figure>
             <div className="card-normal">
-              <h2 className="card-title p-4">{item.title}</h2>
-              <p className="p-3">{item.story.slice(0, 50)}....</p>
-              <h2 className="p-3">{item.enddate}</h2>
-              <h3 className="p-3"> {item.category}</h3>
-              <div className="p-3">
+              <h2 className="card-title p-2">{item.title}</h2>
+              <p className="p-2">{item.story.slice(0, 50)}....</p>
+              <h2 className="p-2">{item.enddate}</h2>
+              <h3 className="p-2"> {item.category}</h3>
+              <div className="p-2">
                 Fund Raise {item.amountDonated} from {item.goal}
                 <LinearProgress
                   aria-setsize={4}
