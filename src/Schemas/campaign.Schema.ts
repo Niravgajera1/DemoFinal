@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema()
 export class Campaign extends Document {
@@ -22,10 +22,13 @@ export class Campaign extends Document {
   enddate: string;
 
   @Prop()
-  image: File;
+  image: string | null;
 
   @Prop({ default: 0 })
   amountDonated: number;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  user: Types.ObjectId;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
