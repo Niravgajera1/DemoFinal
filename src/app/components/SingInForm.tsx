@@ -31,6 +31,7 @@ const SingInForm: React.FC = () => {
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      console.log(formData);
       const res = await fetch("http://localhost:3001/auth/signin", {
         method: "POST",
         headers: {

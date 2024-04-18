@@ -21,8 +21,6 @@ const createCampaign = () => {
     enddate: "",
     image: "",
   });
-
-  const [image, setImage] = useState<string | null>("");
   const router = useRouter();
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -39,33 +37,22 @@ const createCampaign = () => {
     }));
   };
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     setImage(res[0].url); // Update separate state for image
-  //   }
-  // };
+  const handleFileChange = (imageUrl: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      image: imageUrl,
+    }));
+  };
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    alert("btn clicked");
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    // formData.append("yourname", data.yourname);
-    // formData.append("title", data.title);
-    // formData.append("category", data.category);
-    // formData.append("story", data.story);
-    // formData.append("goal", data.goal);
-    // formData.append(
-    //   "enddate",
-    //   dayjs(data.enddate, "DD-MM-YYYY").format("YYYY-MM-DD")
-    // );
-    // if (image) {
-    //   formData.append("image", image);
-    // }
-    console.log(">>>>.formData.", formData);
     try {
       const res = await fetch("http://localhost:3001/campaign/new", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
       const Data = await res.json();
       if (res.ok) {
@@ -74,7 +61,6 @@ const createCampaign = () => {
       } else {
         alert(Data.message);
       }
-      console.log("<<<Frn-Data>>>", Data);
     } catch (error) {
       console.error(error);
     }
@@ -185,9 +171,9 @@ const createCampaign = () => {
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res: { url: string }[]) => {
-                    setImage(res[0].url);
-                    // Do something with the response
-                    console.log("Files: ", res);
+                    if (res && res.length > 0) {
+                      handleFileChange(res[0].url);
+                    }
                     alert("Upload Completed");
                   }}
                   onUploadError={(error: Error) => {
