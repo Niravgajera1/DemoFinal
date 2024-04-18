@@ -12,17 +12,10 @@ export class CampaignService {
   ) {}
 
   async createCampaign(
-    createcampaigndto: CreateCampaignDto,
-    // userId: string,
+    createCampaignDto: CreateCampaignDto,
   ): Promise<Campaign> {
-    console.log(createcampaigndto, 'createcampaigndto=======');
-    const newcampaign = new this.campaignModel({
-      ...createcampaigndto,
-      // user: userId,
-    });
-
-    console.log(newcampaign, 'newcampaign');
-    return await newcampaign.save();
+    const newCampaign = new this.campaignModel(createCampaignDto);
+    return await newCampaign.save();
   }
 
   async findByid(id: string) {
@@ -70,12 +63,6 @@ export class CampaignService {
       if (!campaign) {
         throw new Error(`Campaign with ID ${id} not found`);
       }
-
-      // if (!campaign.amountDonated) {
-      //   campaign.amountDonated = 0;
-      // }
-
-      // // Convert amountDonated to number if it's a string
       const currentAmountDonated = Number(campaign.amountDonated);
       campaign.amountDonated = currentAmountDonated + amount;
       await campaign.save();

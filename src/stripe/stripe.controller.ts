@@ -1,6 +1,15 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CampaignService } from './../campaign/campaign.service'; // Import the CampaignService
+import { Session } from 'inspector';
+
+interface CheckoutRequest {
+  // userEmail: string;
+  campaignId: string;
+  // campaignName: string;
+  // campaignImage: string;
+  donationAmount: number; // New field for donation amount
+}
 
 @Controller('stripe')
 export class StripeController {
@@ -9,30 +18,18 @@ export class StripeController {
     private campaignService: CampaignService, // Inject the CampaignService
   ) {}
 
-  @Post('payment/:id')
-  async payment(@Body() body: { amount: number }, @Param('id') id: string) {
-    try {
-      const { amount } = body;
-      const paymentIntent = await this.stripeService.createPayment(
-        amount,
-        'inr',
-        id,
-      );
-      await this.campaignService.updateamountDonated(id, amount);
-      // Fetch campaign details
-      const campaign = await this.campaignService.findByid(id);
+  @Post('/checkout')
+  async createCheckoutSession(
+    @Body() body: any,
+    // @Res()
+    // res: Response,
+  ): Promise<string> {
+    const { campaignId, donationAmount } = body;
 
-      return {
-        message: 'Payment successful!',
-        campaign: {
-          id: campaign.id,
-          name: campaign.title,
-          amountDonated: campaign.amountDonated,
-        },
-      };
-    } catch (error) {
-      console.log('<<<Error>>>', error.message);
-      throw new Error('Failed to process payment');
-    }
+    const sessionurl = await this.stripeService.createCheckoutSession(
+      campaignId,
+      donationAmount,
+    );
+    return sessionurl;
   }
 }

@@ -22,7 +22,7 @@ export class Campaign extends Document {
   enddate: string;
 
   @Prop()
-  image: string;
+  image: string | null;
 
   @Prop({ default: 0 })
   amountDonated: number;

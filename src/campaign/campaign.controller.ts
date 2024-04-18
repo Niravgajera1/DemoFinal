@@ -5,6 +5,7 @@ import {
   Get,
   Patch,
   Delete,
+  UploadedFile,
   Param,
   HttpException,
   UseGuards,
@@ -17,6 +18,8 @@ import { mongo } from 'mongoose';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { Campaign } from 'src/Schemas/campaign.Schema';
 
 @Controller('campaign')
 export class CampaignController {
@@ -76,37 +79,13 @@ export class CampaignController {
 
   @Post('/new')
   async create(
-    // @UploadedFile() image: Express.Multer.File, // Ensure the type of image is Express.Multer.File
-    @Body() createCampaignDto,
-  ) {
-    console.log(createCampaignDto, 'BODY-------');
-    try {
-      console.log('>>>>>>>>>>>FDDGBDHBDFGD');
-      // if (image) {
-      //   createCampaignDto.image = image.filename;
-      // } else {
-      //   createCampaignDto.image = null;
-      // }
-
-      createCampaignDto.enddate = createCampaignDto.enddate
-        .split('-')
-        .reverse()
-        .join('-');
-
-      console.log('in the controller');
-      console.log(
-        createCampaignDto,
-        'createCampaignDto=========== in controller',
-      );
-
-      const CreateCampaign =
-        await this.campaignservice.createCampaign(createCampaignDto);
-      return {
-        message: 'Campaign Created Successfully !',
-        campaign: CreateCampaign,
-      };
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    @Body() createCampiagnDto: CreateCampaignDto,
+  ): Promise<{ campaign: Campaign; message: string }> {
+    const CreateCampaign =
+      await this.campaignservice.createCampaign(createCampiagnDto);
+    return {
+      message: 'Campaign Created Successfully !',
+      campaign: CreateCampaign,
+    };
   }
 }
