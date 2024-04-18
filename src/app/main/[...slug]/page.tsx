@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
-import LinearProgress from "@mui/material/LinearProgress";
+// import LinearProgress from "@mui/material/LinearProgress";
 
 interface CampaignData {
   _id: string;
@@ -13,6 +13,7 @@ interface CampaignData {
   story: string;
   amountDonated: number;
   goal: number;
+  image: string;
 }
 
 const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
@@ -25,6 +26,8 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   console.log(`http://localhost:3001/campaign/${id}`);
 
   const [data, setData] = useState<CampaignData | null>(null);
+  const [donationAmout, setDonationAmount] = useState<Number | null>(null);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -42,14 +45,35 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     }
   };
 
-  const calculateProgress = () => {
-    if (!data) return 0;
-    const percentage = (data.amountDonated / data.goal) * 100;
-    return Math.min(percentage, 100);
-  };
+  // const calculateProgress = () => {
+  //   if (!data) return 0;
+  //   const percentage = (data.amountDonated / data.goal) * 100;
+  //   return Math.min(percentage, 100);
+  // };
+  const redirectToCheckOut = async () => {
+    try {
+      if (donationAmout === null) {
+        alert("Please Enter a donation Amount");
+        return;
+      }
 
-  const HandleClick = () => {
-    alert("Butto Clicked");
+      const res = await fetch(`http://localhost:3001/stripe/payment/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          amount: donationAmout,
+        }),
+      });
+      const session = await res.json();
+      if (session && session.id) {
+        window.location.href = session.url;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -66,7 +90,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 className="m-2 p-2"
                 width="650px"
                 height="600px"
-                src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                src={data.image}
                 alt="Shoes"
               />
               <div className="flex flex-col m-4 p-1/2  bg-white/50 h-scren w-screen justify-items-center">
@@ -112,7 +136,13 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     </div> */}
                     <button
                       className="bg-blue-500 text-black text-xl p-2 w-full rounded-lg text-center hover:border hover:bg-blue-700 hover:border-stone-700 hover:text-white transform duration-300"
-                      onClick={HandleClick}
+                      onClick={() => {
+                        const amount = prompt("Enter Donation Amount:");
+                        if (amount !== null && amount !== "") {
+                          setDonationAmount(parseFloat(amount));
+                          redirectToCheckOut();
+                        }
+                      }}
                     >
                       Donate Now
                     </button>

@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -61,16 +61,16 @@ const Card: React.FC = () => {
         >
           <div className="card w-96 bg-base-100 shadow-2xl">
             <figure>
-              <img src={item.image} alt="Shoes" />
+              <img src={item.image} alt="Shoes" height="180" />
             </figure>
             <div className="card-normal">
-              <h2 className="card-title p-4">{item.title}</h2>
-              <p className="p-3">{item.story.slice(0, 50)}....</p>
-              <h2 className="p-3">{item.enddate}</h2>
-              <h3 className="p-3"> {item.category}</h3>
-              <div className="p-3">
+              <h2 className="card-title p-2">{item.category}</h2>
+              <h3 className="p-1">{item.title.slice(0, 35)} </h3>
+              <h2 className="p-1">{item.enddate}</h2>
+              <div className="p-1">
                 Fund Raise {item.amountDonated} from {item.goal}
                 <LinearProgress
+                  className="mt-1 h-px"
                   aria-setsize={4}
                   variant="determinate"
                   value={calculateProgress(item.amountDonated, item.goal)} // Call the function to get the progress value
