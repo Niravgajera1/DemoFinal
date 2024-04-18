@@ -51,26 +51,26 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   //   return Math.min(percentage, 100);
   // };
   const redirectToCheckOut = async () => {
+    console.log(typeof donationAmout, donationAmout);
     try {
       if (donationAmout === null) {
         alert("Please Enter a donation Amount");
         return;
       }
-
-      const res = await fetch(`http://localhost:3001/stripe/payment/${id}`, {
+      const res = await fetch(`http://localhost:3001/stripe/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: id,
-          amount: donationAmout,
+          campaignId: id,
+          donationAmount: donationAmout,
         }),
       });
-      const session = await res.json();
-      if (session && session.id) {
-        window.location.href = session.url;
-      }
+      const sessionUrl = await res.text(); // Assuming the server sends the URL directly
+      console.log(res);
+
+      window.location.href = sessionUrl;
     } catch (error) {
       console.log(error);
     }
