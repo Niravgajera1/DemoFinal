@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Campaign } from './campaign.Schema';
 
 @Schema()
 export class User extends Document {
@@ -20,6 +21,9 @@ export class User extends Document {
 
   @Prop()
   PasswordExpiresIn: Date;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
+  contributedCampaigns: string[]; // Assuming campaign IDs are strings
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

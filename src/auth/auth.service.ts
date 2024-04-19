@@ -13,6 +13,7 @@ import { loginuserdto } from './dto/loginuser.dto';
 import { Response } from 'express';
 import * as nodemailer from 'nodemailer';
 import * as crypto from 'crypto';
+import { use } from 'passport';
 
 @Injectable()
 export class AuthService {
@@ -150,9 +151,7 @@ export class AuthService {
       user.PasswordReserToken = undefined;
       user.PasswordExpiresIn = undefined;
       await user.save();
-
       const newToken = this.jwtService.sign({ id: user._id });
-
       return {
         status: 'success',
         token: newToken,
@@ -164,5 +163,25 @@ export class AuthService {
 
   async findAll(): Promise<User[]> {
     return await this.userModel.find().exec();
+  }
+
+  async addContributedCampaign(
+    userId: string,
+    campaignId: string,
+  ): Promise<User> {
+    try {
+      const user = await this.userModel
+        .findByIdAndUpdate(
+          userId,
+          { $push: { contributedCampaigns: campaignId } },
+          { new: true },
+        )
+        .populate('contributedCampaigns', 'name _id')
+        .exec(); // Populate campaign data
+
+      return user;
+    } catch (error) {
+      throw new Error(`Failed to add contributed campaign: ${error.message}`);
+    }
   }
 }
