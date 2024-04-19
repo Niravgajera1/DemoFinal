@@ -61,7 +61,11 @@ const Card: React.FC = () => {
         >
           <div className="card w-96 bg-base-100 shadow-2xl">
             <figure>
-              <img src={item.image} alt="Shoes" height="180" />
+              <img
+                src={item.image}
+                alt="Image"
+                style={{ height: "380", width: "250", objectFit: "initial" }}
+              />
             </figure>
             <div className="card-normal">
               <h2 className="card-title p-2">{item.category}</h2>

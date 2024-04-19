@@ -65,6 +65,8 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
         body: JSON.stringify({
           campaignId: id,
           donationAmount: donationAmout,
+          campaignImage: data?.image,
+          campaignName: data?.title,
         }),
       });
       const sessionUrl = await res.text(); // Assuming the server sends the URL directly
@@ -76,6 +78,18 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     }
   };
 
+  useEffect(() => {
+    if (donationAmout !== null) {
+      redirectToCheckOut();
+    }
+  }, [donationAmout]);
+
+  const handleDonation = async () => {
+    const amount = prompt("Enter Donation Amount:");
+    if (amount !== null && amount !== "") {
+      await setDonationAmount(parseFloat(amount));
+    }
+  };
   return (
     <>
       <Navbar />
@@ -136,13 +150,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     </div> */}
                     <button
                       className="bg-blue-500 text-black text-xl p-2 w-full rounded-lg text-center hover:border hover:bg-blue-700 hover:border-stone-700 hover:text-white transform duration-300"
-                      onClick={() => {
-                        const amount = prompt("Enter Donation Amount:");
-                        if (amount !== null && amount !== "") {
-                          setDonationAmount(parseFloat(amount));
-                          redirectToCheckOut();
-                        }
-                      }}
+                      onClick={handleDonation}
                     >
                       Donate Now
                     </button>

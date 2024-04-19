@@ -183,7 +183,7 @@ const createCampaign = () => {
                 />
               </div>
             </div>
-            <button className="bg-stone-700 text-white p-2 w-full rounded-lg text-center hover:border hover:bg-stone-600 hover:border-stone-700 hover:text-stone-800 transfrom duration-300">
+            <button className="bg-stone-700 text-white p-2 w-full rounded-lg text-center hover:border hover:bg-stone-600 hover:border-stone-700 hover:text-stone-800 transfrom duration-300 mt-2">
               Submit
             </button>
           </form>

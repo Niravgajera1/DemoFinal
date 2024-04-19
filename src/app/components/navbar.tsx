@@ -3,13 +3,27 @@ import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Redux/slice/authSlice";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import { useRouter } from "next/navigation";
 
 const navbar = () => {
+  const router = useRouter();
   const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate);
   const dispatch = useDispatch();
   const handleLogOut = () => {
     dispatch(logout());
     window.location.href = "/";
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = e.target.value;
+    if (selectedOption === "For Charity") {
+      router.push("/CreateCampaign");
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -57,15 +71,26 @@ const navbar = () => {
                     </button>
                   </Link>
                 )}
-                {isAuthenticate && (
+                {/* {isAuthenticate && (
                   <Link href="/CreateCampaign">
                     <button
                       className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
                       type="button"
+                      onClick={}
                     >
                       CreateCampaign
                     </button>
                   </Link>
+                )} */}
+
+                {isAuthenticate && (
+                  <select className="p-2" onChange={handleChange}>
+                    <option disabled selected>
+                      Create Campaign
+                    </option>
+                    <option>For You</option>
+                    <option>For Charity</option>
+                  </select>
                 )}
                 {isAuthenticate && (
                   <div className="dropdown dropdown-end">
