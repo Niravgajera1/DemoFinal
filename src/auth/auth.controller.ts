@@ -4,16 +4,16 @@ import {
   Body,
   Get,
   Res,
-  Patch,
-  Param,
-  BadRequestException,
+  // Patch,
+  // Param,
+  // BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { createuserdto } from './dto/createuser.dto';
 import { loginuserdto } from './dto/loginuser.dto';
 import { Response } from 'express';
-import { ForgotPasswordDto } from './dto/forgotpassword.dto';
-import { resetPassworddto } from './dto/resetPassword.dto';
+// import { ForgotPasswordDto } from './dto/forgotpassword.dto';
+// import { resetPassworddto } from './dto/resetPassword.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,32 +35,32 @@ export class AuthController {
     }
   }
 
-  @Post('/signin/forgotPassword')
-  async forgotPassword(@Body() forgotpassworddto: ForgotPasswordDto) {
-    await this.authservice.SendResetPasswordToken(forgotpassworddto);
-    return { message: 'Password Reset Sent Successfully' };
-  }
+  // @Post('/signin/forgotPassword')
+  // async forgotPassword(@Body() forgotpassworddto: ForgotPasswordDto) {
+  //   await this.authservice.SendResetPasswordToken(forgotpassworddto);
+  //   return { message: 'Password Reset Sent Successfully' };
+  // }
 
-  @Patch('/signin/resetPassword/:token')
-  async resetPassword(
-    @Param('token') token: string,
-    @Body() ResetPasswordDto: resetPassworddto,
-  ) {
-    try {
-      if (ResetPasswordDto.newPassword !== ResetPasswordDto.confirmPassword) {
-        throw new BadRequestException('Password Does Not Match');
-      }
+  // @Patch('/signin/resetPassword/:token')
+  // async resetPassword(
+  //   @Param('token') token: string,
+  //   @Body() ResetPasswordDto: resetPassworddto,
+  // ) {
+  //   try {
+  //     if (ResetPasswordDto.newPassword !== ResetPasswordDto.confirmPassword) {
+  //       throw new BadRequestException('Password Does Not Match');
+  //     }
 
-      const result = await this.authservice.resetPassword(
-        token,
-        ResetPasswordDto.newPassword,
-        ResetPasswordDto.confirmPassword,
-      );
-      return result;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
+  //     const result = await this.authservice.resetPassword(
+  //       token,
+  //       ResetPasswordDto.newPassword,
+  //       ResetPasswordDto.confirmPassword,
+  //     );
+  //     return result;
+  //   } catch (error) {
+  //     throw new BadRequestException(error.message);
+  //   }
+  // }
 
   @Post('/signup')
   async signup(

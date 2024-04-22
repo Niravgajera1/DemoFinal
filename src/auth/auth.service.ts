@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,15 +10,18 @@ import { createuserdto } from './dto/createuser.dto';
 import { Model } from 'mongoose';
 import { User } from '../Schemas/auth.Schema';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
 import { loginuserdto } from './dto/loginuser.dto';
 import { Response } from 'express';
 import * as nodemailer from 'nodemailer';
 import * as crypto from 'crypto';
 import { use } from 'passport';
+import { Campaign } from 'src/Schemas/campaign.Schema';
 
 @Injectable()
 export class AuthService {
+  [x: string]: any;
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
@@ -70,96 +75,108 @@ export class AuthService {
     }
   }
 
-  async SendResetPasswordToken(option: { email: string }) {
+  async findById(id: string): Promise<User> {
     try {
-      const resetToken = this.createPasswordResetToken();
-      // user.passwordResetToken = resetToken;
-      // User.passwordExpiresIn =
-      const resetUrl = `http://localhost:3001/auth/signin/resetPassword/${resetToken}`;
-      const message = `Your Password Reset Token Valid For 10 Minuts : ${resetUrl}`;
-      // console.log('<<<MEssAge>>>', message);
-
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: Number(process.env.EMAIL_PORT),
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
-
-      const mailOptions = {
-        from: 'niravpatelpc@gmail.com',
-        to: option.email,
-        subject: 'Password Reset Token',
-        text: message,
-      };
-
-      await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
-  createPasswordResetToken(): string {
-    // Generate a random reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-
-    // Hash the reset token
-    const hashedResetToken = crypto
-      .createHash('sha256')
-      .update(resetToken)
-      .digest('hex');
-
-    // Set the hashed token and expiration time
-    const passwordResetToken = hashedResetToken;
-    const passwordResetExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
-    // console.log(
-    //   '<<<<Password Reset Token>>>',
-    //   { resetToken },
-    //   passwordResetToken,
-    // );
-
-    // Return the unhashed reset token for sending it to the user
-    return resetToken;
-  }
-
-  async resetPassword(
-    token: string,
-    newPassword: string,
-    confirmPassword: string,
-  ): Promise<{ status: string; token?: string }> {
-    try {
-      const hashToken = crypto.createHash('sha256').update(token).digest('hex');
-
-      const user = await this.userModel.findOne({
-        passwordResetToken: hashToken,
-        passwordResetExpires: { $gt: Date.now() },
-      });
-
+      const user = await this.userModel.findById(id).exec();
       if (!user) {
-        throw new Error('Token is invalid or expired');
+        throw new NotFoundException('User Not Found');
       }
-
-      if (newPassword !== confirmPassword) {
-        throw new Error('Passwords do not match');
-      }
-
-      user.password = newPassword;
-      user.confirmpassword = confirmPassword;
-      user.PasswordReserToken = undefined;
-      user.PasswordExpiresIn = undefined;
-      await user.save();
-      const newToken = this.jwtService.sign({ id: user._id });
-      return {
-        status: 'success',
-        token: newToken,
-      };
+      return user;
     } catch (error) {
-      throw new Error(error.message);
+      throw new InternalServerErrorException(error.message);
     }
   }
+
+  // async SendResetPasswordToken(option: { email: string }) {
+  //   try {
+  //     const resetToken = this.createPasswordResetToken();
+  //     // user.passwordResetToken = resetToken;
+  //     // User.passwordExpiresIn =
+  //     const resetUrl = `http://localhost:3001/auth/signin/resetPassword/${resetToken}`;
+  //     const message = `Your Password Reset Token Valid For 10 Minuts : ${resetUrl}`;
+  //     // console.log('<<<MEssAge>>>', message);
+
+  //     const transporter = nodemailer.createTransport({
+  //       host: process.env.EMAIL_HOST,
+  //       port: Number(process.env.EMAIL_PORT),
+  //       service: 'gmail',
+  //       auth: {
+  //         user: process.env.EMAIL_USERNAME,
+  //         pass: process.env.EMAIL_PASSWORD,
+  //       },
+  //     });
+
+  //     const mailOptions = {
+  //       from: 'niravpatelpc@gmail.com',
+  //       to: option.email,
+  //       subject: 'Password Reset Token',
+  //       text: message,
+  //     };
+
+  //     await transporter.sendMail(mailOptions);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }
+
+  // createPasswordResetToken(): string {
+  //   // Generate a random reset token
+  //   const resetToken = crypto.randomBytes(32).toString('hex');
+
+  //   // Hash the reset token
+  //   const hashedResetToken = crypto
+  //     .createHash('sha256')
+  //     .update(resetToken)
+  //     .digest('hex');
+
+  //   // Set the hashed token and expiration time
+  //   const passwordResetToken = hashedResetToken;
+  //   const passwordResetExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
+  //   // console.log(
+  //   //   '<<<<Password Reset Token>>>',
+  //   //   { resetToken },
+  //   //   passwordResetToken,
+  //   // );
+
+  //   // Return the unhashed reset token for sending it to the user
+  //   return resetToken;
+  // }
+
+  // async resetPassword(
+  //   token: string,
+  //   newPassword: string,
+  //   confirmPassword: string,
+  // ): Promise<{ status: string; token?: string }> {
+  //   try {
+  //     const hashToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  //     const user = await this.userModel.findOne({
+  //       passwordResetToken: hashToken,
+  //       passwordResetExpires: { $gt: Date.now() },
+  //     });
+
+  //     if (!user) {
+  //       throw new Error('Token is invalid or expired');
+  //     }
+
+  //     if (newPassword !== confirmPassword) {
+  //       throw new Error('Passwords do not match');
+  //     }
+
+  //     user.password = newPassword;
+  //     user.confirmpassword = confirmPassword;
+  //     user.PasswordReserToken = undefined;
+  //     user.PasswordExpiresIn = undefined;
+  //     await user.save();
+  //     const newToken = this.jwtService.sign({ id: user._id });
+  //     return {
+  //       status: 'success',
+  //       token: newToken,
+  //     };
+  //   } catch (error) {
+  //     throw new Error(error.message);
+  //   }
+  // }
 
   async findAll(): Promise<User[]> {
     return await this.userModel.find().exec();
@@ -168,18 +185,37 @@ export class AuthService {
   async addContributedCampaign(
     userId: string,
     campaignId: string,
-  ): Promise<User> {
+    donationAmount: number,
+    userName: string,
+  ): Promise<Campaign> {
     try {
-      const user = await this.userModel
+      await this.userModel
         .findByIdAndUpdate(
           userId,
           { $push: { contributedCampaigns: campaignId } },
           { new: true },
         )
-        .populate('contributedCampaigns', 'name _id')
-        .exec(); // Populate campaign data
+        .exec();
 
-      return user;
+      const updatedcamapign = await this.campaignModel
+        .findByIdAndUpdate(
+          campaignId,
+          {
+            $push: {
+              contributedUsers: {
+                user: userId,
+                userName: User.name,
+                donationAmount: donationAmount,
+              },
+            },
+          },
+          { new: true }, // Return the updated document
+        )
+        .exec();
+      console.log(updatedcamapign, '><><><><USER><><><><><');
+      // Populate campaign data
+      // console.log(user);
+      return updatedcamapign;
     } catch (error) {
       throw new Error(`Failed to add contributed campaign: ${error.message}`);
     }

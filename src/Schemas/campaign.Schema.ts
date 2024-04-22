@@ -27,8 +27,14 @@ export class Campaign extends Document {
   @Prop({ default: 0 })
   amountDonated: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  user: Types.ObjectId;
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  contributedUsers: Types.ObjectId[];
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
+CampaignSchema.virtual('populatedContributedUsers', {
+  ref: 'User',
+  localField: 'contributedUser',
+  foreignField: '_id',
+  justOne: false,
+});

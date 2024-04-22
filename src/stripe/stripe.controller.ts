@@ -9,6 +9,7 @@ interface CheckoutRequest {
   donationAmount: number;
   campaignImage: string;
   campaignName: string;
+  userId: string;
 }
 
 @Controller('stripe')
@@ -25,8 +26,27 @@ export class StripeController {
     // @Res()
     // res: Response,
   ): Promise<string> {
-    const { campaignId, donationAmount, campaignImage, campaignName } = body;
+    const { campaignId, donationAmount, campaignImage, campaignName, userId } =
+      body;
+    const stringUserId = String(userId);
 
+    try {
+      const user = await this.userService.findById(stringUserId);
+      if (user) {
+        const userName = stringUserId;
+        const userId = stringUserId;
+        console.log(userId, campaignId, donationAmount, userName);
+        await this.userService.addContributedCampaign(
+          userId,
+          campaignId,
+          donationAmount,
+          userName,
+        );
+      }
+    } catch (error) {
+      console.log('failed to update the data', error.message);
+    }
+    // console.log(stringUserId, '>>>>>>>>>>>>>>>>>>>>>>>');
     const sessionurl = await this.stripeService.createCheckoutSession(
       campaignId,
       donationAmount,
@@ -38,7 +58,6 @@ export class StripeController {
         campaignId,
         donationAmount,
       );
-      await this.userService.addContributedCampaign(body.userId, campaignId);
     } catch (error) {
       console.log('error to upadate amount :', error.message);
     }

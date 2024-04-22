@@ -17,31 +17,35 @@ export class StripeService {
     campaignName: string,
   ) {
     // console.log(campaignId, campaignName, campaignImage, '>>>>>>>');
-    const session = await this.stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      client_reference_id: JSON.stringify({
-        campaignId,
-        campaignName,
-        campaignImage,
-      }),
+    try {
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        client_reference_id: JSON.stringify({
+          campaignId,
+          campaignName,
+          campaignImage,
+        }),
 
-      line_items: [
-        {
-          price_data: {
-            currency: 'inr',
-            product_data: {
-              name: `You Are Supportig : ${campaignName}`,
-              images: [campaignImage],
+        line_items: [
+          {
+            price_data: {
+              currency: 'inr',
+              product_data: {
+                name: `You Are Supportig : ${campaignName}`,
+                images: [campaignImage],
+              },
+              unit_amount: donationAmount * 100, // Include donation amount
             },
-            unit_amount: donationAmount * 100, // Include donation amount
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: `http://localhost:3000/main`, // Include donation amount in success URL
-      cancel_url: `http://localhost:3000`,
-    });
-    return session.url;
+        ],
+        mode: 'payment',
+        success_url: `http://localhost:3000/main`, // Include donation amount in success URL
+        cancel_url: `http://localhost:3000`,
+      });
+      return session.url;
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 }
