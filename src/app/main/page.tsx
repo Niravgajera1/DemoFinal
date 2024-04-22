@@ -12,7 +12,7 @@ const main: React.FC = () => {
       <Provider store={store}>
         <Navbar />
       </Provider>
-      <div className="bg-slate-300">
+      <div className="bg-gray-200">
         <div className="flex flex-wrap  justify-center mx-2 md:mx-auto md:max-w-screen-lg lg:max-w-screen-xl ">
           <Card />
         </div>

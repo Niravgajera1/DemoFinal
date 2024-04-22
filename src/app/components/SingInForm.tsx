@@ -22,7 +22,6 @@ const SingInForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(e.target);
 
     setFormData((pre) => ({ ...pre, [name]: value }));
     console.log(formData);
@@ -36,7 +35,6 @@ const SingInForm: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //  Authorization: `Bearer ${jwt}`,
         },
         body: JSON.stringify(formData),
       });
@@ -51,7 +49,11 @@ const SingInForm: React.FC = () => {
         const current_user = data.user;
         console.log(current_user);
         await alert("login successfully");
-        dispatch(login({ user: current_user }));
+        dispatch(login({ userId: data._id, user: current_user }));
+        //    localStorage.setItem("token", data.token);
+        document.cookie = `token=${data.token}; path=/; expires=${new Date(
+          Date.now() + 7 * 24 * 60 * 60 * 1000
+        ).toUTCString()};`;
         window.location.href = "/main";
       }
     } catch (error) {

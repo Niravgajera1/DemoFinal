@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
+import { UseSelector, useSelector } from "react-redux";
+import { RootState } from "@/app/Redux/store";
 // import LinearProgress from "@mui/material/LinearProgress";
 
 interface CampaignData {
@@ -22,11 +24,17 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   params: { slug: string };
 }) => {
   const id = params.slug[0];
-  console.log(id);
-  console.log(`http://localhost:3001/campaign/${id}`);
 
   const [data, setData] = useState<CampaignData | null>(null);
   const [donationAmout, setDonationAmount] = useState<Number | null>(null);
+
+  const userDataString = useSelector(function (state: RootState) {
+    return state.auth.user;
+  });
+  console.log(userDataString, ">>>>>>");
+  const userData = userDataString ? userDataString : null;
+
+  const userId = userData ? userData.user._id : null;
 
   useEffect(() => {
     fetchData();
@@ -51,8 +59,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   //   return Math.min(percentage, 100);
   // };
   const redirectToCheckOut = async () => {
-    console.log(typeof donationAmout, donationAmout);
+    console.log(typeof donationAmout, donationAmout, "..//////");
+
     try {
+      console.log(userId, "<><><><><><><><><><>");
       if (donationAmout === null) {
         alert("Please Enter a donation Amount");
         return;
@@ -67,10 +77,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           donationAmount: donationAmout,
           campaignImage: data?.image,
           campaignName: data?.title,
+          userId: userId,
         }),
       });
       const sessionUrl = await res.text(); // Assuming the server sends the URL directly
-      console.log(res);
 
       window.location.href = sessionUrl;
     } catch (error) {
