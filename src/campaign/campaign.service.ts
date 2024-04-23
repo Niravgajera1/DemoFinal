@@ -4,6 +4,7 @@ import { Campaign } from '../Schemas/campaign.Schema';
 import { Model } from 'mongoose';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class CampaignService {
@@ -26,9 +27,18 @@ export class CampaignService {
     return found;
   }
 
-  async findAll(): Promise<Campaign[]> {
+  async findAll(query: Query): Promise<Campaign[]> {
+    const resPerPage = 6;
+    const currentPage = Number(query.page) || 1;
+    const skip = resPerPage * (currentPage - 1);
+    const filter = query.filter || '';
+
     try {
-      return await this.campaignModel.find().exec();
+      return await this.campaignModel
+        .find()
+        .limit(resPerPage)
+        .skip(skip)
+        .exec();
     } catch (error) {
       throw error.message;
     }

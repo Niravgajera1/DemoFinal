@@ -23,7 +23,11 @@ export class User extends Document {
   PasswordExpiresIn: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
-  contributedCampaigns: string[]; // Assuming campaign IDs are strings
+  contributedCampaigns: {
+    campaignId: string;
+    name: string;
+    donationAmount: number;
+  }; // Assuming campaign IDs are strings
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

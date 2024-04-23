@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigModule and ConfigService
 import { JwtStrategy } from './jwt.strategy';
+import { Campaign, CampaignSchema } from 'src/Schemas/campaign.Schema';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { JwtStrategy } from './jwt.strategy';
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: Campaign.name,
+        schema: CampaignSchema,
       },
     ]),
     ConfigModule.forRoot(), // Import ConfigModule.forRoot()

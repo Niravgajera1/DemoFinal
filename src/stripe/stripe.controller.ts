@@ -21,46 +21,47 @@ export class StripeController {
   ) {}
 
   @Post('/checkout')
-  async createCheckoutSession(
-    @Body() body: CheckoutRequest,
-    // @Res()
-    // res: Response,
-  ): Promise<string> {
+  async createCheckoutSession(@Body() body: CheckoutRequest): Promise<string> {
     const { campaignId, donationAmount, campaignImage, campaignName, userId } =
       body;
     const stringUserId = String(userId);
-
     try {
+      const sessionurl = await this.stripeService.createCheckoutSession(
+        campaignId,
+        donationAmount,
+        campaignImage,
+        campaignName,
+      );
+
       const user = await this.userService.findById(stringUserId);
       if (user) {
-        const userName = stringUserId;
+        const userName = user.name;
         const userId = stringUserId;
-        console.log(userId, campaignId, donationAmount, userName);
+        // console.log(userId, campaignId, donationAmount, userName);
+        await this.campaignService.updateamountDonated(
+          campaignId,
+          donationAmount,
+        );
         await this.userService.addContributedCampaign(
           userId,
           campaignId,
           donationAmount,
           userName,
+          campaignName,
         );
       }
+      return sessionurl;
     } catch (error) {
-      console.log('failed to update the data', error.message);
+      console.log('payment Failed', error.message);
     }
     // console.log(stringUserId, '>>>>>>>>>>>>>>>>>>>>>>>');
-    const sessionurl = await this.stripeService.createCheckoutSession(
-      campaignId,
-      donationAmount,
-      campaignImage,
-      campaignName,
-    );
-    try {
-      await this.campaignService.updateamountDonated(
-        campaignId,
-        donationAmount,
-      );
-    } catch (error) {
-      console.log('error to upadate amount :', error.message);
-    }
-    return sessionurl;
+    // try {
+    //   await this.campaignService.updateamountDonated(
+    //     campaignId,
+    //     donationAmount,
+    //   );
+    // } catch (error) {
+    //   console.log('error to upadate amount :', error.message);
+    // }
   }
 }

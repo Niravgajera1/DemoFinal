@@ -40,7 +40,7 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `http://localhost:3000/main`, // Include donation amount in success URL
+        success_url: `http://localhost:3000/PaymentSuccessfull`, // Include donation amount in success URL
         cancel_url: `http://localhost:3000`,
       });
       return session.url;

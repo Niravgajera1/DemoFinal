@@ -21,9 +21,10 @@ import { Campaign } from 'src/Schemas/campaign.Schema';
 
 @Injectable()
 export class AuthService {
-  [x: string]: any;
+  // [x: string]: any;
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Campaign.name) private campaignModel: Model<Campaign>,
     private jwtService: JwtService,
   ) {}
 
@@ -187,12 +188,21 @@ export class AuthService {
     campaignId: string,
     donationAmount: number,
     userName: string,
+    campaignName: string,
   ): Promise<Campaign> {
     try {
       await this.userModel
         .findByIdAndUpdate(
           userId,
-          { $push: { contributedCampaigns: campaignId } },
+          {
+            $push: {
+              contributedCampaigns: {
+                campaignId: campaignId,
+                name: campaignName,
+                donationAmount: donationAmount,
+              },
+            },
+          },
           { new: true },
         )
         .exec();
@@ -204,7 +214,7 @@ export class AuthService {
             $push: {
               contributedUsers: {
                 user: userId,
-                userName: User.name,
+                userName: userName,
                 donationAmount: donationAmount,
               },
             },
@@ -212,9 +222,6 @@ export class AuthService {
           { new: true }, // Return the updated document
         )
         .exec();
-      console.log(updatedcamapign, '><><><><USER><><><><><');
-      // Populate campaign data
-      // console.log(user);
       return updatedcamapign;
     } catch (error) {
       throw new Error(`Failed to add contributed campaign: ${error.message}`);

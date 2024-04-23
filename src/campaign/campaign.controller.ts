@@ -11,24 +11,24 @@ import {
   UseGuards,
   UseInterceptors,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { mongo } from 'mongoose';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { Campaign } from 'src/Schemas/campaign.Schema';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @Controller('campaign')
 export class CampaignController {
   constructor(private campaignservice: CampaignService) {}
 
   @Get()
-  async getcampaign() {
+  async getcampaign(@Query() query: ExpressQuery) {
     try {
-      return await this.campaignservice.findAll();
+      return await this.campaignservice.findAll(query);
     } catch (error) {
       throw error.message;
     }
