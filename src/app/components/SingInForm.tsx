@@ -44,12 +44,12 @@ const SingInForm: React.FC = () => {
         alert(data.message);
       }
       if (res.ok) {
-        console.log("res : ", res);
-        console.log("login Successfully");
         const current_user = data.user;
         console.log(current_user);
+
+        // console.log(current_user);
+        dispatch(login(current_user));
         await alert("login successfully");
-        dispatch(login({ userId: data._id, user: current_user }));
         //    localStorage.setItem("token", data.token);
         document.cookie = `token=${data.token}; path=/; expires=${new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000

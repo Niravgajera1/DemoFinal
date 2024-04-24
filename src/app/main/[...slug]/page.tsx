@@ -5,7 +5,25 @@ import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
 import { UseSelector, useSelector } from "react-redux";
 import { RootState } from "@/app/Redux/store";
+import Button from "@mui/material/Button";
 // import LinearProgress from "@mui/material/LinearProgress";
+import TextField from "@mui/material/TextField";
+import SendIcon from "@mui/icons-material/Send";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 interface CampaignData {
   _id: string;
@@ -24,17 +42,24 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   params: { slug: string };
 }) => {
   const id = params.slug[0];
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const [data, setData] = useState<CampaignData | null>(null);
   const [donationAmout, setDonationAmount] = useState<Number | null>(null);
 
-  const userDataString = useSelector(function (state: RootState) {
-    return state.auth.user;
-  });
-  console.log(userDataString, ">>>>>>");
-  const userData = userDataString ? userDataString : null;
+  const { userId }: { userId: string | null } = useSelector(
+    (state: RootState) => state.auth
+  );
+  console.log(userId, ">>>>>>>>>>>>>");
+  // const userDataString = useSelector(function (state: RootState) {
+  //   return state.auth.user;
+  // });
+  //console.log(userDataString, ">>>>>>");
+  // const userData = userDataString ? userDataString : null;
 
-  const userId = userData ? userData.user._id : null;
+  // const userId = userData ? userData.user._id : null;
 
   useEffect(() => {
     fetchData();
@@ -59,10 +84,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   //   return Math.min(percentage, 100);
   // };
   const redirectToCheckOut = async () => {
-    console.log(typeof donationAmout, donationAmout, "..//////");
+    //   console.log(typeof donationAmout, donationAmout, "..//////");
 
     try {
-      console.log(userId, "<><><><><><><><><><>");
+      //  console.log(userId, "<><><><><><><><><><>");
       if (donationAmout === null) {
         alert("Please Enter a donation Amount");
         return;
@@ -81,7 +106,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
         }),
       });
       const sessionUrl = await res.text(); // Assuming the server sends the URL directly
-
       window.location.href = sessionUrl;
     } catch (error) {
       console.log(error);
@@ -104,7 +128,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     <>
       <Navbar />
       {data && (
-        <div className="responsive justify-center h-screen item-center bg-slate-300 mt-2 p-4">
+        <div className="responsive justify-center item-center bg-slate-300 mt-2 p-4">
           <div className="responsive justify-items-start bg-white/40 m-2 rounded-lg">
             <div
               key={data._id}
@@ -117,6 +141,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 src={data.image}
                 alt="Shoes"
               />
+
               <div className="flex flex-col m-4 p-1/2  bg-white/50 h-scren w-screen justify-items-center">
                 <div className="card-body flex flex-row">
                   <div className="card-title">
@@ -168,11 +193,116 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 </div>
               </div>
             </div>
+            {/* <p>{`${data.yourname} is organising this fundraiser.`}</p> */}
             <div className="flex flex-col p-2 m-2 w-1/2 m-2 p-2">
               <h2 className="flex flex-col font-black text-lg">
                 Campaign Story
               </h2>
               <p>{data.story}</p>
+              <hr className="mt-4" />
+              <h2 className="flex flex-col font-black text-lg mt-2">
+                Organiser
+              </h2>
+            </div>
+            <div className="flex flex-row p-2 m-2 w-1/2  p-2 mb-2">
+              <img
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                className="rounded-full w-20 h-20 object-cover mb-4 p-2"
+              />
+              <div className="m-3">
+                <p className="p-px font-semibold">{data.yourname}</p>
+                <h5 className="p-px mb-2">Organiser</h5>
+                <Button variant="outlined" className="" onClick={handleOpen}>
+                  Contact
+                </Button>
+              </div>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={{ ...style, overflowY: "auto" }}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    <p className="font-semibold">{`Write a message to ${data.yourname}`}</p>
+                    <div className="flex flex-row mt-2">
+                      <img
+                        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                        className="rounded-full w-20 h-20 object-cover mb-4 p-2"
+                      />
+                      <div className="m-3">
+                        <p className="p-px font-semibold">{data.yourname}</p>
+                        <h5 className="p-px mb-2">Organiser</h5>
+                      </div>
+                    </div>
+                  </Typography>
+                  <Typography
+                    id="modal-modal-description"
+                    variant="inherit"
+                    sx={{
+                      mt: 2,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Duis mollis, est non commodo luctus, nisi erat porttitor
+                    ligula. */}
+                    <form
+                      className="p-2 flex flex-col justify-center items-center w-1/2"
+                      action="https://formcarry.com/s/Mc2CYx6LzHt"
+                      method="POST"
+                    >
+                      <TextField
+                        margin="normal"
+                        name="name"
+                        required
+                        fullWidth
+                        size="medium"
+                        id="fullWidth"
+                        variant="outlined"
+                        label="Enter Your Name"
+                      />
+                      <TextField
+                        margin="normal"
+                        name="Email"
+                        fullWidth
+                        required
+                        size="small"
+                        id="outlined-basic"
+                        variant="outlined"
+                        label="Enter Your Email"
+                      />
+                      <TextField
+                        margin="normal"
+                        name="message"
+                        className="rounded-xl"
+                        multiline
+                        minRows={4}
+                        fullWidth
+                        required
+                        size="small"
+                        id="outlined-basic"
+                        variant="outlined"
+                        label="Enter Your Message"
+                      />
+                      <Button
+                        className="mt-6"
+                        fullWidth
+                        variant="outlined"
+                        endIcon={<SendIcon />}
+                        type="submit"
+                      >
+                        Send
+                      </Button>
+                    </form>
+                  </Typography>
+                </Box>
+              </Modal>
             </div>
           </div>
         </div>
