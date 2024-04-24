@@ -16,6 +16,10 @@ export class CreateCampaignDto {
 
   @IsNotEmpty()
   @IsString()
+  useremail: string;
+
+  @IsNotEmpty()
+  @IsString()
   category: string;
 
   @IsNotEmpty()
