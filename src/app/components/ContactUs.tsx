@@ -2,7 +2,6 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import image from "./../../../public/images/Contact.png";
 
 const ContactUs = () => {
   return (
@@ -13,7 +12,7 @@ const ContactUs = () => {
       <div className="flex flex-row justify-center items-center width-1/2 gap-8 mb-4  ">
         <div>
           <img
-            src={image.src}
+            src="/images/Contact.png"
             width="600"
             height="650"
             className="p-4 m-2"

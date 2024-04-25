@@ -6,6 +6,7 @@ import Footer from "@/app/components/footer";
 import { UseSelector, useSelector } from "react-redux";
 import { RootState } from "@/app/Redux/store";
 import Button from "@mui/material/Button";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 // import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
@@ -34,6 +35,7 @@ interface CampaignData {
   amountDonated: number;
   goal: number;
   image: string;
+  contributedUsers: [];
 }
 
 const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
@@ -46,20 +48,24 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [copy, setCopy] = useState(false);
   const [data, setData] = useState<CampaignData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [donationAmout, setDonationAmount] = useState<Number | null>(null);
 
   const { userId }: { userId: string | null } = useSelector(
     (state: RootState) => state.auth
   );
-  console.log(String(userId), ">>>>>>>>>>>>>");
-  // const userDataString = useSelector(function (state: RootState) {
-  //   return state.auth.user;
-  // });
-  //console.log(userDataString, ">>>>>>");
-  // const userData = userDataString ? userDataString : null;
-
-  // const userId = userData ? userData.user._id : null;
+  //  console.log(String(userId), ">>>>>>>>>>>>>");
+  const copyToClipboard = () => {
+    const campaignLink = window.location.href;
+    navigator.clipboard.writeText(campaignLink).then(() => {
+      setCopy(true);
+      setTimeout(() => {
+        setCopy(false);
+      }, 2000);
+    });
+  };
 
   useEffect(() => {
     fetchData();
@@ -73,6 +79,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       }
       const data = await response.json();
       setData(data);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -121,10 +128,19 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       await setDonationAmount(parseFloat(amount));
     }
   };
+
   return (
     <>
       <Navbar />
-      {data && (
+      {copy && <div className="alert">Link copied successfully!</div>}
+      {loading && (
+        <>
+          <div className="text-3xl items-center h-screen flex bg-slate-300 justify-center">
+            Loading...........
+          </div>
+        </>
+      )}
+      {!loading && data && (
         <div className="responsive justify-center item-center bg-slate-300 mt-2 p-4">
           <div className="responsive justify-items-start bg-white/40 m-2 rounded-lg">
             <div
@@ -185,6 +201,15 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                       onClick={handleDonation}
                     >
                       Donate Now
+                    </button>
+                  </div>
+                  <div className=" justify-start">
+                    <p className="jsutify-start font-semibold text-purple">
+                      {`${data.contributedUsers.length} people have just made a donation`}
+                    </p>
+                    <button onClick={copyToClipboard}>
+                      <ContentCopyRoundedIcon />
+                      <p>Copy to clipboard</p>
                     </button>
                   </div>
                 </div>
@@ -269,7 +294,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                         name="Email"
                         fullWidth
                         required
-                        size="small"
+                        size="medium"
                         id="outlined-basic"
                         variant="outlined"
                         label="Enter Your Email"
@@ -282,7 +307,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                         minRows={4}
                         fullWidth
                         required
-                        size="small"
+                        size="medium"
                         id="outlined-basic"
                         variant="outlined"
                         label="Enter Your Message"

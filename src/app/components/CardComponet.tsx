@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@mui/material/LinearProgress";
 
+import Footer from "./footer";
+
 interface CardData {
   _id: string;
   title: string;
@@ -18,6 +20,7 @@ interface CardData {
 const Card: React.FC = () => {
   const [data, setData] = useState<CardData[]>([]);
   const [totalpage, settotalPage] = useState<number>();
+  const [loading, setLoading] = useState<boolean>(true);
   const [pageNumbers, setPageNumbers] = useState<number[]>([]);
   const [page, setPage] = useState<number>(1);
   const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate); // Ensure the selector returns the value of isAuthenticate
@@ -41,6 +44,7 @@ const Card: React.FC = () => {
         throw new Error(data.message);
       }
       setData(data);
+      setLoading(false);
       settotalPage(totalpage);
       setPageNumbers(Array.from({ length: totalpage }, (_, i) => i + 1));
       // console.log();
@@ -76,6 +80,15 @@ const Card: React.FC = () => {
     setPage(pageNumber);
   };
 
+  if (loading) {
+    return (
+      <>
+        <div className="text-3xl items-center h-screen flex justify-center">
+          Loading...........
+        </div>
+      </>
+    );
+  }
   return (
     <>
       <div className="grid grid-cols-3 ">
@@ -122,7 +135,7 @@ const Card: React.FC = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-between px-4 mt-2 mb-2 border-solid border-2">
+      <div className="flex justify-center gap-2 px-4 mt-2 mb-2 p-2">
         {page === 1 ? (
           <div className="opacity-60" aria-disabled="true">
             {"<< Previous"}
