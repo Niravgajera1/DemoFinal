@@ -52,7 +52,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const { userId }: { userId: string | null } = useSelector(
     (state: RootState) => state.auth
   );
-  console.log(userId, ">>>>>>>>>>>>>");
+  console.log(String(userId), ">>>>>>>>>>>>>");
   // const userDataString = useSelector(function (state: RootState) {
   //   return state.auth.user;
   // });
@@ -84,10 +84,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   //   return Math.min(percentage, 100);
   // };
   const redirectToCheckOut = async () => {
-    //   console.log(typeof donationAmout, donationAmout, "..//////");
-
     try {
-      //  console.log(userId, "<><><><><><><><><><>");
       if (donationAmout === null) {
         alert("Please Enter a donation Amount");
         return;
@@ -105,7 +102,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           userId: userId,
         }),
       });
-      const sessionUrl = await res.text(); // Assuming the server sends the URL directly
+      const sessionUrl = await res.text();
       window.location.href = sessionUrl;
     } catch (error) {
       console.log(error);
@@ -193,7 +190,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 </div>
               </div>
             </div>
-            {/* <p>{`${data.yourname} is organising this fundraiser.`}</p> */}
+            <p className="pl-2 ml-2">{`${data.yourname} is organising this fundraiser.`}</p>
             <div className="flex flex-col p-2 m-2 w-1/2 m-2 p-2">
               <h2 className="flex flex-col font-black text-lg">
                 Campaign Story
