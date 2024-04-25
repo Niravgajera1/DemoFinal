@@ -30,15 +30,25 @@ export class CampaignService {
   async findAll(
     query: Query,
   ): Promise<{ data: Campaign[]; totalitem: number }> {
+    ///console.log(query, 'query>>>');
     const resPerPage = 6;
     const currentPage = Number(query.page) || 1;
     const skip = resPerPage * (currentPage - 1);
-    const filter = query.filter || '';
+    let DBquery: any = {};
 
     try {
-      const totalitem = await this.campaignModel.countDocuments().exec();
+      if (DBquery?.category) {
+        DBquery['category'] = {
+          $regexp: '^' + query?.category,
+          $options: 'i',
+        };
+      }
+      if (query?.category) {
+        DBquery['category'] = { $regex: '^' + query?.category, $options: 'i' };
+      }
+      const totalitem = await this.campaignModel.countDocuments(DBquery).exec();
       const data = await this.campaignModel
-        .find()
+        .find(DBquery)
         .limit(resPerPage)
         .skip(skip)
         .exec();

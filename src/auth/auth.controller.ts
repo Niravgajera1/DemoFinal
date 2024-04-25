@@ -5,7 +5,7 @@ import {
   Get,
   Res,
   // Patch,
-  // Param,
+  Param,
   // BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -23,6 +23,12 @@ export class AuthController {
   getuser() {
     return this.authservice.findAll();
   }
+  @Get('/:id')
+  async getuserById(@Param('id') id: string) {
+    const user = await this.authservice.findById(id);
+    return user;
+  }
+
   @Post('/signin')
   async login(@Body() loginUserDto: loginuserdto, @Res() res: Response) {
     try {
