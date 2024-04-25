@@ -14,6 +14,7 @@ import { UploadButton } from "@/utils/uploadthing";
 const createCampaign = () => {
   const [data, setData] = useState({
     yourname: "",
+    useremail: "",
     title: "",
     category: "",
     story: "",
@@ -136,7 +137,7 @@ const createCampaign = () => {
                 color="info"
               />
             </div>
-            <div className="relative flex flex-row gap-10 items-center justify-center mt-4 mb-6">
+            <div className="relative flex flex-row gap-5 items-center justify-center mt-4 mb-6">
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
                   required
@@ -147,6 +148,20 @@ const createCampaign = () => {
                   fullWidth
                   id="outlined-basic"
                   label="Enter Goal Amount"
+                  variant="filled"
+                  color="info"
+                />
+              </div>
+              <div className="relative h-11 w-full min-w-[200px]">
+                <TextField
+                  required
+                  value={data.useremail}
+                  onChange={handleChange}
+                  name="useremail"
+                  size="small"
+                  fullWidth
+                  id="outlined-basic"
+                  label="Enter User Email"
                   variant="filled"
                   color="info"
                 />

@@ -23,7 +23,7 @@ const Card: React.FC = () => {
   const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate); // Ensure the selector returns the value of isAuthenticate
   const router = useRouter();
 
-  let isPageOutofRange: boolean;
+  const resPerPage: number = 6;
 
   useEffect(() => {
     fetchData();
@@ -34,24 +34,15 @@ const Card: React.FC = () => {
       const response = await fetch(
         `http://localhost:3001/campaign?page=${page}`
       );
-      const data = await response.json();
-      const totalpage = data.length;
-      console.log(data.length, "totalpage>>>>>");
+      const { data, totalitem } = await response.json();
+      const totalpage = Math.ceil(totalitem / resPerPage);
+      //      console.log(data.length, "totalpage>>>>>");
       if (!response.ok) {
         throw new Error(data.message);
       }
       setData(data);
       settotalPage(totalpage);
-      let pageNumbers: number[] = [];
-      const offsetNumber: number = 2;
-      isPageOutofRange = page > data.length;
-      for (let i = page - offsetNumber; i <= page + offsetNumber; i++) {
-        if (i >= 1 && i <= data.length) {
-          pageNumbers.push(i);
-        }
-      }
-      console.log(pageNumbers);
-      setPageNumbers(pageNumbers);
+      setPageNumbers(Array.from({ length: totalpage }, (_, i) => i + 1));
       // console.log();
     } catch (error) {
       console.error(error);
@@ -131,7 +122,7 @@ const Card: React.FC = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-between px-4">
+      <div className="flex justify-between px-4 mt-2 mb-2 border-solid border-2">
         {page === 1 ? (
           <div className="opacity-60" aria-disabled="true">
             {"<< Previous"}

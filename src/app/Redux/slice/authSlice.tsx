@@ -22,10 +22,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      console.log("login reducer ", action.payload, ">>>>>>>>>>");
       state.isAuthenticate = true;
-      state.user = action.payload;
-      state.userId = action.payload?.id;
+      const data = action.payload;
+      console.log(data, "data>>>>>>>>>>>>>>>>>>>>");
+      state.user = data.name;
+      state.userId = data._id;
+      console.log(state.userId);
     },
     logout: (state) => {
       state.isAuthenticate = false;
