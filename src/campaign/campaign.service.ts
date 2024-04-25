@@ -27,18 +27,22 @@ export class CampaignService {
     return found;
   }
 
-  async findAll(query: Query): Promise<Campaign[]> {
+  async findAll(
+    query: Query,
+  ): Promise<{ data: Campaign[]; totalitem: number }> {
     const resPerPage = 6;
     const currentPage = Number(query.page) || 1;
     const skip = resPerPage * (currentPage - 1);
     const filter = query.filter || '';
 
     try {
-      return await this.campaignModel
+      const totalitem = await this.campaignModel.countDocuments().exec();
+      const data = await this.campaignModel
         .find()
         .limit(resPerPage)
         .skip(skip)
         .exec();
+      return { totalitem, data };
     } catch (error) {
       throw error.message;
     }
