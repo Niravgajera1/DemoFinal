@@ -41,7 +41,7 @@ const Profile = () => {
       <Navbar />
       {userData && (
         <div className="bg-slate-300 h-screen flex flex-col justify-center ">
-          <div className="justify-items-start bg-white/80 mx-8 rounded-lg ">
+          <div className="justify-items-start  h-screen  my-8 bg-white/80 mx-8 rounded-lg">
             <div className="flex flex-row">
               <figure>
                 <img

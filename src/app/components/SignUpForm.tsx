@@ -63,75 +63,93 @@ const SignUpForm: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="relative flex bg-slate-400 justify-center items-center h-screen ">
-        <div className="max-w-md w-full p-6 rounded-lg shadow-md bg-white/60 ">
-          <div className="bg-zinc-400 flex flex-row  p-1/2 rounded-lg justify-items-center">
-            <h4 className="p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 m ">
-              Sign Up To Your Account
-            </h4>
+      <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-full">
+        <div className="responsive mx-8 my-8 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center">
+          <div className="responsive card lg:card-side flex flex-row ">
+            <img
+              className="m-2 p-2 w-full lg:w-1/2"
+              width="650px"
+              height="1200px"
+              src="/images/login.png"
+              alt="Campaign Image"
+            />
+            <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
+              <div className="card-body flex flex-row">
+                <div className="bg-zinc-400 card-title flex flex-row  p-1/2 rounded-lg justify-items-center">
+                  <h4 className="p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 ">
+                    Sign Up To Your Account
+                  </h4>
+                </div>
+                <form onSubmit={handleSubmit} className="m-2">
+                  <TextField
+                    margin="normal"
+                    name="name"
+                    value={User.name}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Name"
+                  />
+
+                  <TextField
+                    margin="normal"
+                    name="email"
+                    value={User.email}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Email"
+                  />
+
+                  <TextField
+                    margin="normal"
+                    name="password"
+                    value={User.password}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Password"
+                  />
+
+                  <TextField
+                    margin="normal"
+                    name="confirmpassword"
+                    value={User.confirmpassword}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Confirm password"
+                  />
+                  <button
+                    className="w-full mt-2 bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    type="submit"
+                  >
+                    Register
+                  </button>
+                  <p className="mt-2 justify-center hover:underline focus:outline-none">
+                    All Ready Have An Account ?{" "}
+                    {
+                      <Link href="/signin" className="text-blue-500">
+                        SignIn
+                      </Link>
+                    }
+                  </p>
+                </form>
+              </div>
+            </div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              margin="normal"
-              name="name"
-              value={User.name}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Name"
-            />
-
-            <TextField
-              margin="normal"
-              name="email"
-              value={User.email}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Email"
-            />
-
-            <TextField
-              margin="normal"
-              name="password"
-              value={User.password}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Password"
-            />
-
-            <TextField
-              margin="normal"
-              name="confirmpassword"
-              value={User.confirmpassword}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Confirm password"
-            />
-            <button
-              className="w-full mt-2 bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              type="submit"
-            >
-              Register
-            </button>
-            <p className="mt-2 justify-center text-blue-600 hover:underline focus:outline-none">
-              All Ready Have An Account ? {<Link href="/signin">SignIn</Link>}
-            </p>
-          </form>
         </div>
       </div>
       <Footer />

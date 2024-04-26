@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import Footer from "./footer";
 import ForgotPassword from "./ForgotPassword";
-import styles from "@/app/Styles/style.module.css";
 import { login } from "./../Redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 
@@ -47,10 +46,9 @@ const SingInForm: React.FC = () => {
         const current_user = data.user;
         console.log(current_user);
 
-        // console.log(current_user);
         dispatch(login(current_user));
         await alert("login successfully");
-        //    localStorage.setItem("token", data.token);
+
         document.cookie = `token=${data.token}; path=/; expires=${new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toUTCString()};`;
@@ -72,59 +70,76 @@ const SingInForm: React.FC = () => {
   return (
     <div>
       <Navbar />
-
-      <div className="flex justify-center items-center h-screen  bg-slate-400 ">
-        <div className="max-w-md w-full p-6 bg-greay rounded-lg shadow-md backdrop-blur-xm bg-white/60">
-          <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
-            <h4 className="justify-center p-3 text-xl font-semibold">
-              Welcome Again
-            </h4>
+      <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-screen">
+        <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center ">
+          <div className="responsive card lg:card-side flex flex-row ">
+            <img
+              className="m-2 p-2 w-full lg:w-1/2"
+              width="650px"
+              height="1200px"
+              src="/images/login.png"
+              alt="Campaign Image"
+            />
+            <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
+              <div className="card-body flex flex-row">
+                <div className="bg-zinc-400 card-title flex flex-row  p-1/2 rounded-lg justify-items-center">
+                  <h4 className="p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 ">
+                    Welcome Again
+                  </h4>
+                </div>
+                <form onSubmit={HandleSubmit}>
+                  <TextField
+                    margin="normal"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Email"
+                  />
+                  <TextField
+                    margin="normal"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    size="small"
+                    fullWidth
+                    id="outlined-basic"
+                    variant="filled"
+                    label="Enter Your Password"
+                  />
+                  <button
+                    className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    type="submit"
+                  >
+                    SignIn
+                  </button>
+                  <p className="mt-2">
+                    <button
+                      type="button"
+                      className="text-blue-600 hover:underline focus:outline-none"
+                      onClick={handleForgotPasswordClick}
+                    >
+                      Forgot your password?
+                    </button>
+                  </p>
+                  <p className="mt-2 justify-center  hover:underline focus:outline-none">
+                    New At FundFusion ?{" "}
+                    {
+                      <Link href="/signup" className="text-blue-500">
+                        SignUp
+                      </Link>
+                    }
+                  </p>
+                </form>
+              </div>
+            </div>
           </div>
-          <form onSubmit={HandleSubmit}>
-            <TextField
-              margin="normal"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Email"
-            />
-            <TextField
-              margin="normal"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              size="small"
-              fullWidth
-              id="outlined-basic"
-              variant="filled"
-              label="Enter Your Password"
-            />
-            <button
-              className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-              type="submit"
-            >
-              SignIn
-            </button>
-            <p className="mt-2">
-              <button
-                type="button"
-                className="text-blue-600 hover:underline focus:outline-none"
-                onClick={handleForgotPasswordClick}
-              >
-                Forgot your password?
-              </button>
-            </p>
-            <p className="mt-2 justify-center text-blue-600 hover:underline focus:outline-none">
-              New At FundFusion ? {<Link href="/signup">SignUp</Link>}
-            </p>
-          </form>
         </div>
       </div>
       <Footer />

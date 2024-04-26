@@ -43,6 +43,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 }: {
   params: { slug: string };
 }) => {
+  // console.log(params, ">>>>>");
   const id = params.slug[0];
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -132,30 +133,32 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   return (
     <>
       <Navbar />
-      {copy && <div className="alert">Link copied successfully!</div>}
+      {copy && (
+        <div className="alert bg-green-300 mt-1">Link copied successfully!</div>
+      )}
       {loading && (
         <>
           <div className="text-3xl items-center h-screen flex bg-slate-300 justify-center">
-            Loading...........
+            Loading.....
           </div>
         </>
       )}
       {!loading && data && (
-        <div className="responsive justify-center item-center bg-slate-300 mt-2 p-4">
-          <div className="responsive justify-items-start bg-white/40 m-2 rounded-lg">
+        <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4">
+          <div className="responsive   mx-8 my8 bg-white/40 m-2 rounded-lg">
             <div
               key={data._id}
               className="responsive card lg:card-side flex flex-row "
             >
               <img
-                className="m-2 p-2"
+                className="m-2 p-2 w-full lg:w-1/2"
                 width="650px"
                 height="600px"
                 src={data.image}
-                alt="Shoes"
+                alt="Campaign Image"
               />
 
-              <div className="flex flex-col m-4 p-1/2  bg-white/50 h-scren w-screen justify-items-center">
+              <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
                 <div className="card-body flex flex-row">
                   <div className="card-title">
                     <h2 className="flex flex-row font-black text-lg">
@@ -188,14 +191,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </div>
                   <h4>{data.goal}</h4>
                   <div className="card-actions justify-center mt-auto">
-                    {/* <div>
-                      Fund Raise{data.amountDonated} from {data.goal}
-                      <LinearProgress
-                        className="h-4"
-                        variant="determinate"
-                        value={calculateProgress()} // Call the function to get the progress value
-                      />
-                    </div> */}
                     <button
                       className="bg-blue-500 text-black text-xl p-2 w-full rounded-lg text-center hover:border hover:bg-blue-700 hover:border-stone-700 hover:text-white transform duration-300"
                       onClick={handleDonation}
@@ -204,7 +199,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     </button>
                   </div>
                   <div className=" justify-start">
-                    <p className="jsutify-start font-semibold text-purple">
+                    <p className="jsutify-start font-semibold text-purple mb-2">
                       {`${data.contributedUsers.length} people have just made a donation`}
                     </p>
                     <button onClick={copyToClipboard}>
@@ -216,7 +211,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
               </div>
             </div>
             <p className="pl-2 ml-2">{`${data.yourname} is organising this fundraiser.`}</p>
-            <div className="flex flex-col p-2 m-2 w-1/2 m-2 p-2">
+            <div className="flex flex-col p-2 m-2 w-1/2">
               <h2 className="flex flex-col font-black text-lg">
                 Campaign Story
               </h2>
@@ -226,7 +221,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 Organiser
               </h2>
             </div>
-            <div className="flex flex-row p-2 m-2 w-1/2  p-2 mb-2">
+            <div className="flex flex-row p-2 m-2 w-full  mb-2">
               <img
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                 className="rounded-full w-20 h-20 object-cover mb-4 p-2"
@@ -272,8 +267,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                       alignItems: "center",
                     }}
                   >
-                    {/* Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula. */}
                     <form
                       className="p-2 flex flex-col justify-center items-center w-1/2"
                       action="https://formcarry.com/s/Mc2CYx6LzHt"

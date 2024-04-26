@@ -91,16 +91,17 @@ const Card: React.FC = () => {
   }
   return (
     <>
-      <div className="grid grid-cols-3 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
         {data.map((item) => (
           <div
             key={item._id}
-            className="flex h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
+            className="flex flex-col h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
           >
-            <div className="card w-96 bg-base-100 shadow-2xl">
+            <div className="card w-full bg-base-100 shadow-2xl">
               <figure>
                 <img
                   src={item.image}
+                  className="w-full"
                   alt="Image"
                   style={{
                     height: "250px",

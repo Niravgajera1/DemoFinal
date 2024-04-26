@@ -5,12 +5,12 @@ import SendIcon from "@mui/icons-material/Send";
 
 const ContactUs = () => {
   return (
-    <div className="bg-red-200">
-      <h1 className="text-3xl text-center font-bold m-4 p-4 bg-red-300 mb-4 ">
+    <div className="bg-red-200 flex flex-col justify-center items-center">
+      <div className="text-3xl text-center font-bold m-4 p-4 bg-red-300 mb-4 w-full">
         Contact Us
-      </h1>
-      <div className="flex flex-row justify-center items-center width-1/2 gap-8 mb-4  ">
-        <div>
+      </div>
+      <div className="flex flex-col lg:flex-row justify-center items-center mb-4">
+        <div className="lg:w-1/2 xl:w-1/2  p-4 m-2">
           <img
             src="/images/Contact.png"
             width="600"
@@ -19,7 +19,7 @@ const ContactUs = () => {
           ></img>
         </div>
         <form
-          className="p-2 flex flex-col justify-center items-center w-1/2"
+          className="lg:w-1/2 xl:w-1/2 p-2 flex flex-col justify-center items-center m-3"
           action="https://formcarry.com/s/Mc2CYx6LzHt"
           method="POST"
         >
@@ -32,6 +32,7 @@ const ContactUs = () => {
             id="outlined-basic"
             variant="outlined"
             label="Enter Your Name"
+            className="lg:w-1/2 xl:w-1/2"
           />
           <TextField
             margin="normal"
@@ -42,11 +43,11 @@ const ContactUs = () => {
             id="outlined-basic"
             variant="outlined"
             label="Enter Your Email"
+            className="lg:w-1/2 xl:w-1/2"
           />
           <TextField
             margin="normal"
             name="message"
-            className="rounded-xl"
             style={{ width: "50%" }}
             multiline
             minRows={4}
@@ -55,9 +56,10 @@ const ContactUs = () => {
             id="outlined-basic"
             variant="outlined"
             label="Enter Your Message"
+            className="lg:w-1/2 xl:w-1/2"
           />
           <Button
-            className="mt-4"
+            className="mt-4 lg:w-1/2 xl:w-1/2 "
             variant="outlined"
             endIcon={<SendIcon />}
             type="submit"
