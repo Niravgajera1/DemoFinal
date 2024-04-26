@@ -20,7 +20,7 @@ export class User extends Document {
   PasswordReserToken: string;
 
   @Prop()
-  PasswordExpiresIn: Date;
+  TokenExpiresIn: Date;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
   contributedCampaigns: {

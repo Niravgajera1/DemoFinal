@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigModule and ConfigService
 import { JwtStrategy } from './jwt.strategy';
 import { Campaign, CampaignSchema } from 'src/Schemas/campaign.Schema';
+import { EmailService } from './email.service';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { Campaign, CampaignSchema } from 'src/Schemas/campaign.Schema';
     ConfigModule.forRoot(), // Import ConfigModule.forRoot()
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, EmailService],
   exports: [JwtStrategy, PassportModule, AuthModule, AuthService],
 })
 export class AuthModule {}

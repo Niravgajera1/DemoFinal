@@ -6,18 +6,27 @@ import {
   Res,
   // Patch,
   Param,
+  HttpException,
+  HttpStatus,
+  Patch,
   // BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { createuserdto } from './dto/createuser.dto';
 import { loginuserdto } from './dto/loginuser.dto';
 import { Response } from 'express';
+import { emailDto } from './dto/email.dto';
+import { EmailService } from './email.service';
+import { UpdatePasswordDto, resetPassworddto } from './dto/resetPassword.dto';
 // import { ForgotPasswordDto } from './dto/forgotpassword.dto';
 // import { resetPassworddto } from './dto/resetPassword.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authservice: AuthService) {}
+  constructor(
+    private authservice: AuthService,
+    private emailService: EmailService,
+  ) {}
 
   @Get('/')
   getuser() {
@@ -41,37 +50,40 @@ export class AuthController {
     }
   }
 
-  // @Post('/signin/forgotPassword')
-  // async forgotPassword(@Body() forgotpassworddto: ForgotPasswordDto) {
-  //   await this.authservice.SendResetPasswordToken(forgotpassworddto);
-  //   return { message: 'Password Reset Sent Successfully' };
-  // }
-
-  // @Patch('/signin/resetPassword/:token')
-  // async resetPassword(
-  //   @Param('token') token: string,
-  //   @Body() ResetPasswordDto: resetPassworddto,
-  // ) {
-  //   try {
-  //     if (ResetPasswordDto.newPassword !== ResetPasswordDto.confirmPassword) {
-  //       throw new BadRequestException('Password Does Not Match');
-  //     }
-
-  //     const result = await this.authservice.resetPassword(
-  //       token,
-  //       ResetPasswordDto.newPassword,
-  //       ResetPasswordDto.confirmPassword,
-  //     );
-  //     return result;
-  //   } catch (error) {
-  //     throw new BadRequestException(error.message);
-  //   }
-  // }
-
   @Post('/signup')
   async signup(
     @Body() CreateUserDto: createuserdto,
   ): Promise<{ token: string }> {
     return this.authservice.SignUp(CreateUserDto);
+  }
+
+  @Post('/forgotPassword')
+  async ForgotPass(
+    @Body() data: emailDto,
+  ): Promise<{ message: string } | { error: string }> {
+    try {
+      return await this.emailService.sendEmail(data);
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'internal server error',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  @Patch('/resetPassword')
+  async resetPassword(@Body() resetData: resetPassworddto) {
+    return this.authservice.resetpass(resetData);
+  }
+
+  @Patch('/updatePassword')
+  async updatePassword(@Body() updatepassworddto: UpdatePasswordDto) {
+    try {
+      return await this.authservice.updatePassword(updatepassworddto);
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Internal server Error',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
