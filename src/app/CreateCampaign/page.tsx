@@ -70,8 +70,8 @@ const createCampaign = () => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col  justify-center items-center h-screen bg-slate-400">
-        <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/30">
+      <div className="flex flex-col  justify-center items-center h-screen bg-slate-300">
+        <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/70">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
             <h4 className="justify-center m-2 p-2 text-2xl font-semibold">
               Create A Campaign!
@@ -198,7 +198,10 @@ const createCampaign = () => {
                 />
               </div>
             </div>
-            <button className="bg-stone-700 text-white p-2 w-full rounded-lg text-center hover:border hover:bg-stone-600 hover:border-stone-700 hover:text-stone-800 transfrom duration-300 mt-2">
+            <button
+              className="w-full mt-2 bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-blue-400 rounded-2xl"
+              type="submit"
+            >
               Submit
             </button>
           </form>

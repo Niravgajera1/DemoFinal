@@ -121,7 +121,7 @@ const navbar = () => {
                         </Link>
                       </li>
                       <li>
-                        <a>Settings</a>
+                        <Link href="/UpdatePassword">Update Password</Link>
                       </li>
                       <li>
                         <button onClick={handleLogOut}>Logout</button>

@@ -97,7 +97,7 @@ const Card: React.FC = () => {
             key={item._id}
             className="flex flex-col h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
           >
-            <div className="card w-full bg-base-100 shadow-2xl">
+            <div className="card w-full bg-base-100 shadow-2xl shadow-neutral-600">
               <figure>
                 <img
                   src={item.image}

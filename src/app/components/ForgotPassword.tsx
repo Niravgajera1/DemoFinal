@@ -11,16 +11,34 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
 }) => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    //console.log(email, ">>");
+    if (!email) {
+      alert("Email is required");
+      return;
+    }
     // Handle forgot password submission here
-    console.log("Forgot password submitted with email:", email);
+    const res = await fetch("http://localhost:3001/auth/forgotPassword", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.message);
+    }
+    if (res.ok) {
+      alert(`Forgot password submitted with email:, ${email}`);
+    }
     // Close the popup
     onClose();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
+    //console.log(setEmail, ".....");
   };
 
   return (

@@ -7,12 +7,15 @@ import { UseSelector, useSelector } from "react-redux";
 import { RootState } from "@/app/Redux/store";
 import Button from "@mui/material/Button";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 // import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { title } from "process";
+import { text } from "stream/consumers";
 
 const style = {
   position: "absolute" as "absolute",
@@ -43,7 +46,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 }: {
   params: { slug: string };
 }) => {
-  // console.log(params, ">>>>>");
+  //console.log(params, ">>>>>");
   const id = params.slug[0];
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -86,6 +89,27 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     }
   };
 
+  const handleShareOnWhatsApp = async () => {
+    const message = `checkout this campaign : ${data?.title}\n${window.location.href}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share;
+        ({
+          title: data?.title,
+          text: message,
+          url: window.location.href,
+        });
+      } else {
+        const whatsappUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(
+          message
+        )}`;
+        window.open(whatsappUrl, "_blank");
+      }
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
   // const calculateProgress = () => {
   //   if (!data) return 0;
   //   const percentage = (data.amountDonated / data.goal) * 100;
@@ -206,6 +230,13 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                       <ContentCopyRoundedIcon />
                       <p>Copy to clipboard</p>
                     </button>
+                    <button
+                      onClick={handleShareOnWhatsApp}
+                      className="mx-8 px-8"
+                    >
+                      <WhatsAppIcon />
+                      <p>Share Whatsapp</p>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -224,7 +255,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
             <div className="flex flex-row p-2 m-2 w-full  mb-2">
               <img
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                className="rounded-full w-20 h-20 object-cover mb-4 p-2"
+                className="rounded-full w-20 h-20 object-cover mb-4 p-2 mt-2"
               />
               <div className="m-3">
                 <p className="p-px font-semibold">{data.yourname}</p>
