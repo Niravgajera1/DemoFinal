@@ -78,7 +78,9 @@ export class AuthController {
   @Patch('/updatePassword')
   async updatePassword(@Body() updatepassworddto: UpdatePasswordDto) {
     try {
-      return await this.authservice.updatePassword(updatepassworddto);
+      const result = await this.authservice.updatePassword(updatepassworddto);
+      console.log(result);
+      return result;
     } catch (error) {
       throw new HttpException(
         error.message || 'Internal server Error',

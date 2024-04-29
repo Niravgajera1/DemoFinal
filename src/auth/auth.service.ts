@@ -125,6 +125,7 @@ export class AuthService {
       const updatePassword = await this.userModel.findByIdAndUpdate(
         id,
         { password: hash },
+        //  { confirmPassword: resetinfo.confirmPassword },
         { new: true },
       );
 

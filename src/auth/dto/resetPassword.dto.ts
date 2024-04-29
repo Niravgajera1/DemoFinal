@@ -5,6 +5,10 @@ export class resetPassworddto {
   @IsString()
   password: string;
 
+  @IsNotEmpty()
+  @IsString()
+  confirmPassword: string;
+
   @IsString()
   @IsNotEmpty()
   reset_token: string;
