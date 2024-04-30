@@ -54,6 +54,13 @@ const navbar = () => {
                       </a>
                     </li>
                   </ul> */}
+                {/* <select className="p-2" onChange={handleChange}>
+                  <option disabled selected>
+                    Categoryes
+                  </option>
+                  <option> </option>
+                  <option>For Charity</option>
+                </select> */}
               </div>
               <div className="flex items-center gap-x-1">
                 {!isAuthenticate && (

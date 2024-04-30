@@ -5,7 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 const ContactUs = () => {
   return (
-    <div className="bg-red-200 flex flex-col justify-center items-center">
+    <div className="bg-red-200 flex flex-col justify-center items-center h-screen">
       <div className="text-3xl text-center font-bold m-4 p-4 bg-red-300 mb-4 w-full">
         Contact Us
       </div>

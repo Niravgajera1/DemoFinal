@@ -10,8 +10,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { UploadButton } from "@/utils/uploadthing";
+import { useSelector } from "react-redux";
 
 const createCampaign = () => {
+  const { userId }: { userId: string | null } = useSelector(
+    (state: any) => state.auth
+  );
   const [data, setData] = useState({
     yourname: "",
     useremail: "",
@@ -48,7 +52,7 @@ const createCampaign = () => {
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3001/campaign/new", {
+      const res = await fetch(`http://localhost:3001/campaign/new/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
