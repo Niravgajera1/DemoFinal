@@ -77,12 +77,15 @@ export class CampaignController {
     }
   }
 
-  @Post('/new')
+  @Post('/new/:id')
   async create(
     @Body() createCampiagnDto: CreateCampaignDto,
+    @Param('id') id: string,
   ): Promise<{ campaign: Campaign; message: string }> {
-    const CreateCampaign =
-      await this.campaignservice.createCampaign(createCampiagnDto);
+    const CreateCampaign = await this.campaignservice.createCampaign(
+      createCampiagnDto,
+      id,
+    );
     return {
       message: 'Campaign Created Successfully !',
       campaign: CreateCampaign,

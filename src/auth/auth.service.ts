@@ -218,4 +218,51 @@ export class AuthService {
       throw new Error(`Failed to add contributed campaign: ${error.message}`);
     }
   }
+
+  async addCreatedCampaign(
+    userId: string,
+    camapigId: string,
+    campaignName: string,
+    goal: number,
+    //  userName: string,
+  ): Promise<User> {
+    try {
+      const updatedUser = await this.userModel
+        .findByIdAndUpdate(
+          userId,
+          {
+            $push: {
+              createdCampaigns: {
+                camapigId: camapigId,
+                name: campaignName,
+                goalAmount: goal,
+              },
+            },
+          },
+          {
+            new: true,
+          },
+        )
+        .exec();
+
+      // const updatedCampaign = await this.campaignModel
+      //   .findById(
+      //     camapigId,
+      //     {
+      //       $push: {
+      //         createdBy: {
+      //           userId: userId,
+      //           name: userName,
+      //         },
+      //       },
+      //     },
+      //     { new: true },
+      //   )
+      //   .exec();
+
+      return updatedUser;
+    } catch (error) {
+      console.log('Fail :::::', error.message);
+    }
+  }
 }

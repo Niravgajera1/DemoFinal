@@ -25,7 +25,7 @@ export class StripeController {
     const { campaignId, donationAmount, campaignImage, campaignName, userId } =
       body;
     const stringUserId = String(userId);
-    console.log(stringUserId, '>>>>>>>>>>>>>>>');
+    // console.log(stringUserId, '>>>>>>>>>>>>>>>');
     try {
       const sessionurl = await this.stripeService.createCheckoutSession(
         campaignId,

@@ -28,6 +28,13 @@ export class User extends Document {
     name: string;
     donationAmount: number;
   }; // Assuming campaign IDs are strings
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
+  createdCampaigns: {
+    campaignId: string;
+    title: string;
+    goalAmount: number;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

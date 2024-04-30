@@ -5,18 +5,33 @@ import { Model } from 'mongoose';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { Query } from 'express-serve-static-core';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectModel(Campaign.name) private campaignModel: Model<Campaign>,
+    private authSerive: AuthService,
   ) {}
 
   async createCampaign(
     createCampaignDto: CreateCampaignDto,
+    id: string,
   ): Promise<Campaign> {
     const newCampaign = new this.campaignModel(createCampaignDto);
-    return await newCampaign.save();
+    const result = await newCampaign.save();
+
+    const userId = id;
+    const camapigId = result._id;
+    const campaignName = result.title;
+    const goal = result.goal;
+    await this.authSerive.addCreatedCampaign(
+      userId,
+      camapigId,
+      campaignName,
+      goal,
+    );
+    return result;
   }
 
   async findByid(id: string) {
