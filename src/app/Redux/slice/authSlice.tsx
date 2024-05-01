@@ -3,18 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 interface user {
   id: string;
   name: string;
+  userEmail: string;
 }
 
 interface authState {
   isAuthenticate: boolean;
   user: user | null;
   userId: string | null;
+  userEmail: string | null;
 }
 
 const initialState: authState = {
   isAuthenticate: false,
   user: null,
   userId: null,
+  userEmail: null,
 };
 
 const authSlice = createSlice({
@@ -24,10 +27,12 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.isAuthenticate = true;
       const data = action.payload;
-      console.log(data, "data>>>>>>>>>>>>>>>>>>>>");
+      // console.log(data, "data>>>>>>>>>>>>>>>>>>>>");
       state.user = data.name;
       state.userId = data._id;
-      console.log(state.userId);
+      state.userEmail = data.email;
+      ///console.log(state.userEmail, ">>>>");
+      // console.log(state.userId);
     },
     logout: (state) => {
       state.isAuthenticate = false;

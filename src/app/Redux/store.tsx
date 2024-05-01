@@ -11,13 +11,18 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import userSlice from "./slice/userSlice";
 
 const persistConfig = { key: "user", storage };
+const uPd = { key: "data", storage };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedReducer1 = persistReducer(uPd, userSlice);
+
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
+    user: persistedReducer1,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

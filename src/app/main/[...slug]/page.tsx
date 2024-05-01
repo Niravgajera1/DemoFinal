@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import Navbar from "@/app/components/navbar";
 import Footer from "@/app/components/footer";
 import { UseSelector, useSelector } from "react-redux";
@@ -14,8 +15,6 @@ import SendIcon from "@mui/icons-material/Send";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { title } from "process";
-import { text } from "stream/consumers";
 
 const style = {
   position: "absolute" as "absolute",
@@ -60,6 +59,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const { userId }: { userId: string | null } = useSelector(
     (state: RootState) => state.auth
   );
+
   //  console.log(String(userId), ">>>>>>>>>>>>>");
   const copyToClipboard = () => {
     const campaignLink = window.location.href;
@@ -169,7 +169,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       )}
       {!loading && data && (
         <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4">
-          <div className="responsive   mx-8 my8 bg-white/40 m-2 rounded-lg">
+          <div className="responsive   mx-8  bg-white/40 m-2 rounded-lg">
             <div
               key={data._id}
               className="responsive card lg:card-side flex flex-row "
@@ -300,8 +300,8 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   >
                     <form
                       className="p-2 flex flex-col justify-center items-center w-1/2"
-                      action="https://formcarry.com/s/Mc2CYx6LzHt"
-                      method="POST"
+                      //  action="https://formcarry.com/s/Mc2CYx6LzHt"
+                      //  method="POST"
                     >
                       <TextField
                         margin="normal"
@@ -342,6 +342,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                         variant="outlined"
                         endIcon={<SendIcon />}
                         type="submit"
+                        // onClick={sendMail}
                       >
                         Send
                       </Button>

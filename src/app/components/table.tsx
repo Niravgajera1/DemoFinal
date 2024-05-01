@@ -3,30 +3,18 @@ import React from "react";
 const table = () => {
   return (
     <div>
-      <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
+      <div className="overflow-x-auto mt-4">
+        <table className="table bg-white/30">
+          <thead className="bg-slate-500 rounded-lg ">
             <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <th>Name</th>
               <th>Job</th>
               <th>Favorite Color</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
             <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
@@ -57,11 +45,6 @@ const table = () => {
             </tr>
             {/* row 2 */}
             <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
@@ -92,11 +75,6 @@ const table = () => {
             </tr>
             {/* row 3 */}
             <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
@@ -127,11 +105,6 @@ const table = () => {
             </tr>
             {/* row 4 */}
             <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
@@ -161,16 +134,6 @@ const table = () => {
               </th>
             </tr>
           </tbody>
-          {/* foot */}
-          <tfoot>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
-              <th></th>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>

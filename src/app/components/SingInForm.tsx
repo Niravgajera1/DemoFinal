@@ -23,7 +23,7 @@ const SingInForm: React.FC = () => {
     const { name, value } = e.target;
 
     setFormData((pre) => ({ ...pre, [name]: value }));
-    console.log(formData);
+    // console.log(formData);
   };
 
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,7 @@ const SingInForm: React.FC = () => {
       }
       if (res.ok) {
         const current_user = data.user;
-        console.log(current_user);
+        // console.log(current_user);
 
         dispatch(login(current_user));
         await alert("login successfully");
