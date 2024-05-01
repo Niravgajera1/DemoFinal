@@ -224,7 +224,7 @@ export class AuthService {
     camapigId: string,
     campaignName: string,
     goal: number,
-    //  userName: string,
+    // userName: string,
   ): Promise<User> {
     try {
       const updatedUser = await this.userModel
@@ -244,21 +244,20 @@ export class AuthService {
           },
         )
         .exec();
-
-      // const updatedCampaign = await this.campaignModel
-      //   .findById(
-      //     camapigId,
-      //     {
-      //       $push: {
-      //         createdBy: {
-      //           userId: userId,
-      //           name: userName,
-      //         },
-      //       },
-      //     },
-      //     { new: true },
-      //   )
-      //   .exec();
+      await this.campaignModel
+        .findById(
+          camapigId,
+          {
+            $push: {
+              createdBy: {
+                userId: userId,
+                //userName: userName,
+              },
+            },
+          },
+          { new: true },
+        )
+        .exec();
 
       return updatedUser;
     } catch (error) {
