@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import { Campaign } from './campaign.Schema';
 
 @Schema()
@@ -27,14 +27,10 @@ export class User extends Document {
     campaignId: string;
     name: string;
     donationAmount: number;
-  }; // Assuming campaign IDs are strings
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
-  createdCampaigns: {
-    campaignId: string;
-    title: string;
-    goalAmount: number;
   };
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' }] })
+  createdCampaigns: Campaign[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

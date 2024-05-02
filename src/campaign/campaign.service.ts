@@ -6,34 +6,24 @@ import { CreateCampaignDto } from './dto/create.campaign.dto';
 import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { Query } from 'express-serve-static-core';
 import { AuthService } from 'src/auth/auth.service';
+import { User } from 'src/Schemas/auth.Schema';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectModel(Campaign.name) private campaignModel: Model<Campaign>,
+    @InjectModel(User.name) private userModel: Model<User>,
     private authSerive: AuthService,
   ) {}
 
-  async createCampaign(
-    createCampaignDto: CreateCampaignDto,
-    id: string,
-  ): Promise<Campaign> {
+  async createCampaign(createCampaignDto: CreateCampaignDto, id: string) {
     const newCampaign = new this.campaignModel(createCampaignDto);
     const result = await newCampaign.save();
 
-    const userId = id;
     const camapigId = result._id;
-    const campaignName = result.title;
-    const goal = result.goal;
-    await this.authSerive.addCreatedCampaign(
-      userId,
-      camapigId,
-      campaignName,
-      goal,
-    );
+    await this.authSerive.addCampaign(id, camapigId);
     return result;
   }
-
   async findByid(id: string) {
     const found = await this.campaignModel.findById(id);
     if (!found) {
@@ -64,6 +54,7 @@ export class CampaignService {
       const totalitem = await this.campaignModel.countDocuments(DBquery).exec();
       const data = await this.campaignModel
         .find(DBquery)
+        .populate('')
         .limit(resPerPage)
         .skip(skip)
         .exec();

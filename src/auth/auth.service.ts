@@ -77,7 +77,10 @@ export class AuthService {
 
   async findById(id: string): Promise<User> {
     try {
-      const user = await this.userModel.findById(id).exec();
+      const user = await this.userModel.findById(id).populate({
+        path: 'createdCampaigns',
+        options: { strictPopulate: false },
+      });
       if (!user) {
         throw new NotFoundException('User Not Found');
       }
@@ -88,7 +91,7 @@ export class AuthService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find();
   }
 
   async resetToken(
@@ -219,49 +222,11 @@ export class AuthService {
     }
   }
 
-  async addCreatedCampaign(
-    userId: string,
-    camapigId: string,
-    campaignName: string,
-    goal: number,
-    // userName: string,
-  ): Promise<User> {
-    try {
-      const updatedUser = await this.userModel
-        .findByIdAndUpdate(
-          userId,
-          {
-            $push: {
-              createdCampaigns: {
-                camapigId: camapigId,
-                name: campaignName,
-                goalAmount: goal,
-              },
-            },
-          },
-          {
-            new: true,
-          },
-        )
-        .exec();
-      await this.campaignModel
-        .findById(
-          camapigId,
-          {
-            $push: {
-              createdBy: {
-                userId: userId,
-                //userName: userName,
-              },
-            },
-          },
-          { new: true },
-        )
-        .exec();
-
-      return updatedUser;
-    } catch (error) {
-      console.log('Fail :::::', error.message);
-    }
+  async addCampaign(id: string, campaignId: string) {
+    return await this.userModel.findByIdAndUpdate(
+      id,
+      { createdCampaigns: campaignId },
+      { new: true },
+    );
   }
 }

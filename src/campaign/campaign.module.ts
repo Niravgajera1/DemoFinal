@@ -4,6 +4,7 @@ import { CampaignService } from './campaign.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Campaign, CampaignSchema } from '../Schemas/campaign.Schema';
 import { AuthModule } from 'src/auth/auth.module';
+import { User, UserSchema } from 'src/Schemas/auth.Schema';
 
 @Module({
   imports: [
@@ -12,6 +13,10 @@ import { AuthModule } from 'src/auth/auth.module';
       {
         name: Campaign.name,
         schema: CampaignSchema,
+      },
+      {
+        name: User.name,
+        schema: UserSchema,
       },
     ]),
   ],
