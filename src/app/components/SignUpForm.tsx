@@ -62,7 +62,6 @@ const SignUpForm: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-full">
         <div className="responsive mx-8 my-8 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center">
           <div className="responsive card lg:card-side flex flex-row ">
@@ -152,7 +151,6 @@ const SignUpForm: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

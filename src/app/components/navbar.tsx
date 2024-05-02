@@ -128,6 +128,22 @@ const navbar = () => {
                         </Link>
                       </li>
                       <li>
+                        <Link
+                          href="/UserProfile/campaigns"
+                          className="justify-between"
+                        >
+                          Campaigns
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/UserProfile/contributaions"
+                          className="justify-between"
+                        >
+                          Contributions
+                        </Link>
+                      </li>
+                      <li>
                         <Link href="/UpdatePassword">Update Password</Link>
                       </li>
                       <li>

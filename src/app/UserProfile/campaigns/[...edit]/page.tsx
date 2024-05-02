@@ -1,20 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { UploadButton } from "@/utils/uploadthing";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { UploadButton } from "@/utils/uploadthing";
-import { useSelector } from "react-redux";
 
-const createCampaign = () => {
-  const { userId }: { userId: string | null } = useSelector(
-    (state: any) => state.auth
-  );
-  const [data, setData] = useState({
+interface formdata {
+  yourname: string;
+  title: string;
+  category: string;
+  story: string;
+  goal: string;
+  useremail: string;
+  enddate: string; // Assuming the server expects date in string format
+  image: string;
+}
+
+const Edit: React.FC<{ params: { edit: string } }> = ({
+  params,
+}: {
+  params: { edit: string };
+}) => {
+
+    
+  const id = params.edit[0];
+  const router = useRouter();
+  const [formdata, setFormdata] = useState({
     yourname: "",
     useremail: "",
     title: "",
@@ -24,48 +39,78 @@ const createCampaign = () => {
     enddate: "",
     image: "",
   });
-  const router = useRouter();
   const currentDate = new Date().toISOString().split("T")[0];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData((prevData) => ({ ...prevData, [name]: value }));
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/campaign/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch");
+      }
+      const data = await response.json();
+
+      setFormdata({
+        yourname: data.yourname || "",
+        title: data.title || "",
+        useremail: data.useremail || "",
+        category: data.category || "",
+        story: data.story || "",
+        goal: data.goal || "",
+        enddate: data.enddate || "",
+        image: data.image || "",
+      });
+    } catch (error) {
+      alert("Failed to fetch : ");
+    }
   };
 
-  const handleDateChange = (date: any) => {
-    const formateDate = date.format("DD-MM-YYYY");
-    setData((prevData) => ({
+  const handleInputchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormdata((prevdata) => ({
+      ...prevdata,
+      [name]: value,
+    }));
+  };
+
+  const inputDatechange = (date: any) => {
+    const formteDate = date.format("DD-MM-YYYY");
+    setFormdata((prevData) => ({
       ...prevData,
-      enddate: formateDate,
+      enddate: formteDate,
     }));
   };
 
   const handleFileChange = (imageUrl: string) => {
-    setData((prevData) => ({
+    setFormdata((prevData) => ({
       ...prevData,
       image: imageUrl,
     }));
   };
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3001/campaign/new/${userId}`, {
-        method: "POST",
+      const response = await fetch(`http://localhost:3001/campaign/${id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formdata),
       });
-      const Data = await res.json();
-      if (res.ok) {
-        alert(Data.message);
-        await router.push("/main");
-      } else {
-        alert(Data.message);
+      const updateData = await response.json();
+      if (!response.ok) {
+        alert(updateData.message);
+      }
+      if (response.ok) {
+        alert("Campaign Updated Successfully");
+        await router.push("/UserProfile/campaigns");
       }
     } catch (error) {
-      console.error(error);
+      console.error("failed to update ::::", error);
     }
   };
 
@@ -75,30 +120,28 @@ const createCampaign = () => {
         <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/70">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
             <h4 className="justify-center m-2 p-2 text-2xl font-semibold">
-              Create A Campaign!
+              Edit Your Campaign!
             </h4>
           </div>
           <form onSubmit={handleSubmit}>
             <div className=" relative flex flex-row gap-5 items-center justify-center mt-4 mb-10">
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
-                  required
-                  value={data.yourname}
-                  onChange={handleChange}
+                  value={formdata.yourname}
+                  onChange={handleInputchange}
                   name="yourname"
                   size="small"
                   fullWidth
                   id="outlined-basic"
                   label="Enter Your Name"
                   variant="filled"
-                  color="error"
+                  color="info"
                 />
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
-                  required
-                  value={data.title}
-                  onChange={handleChange}
+                  value={formdata.title}
+                  onChange={handleInputchange}
                   name="title"
                   size="small"
                   fullWidth
@@ -110,9 +153,8 @@ const createCampaign = () => {
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
-                  required
-                  value={data.category}
-                  onChange={handleChange}
+                  value={formdata.category}
+                  onChange={handleInputchange}
                   name="category"
                   size="small"
                   fullWidth
@@ -125,9 +167,8 @@ const createCampaign = () => {
             </div>
             <div className="relative w-full min-w-[200px] font-black mt-4 mb-6">
               <TextField
-                required
-                value={data.story}
-                onChange={handleChange}
+                value={formdata.story}
+                onChange={handleInputchange}
                 name="story"
                 multiline
                 size="small"
@@ -141,9 +182,8 @@ const createCampaign = () => {
             <div className="relative flex flex-row gap-5 items-center justify-center mt-4 mb-6">
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
-                  required
-                  value={data.goal}
-                  onChange={handleChange}
+                  value={formdata.goal}
+                  onChange={handleInputchange}
                   name="goal"
                   size="small"
                   fullWidth
@@ -155,9 +195,8 @@ const createCampaign = () => {
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
                 <TextField
-                  required
-                  value={data.useremail}
-                  onChange={handleChange}
+                  value={formdata.useremail}
+                  onChange={handleInputchange}
                   name="useremail"
                   size="small"
                   fullWidth
@@ -172,8 +211,8 @@ const createCampaign = () => {
                   <DemoContainer components={["DatePicker"]}>
                     <DatePicker
                       name="enddate" // Set the name attribute to match the field name
-                      value={dayjs(data.enddate)}
-                      onChange={handleDateChange}
+                      value={dayjs(formdata.enddate)}
+                      onChange={inputDatechange}
                       label="Select End Date"
                       minDate={dayjs(currentDate)}
                       format="DD-MM-YYYY"
@@ -212,4 +251,4 @@ const createCampaign = () => {
   );
 };
 
-export default createCampaign;
+export default Edit;

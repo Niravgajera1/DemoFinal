@@ -31,14 +31,11 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       const { _id, name, email, createdCampaigns, contributedCampaigns } =
         action.payload;
-      // console.log(data, ">>>>>userDataSet");
       state.id = _id;
       state.name = name;
       state.email = email;
       state.contributedCampaigns = contributedCampaigns;
       state.createdCampaigns = createdCampaigns;
-
-      //   console.log(state.createdCampaigns, ">>>>>>>>>>>>campigns");
     },
   },
 });

@@ -11,9 +11,6 @@ import ContactUs from "./components/ContactUs";
 const Home: React.FC = () => {
   return (
     <main className="flex flex-col min-h-screen overflow-y-auto justify-center">
-      <Provider store={store}>
-        <Navbar />
-      </Provider>
       <div className="flex flex-col justify-center items-center flex-grow bg-red-200 sm:px-4 p-10 h-screen">
         <h4 className="font-black text-5xl mb-4 mt-10">FundFusion</h4>
         <p className="text-xl mb-8 text-center">
@@ -30,8 +27,6 @@ const Home: React.FC = () => {
       </div>
 
       <ContactUs />
-
-      <Footer />
     </main>
   );
 };

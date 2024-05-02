@@ -4,6 +4,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({
@@ -18,15 +21,13 @@ export default function RootLayout({
         rel="stylesheet"
         type="text/css"
       />
-      <link
-        href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-        rel="stylesheet"
-      ></link>
       <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-      <script>AOS.init();</script>
       <body className={inter.className}>
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store}>
+          <Navbar />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );

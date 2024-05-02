@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-import Navbar from "@/app/components/navbar";
-import Footer from "@/app/components/footer";
 import { UseSelector, useSelector } from "react-redux";
 import { RootState } from "@/app/Redux/store";
 import Button from "@mui/material/Button";
@@ -156,7 +153,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 
   return (
     <>
-      <Navbar />
       {copy && (
         <div className="alert bg-green-300 mt-1">Link copied successfully!</div>
       )}
@@ -354,7 +350,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           </div>
         </div>
       )}
-      <Footer />
     </>
   );
 };
