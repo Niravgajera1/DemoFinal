@@ -55,14 +55,5 @@ export class StripeController {
     } catch (error) {
       console.log('payment Failed', error.message);
     }
-    // console.log(stringUserId, '>>>>>>>>>>>>>>>>>>>>>>>');
-    // try {
-    //   await this.campaignService.updateamountDonated(
-    //     campaignId,
-    //     donationAmount,
-    //   );
-    // } catch (error) {
-    //   console.log('error to upadate amount :', error.message);
-    // }
   }
 }

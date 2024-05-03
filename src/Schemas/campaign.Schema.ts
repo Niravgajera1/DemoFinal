@@ -1,7 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
+import { User } from './auth.Schema';
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class Campaign extends Document {
   @Prop({ required: true })
   yourname: string;
@@ -33,8 +36,8 @@ export class Campaign extends Document {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   contributedUsers: Types.ObjectId[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  createdBy: Types.ObjectId[];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  createdBy: User[];
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

@@ -63,6 +63,9 @@ export class AuthService {
     try {
       const { email, password } = LoginUserDto;
       const user = await this.userModel.findOne({ email });
+      if (!user) {
+        throw new UnauthorizedException('with this email no user found');
+      }
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = this.jwtService.sign({ id: user._id });
         res.cookie('token', token, { httpOnly: true });
@@ -225,7 +228,7 @@ export class AuthService {
   async addCampaign(id: string, campaignId: string) {
     return await this.userModel.findByIdAndUpdate(
       id,
-      { createdCampaigns: campaignId },
+      { $push: { createdCampaigns: campaignId } },
       { new: true },
     );
   }

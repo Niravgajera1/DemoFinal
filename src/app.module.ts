@@ -7,6 +7,7 @@ import passport from 'passport';
 import { PassportModule } from '@nestjs/passport';
 import { StripeModule } from './stripe/stripe.module';
 import { ConfigModule } from '@nestjs/config';
+import { ReviewModule } from './review/review.module';
 
 const DBURL: string =
   'mongodb+srv://niravpatelpc:7359965@nest.riw7o.mongodb.net/';
@@ -19,6 +20,7 @@ const DBURL: string =
     CampaignModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     StripeModule,
+    ReviewModule,
   ],
   controllers: [],
   providers: [],

@@ -19,9 +19,15 @@ export class CampaignService {
   async createCampaign(createCampaignDto: CreateCampaignDto, id: string) {
     const newCampaign = new this.campaignModel(createCampaignDto);
     const result = await newCampaign.save();
-
     const camapigId = result._id;
     await this.authSerive.addCampaign(id, camapigId);
+
+    await this.campaignModel.findByIdAndUpdate(
+      camapigId,
+      { $push: { createdBy: id } },
+      { new: true },
+    );
+
     return result;
   }
   async findByid(id: string) {
@@ -85,6 +91,11 @@ export class CampaignService {
     if (!deletedCampaign) {
       throw new NotFoundException('Campaign not found');
     }
+
+    await this.userModel.updateMany(
+      { createdCampaigns: id },
+      { $pull: { createdCampaigns: id } },
+    );
   }
 
   async updateamountDonated(id: string, amount: number) {
