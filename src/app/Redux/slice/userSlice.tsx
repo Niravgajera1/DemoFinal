@@ -37,10 +37,17 @@ const userSlice = createSlice({
       state.contributedCampaigns = contributedCampaigns;
       state.createdCampaigns = createdCampaigns;
     },
+    deleteCampaign: (state, action) => {
+      if (state.createdCampaigns) {
+        state.createdCampaigns = state.createdCampaigns.filter(
+          (campaign: any) => campaign._id !== action.payload
+        );
+      }
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, deleteCampaign } = userSlice.actions;
 
 export const contributedCampaigns = (state: { user: userState }) =>
   state.user.contributedCampaigns;

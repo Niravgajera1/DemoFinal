@@ -27,6 +27,7 @@ const Card: React.FC = () => {
   const router = useRouter();
 
   const resPerPage: number = 6;
+  console.log(page, ">>>>page");
 
   useEffect(() => {
     fetchData();

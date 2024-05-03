@@ -1,15 +1,21 @@
 "use client";
+import { deleteCampaign } from "@/app/Redux/slice/userSlice";
 import { RootState } from "@/app/Redux/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Campaigns = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { createdCampaigns }: { createdCampaigns: object[] | null } =
     useSelector((state: RootState) => state.user);
+
+  const { name }: { name: string | null } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const handleDeleteClick = async (id: any) => {
     try {
@@ -20,16 +26,13 @@ const Campaigns = () => {
         alert("failed to delete");
       }
       if (response.ok) {
+        dispatch(deleteCampaign(id));
         alert("deleted Successfully");
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  const { name }: { name: string | null } = useSelector(
-    (state: RootState) => state.user
-  );
 
   return (
     <>
@@ -71,8 +74,9 @@ const Campaigns = () => {
                 <table className="w-full text-md bg-white shadow-md rounded mb-4 mt-4 ">
                   <tbody>
                     <tr className="border-b">
-                      <th className="text-left p-3 px-5">id</th>
                       <th className="text-left p-3 px-5">Name</th>
+                      <th className="text-left p-3 px-5">Category</th>
+                      <th className="text-left p-3 px-5">CollectedAmount</th>
                       <th className="text-left p-3 px-5">GoalAmount</th>
                       <th></th>
                     </tr>
@@ -80,12 +84,17 @@ const Campaigns = () => {
                       <tr className="border-b hover:bg-orange-100 bg-gray-100">
                         <td className="p-3 px-5">
                           <p className="bg-transparent border-b-2 border-gray-300 py-2">
-                            {campaign._id}
+                            {campaign.title}
                           </p>
                         </td>
                         <td className="p-3 px-5">
                           <p className="bg-transparent border-b-2 border-gray-300 py-2">
-                            {campaign.title}
+                            {campaign.category}
+                          </p>
+                        </td>
+                        <td className="p-3 px-5">
+                          <p className="bg-transparent border-b-2 border-gray-300 py-2">
+                            {campaign.amountDonated}
                           </p>
                         </td>
                         <td className="p-3 px-5">

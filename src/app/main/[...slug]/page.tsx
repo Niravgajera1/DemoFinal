@@ -238,17 +238,45 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
               </div>
             </div>
             <p className="pl-2 ml-2">{`${data.yourname} is organising this fundraiser.`}</p>
-            <div className="flex flex-col p-2 m-2 w-1/2">
-              <h2 className="flex flex-col font-black text-lg">
-                Campaign Story
-              </h2>
-              <p>{data.story}</p>
-              <hr className="mt-4" />
-              <h2 className="flex flex-col font-black text-lg mt-2">
-                Organiser
-              </h2>
+            <div className="md:flex md:flex-row  gap-10 m-2 p-2 ">
+              <div className="flex flex-col p-2 m-2  md:w-1/2">
+                <h2 className="flex flex-col font-black text-lg">
+                  Campaign Story
+                </h2>
+                <p>{data.story}</p>
+                <hr className="mt-4" />
+                <h2 className="flex flex-col font-black text-lg mt-2">
+                  Organiser
+                </h2>
+              </div>
+              <div className="md:w-1/2 overflow-y-auto scrollbar-hidden  bg-white/30">
+                <h2 className="font-black text-xl font-sans justify-center p-2 m-2">
+                  Last Donations
+                </h2>
+                <div className="flex flex-col h-40  w-full">
+                  {data.contributedUsers.map((item: any) => (
+                    <>
+                      <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
+                        <img
+                          src="/images/fund.png"
+                          style={{ width: "60px", height: "60px" }}
+                          className="m-2 p-2"
+                        />
+                        <span>
+                          <p className="text-2xl font-sans mr-6 ml-3 pr-2">
+                            {item.userName}
+                          </p>
+                          <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
+                            ₹ {item.donationAmount}
+                          </p>
+                        </span>
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="flex flex-row p-2 m-2 w-full  mb-2">
+            <div className="flex flex-row pl-2 ml-2 w-full  mb-2">
               <img
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                 className="rounded-full w-20 h-20 object-cover mb-4 p-2 mt-2"

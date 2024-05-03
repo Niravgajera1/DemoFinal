@@ -44,8 +44,7 @@ const SingInForm: React.FC = () => {
       }
       if (res.ok) {
         const current_user = data.user;
-        // console.log(current_user);
-
+       // console.log(current_user, ">>>>>Current user");
         dispatch(login(current_user));
         await alert("login successfully");
 

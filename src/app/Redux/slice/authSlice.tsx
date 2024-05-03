@@ -27,12 +27,13 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.isAuthenticate = true;
       const data = action.payload;
-      // console.log(data, "data>>>>>>>>>>>>>>>>>>>>");
+      //console.log(data, ">>>data");
       state.user = data.name;
+      // console.log(state.user, ">>>>>USer");
       state.userId = data._id;
+      //  console.log(state.userId, ">>>>>USerId");
       state.userEmail = data.email;
-      ///console.log(state.userEmail, ">>>>");
-      // console.log(state.userId);
+      //  console.log(state.userEmail, ">>>>>USerEmail");
     },
     logout: (state) => {
       state.isAuthenticate = false;
