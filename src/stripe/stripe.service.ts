@@ -31,7 +31,7 @@ export class StripeService {
             price_data: {
               currency: 'inr',
               product_data: {
-                name: `You Are Supportig : ${campaignName}`,
+                name: `You Are Supporting : ${campaignName}`,
                 images: [campaignImage],
               },
               unit_amount: donationAmount * 100, // Include donation amount
@@ -40,7 +40,8 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `http://localhost:3000/PaymentSuccessfull`, // Include donation amount in success URL
+        success_url: `http://localhost:3000/PaymentSuccessfull`,
+        // Include donation amount in success URL
         cancel_url: `http://localhost:3000`,
       });
       return session.url;
