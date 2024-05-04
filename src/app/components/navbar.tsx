@@ -30,7 +30,7 @@ const navbar = () => {
 
   return (
     <div className="grid min-h-[80px] w-full place-items-center rounded-lg p-6 ">
-      <div className="-m-6  max-h-[768px] w-[calc(100%+48px)] bg-transperent">
+      <div className="-m-6  max-h-[768px] w-[calc(100%+48px)] bg-transperent ">
         <nav className="sticky top-0 z-10 block w-full max-w-full px-2 text-black bg-base-200 border rounded-none shadow-xl h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:px-4 lg:py-4">
           <div className="flex items-center justify-between text-blue-gray-900 mx-2">
             <Link

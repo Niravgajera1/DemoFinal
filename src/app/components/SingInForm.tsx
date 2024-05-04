@@ -8,6 +8,7 @@ import Footer from "./footer";
 import ForgotPassword from "./ForgotPassword";
 import { login } from "./../Redux/slice/authSlice";
 import { useDispatch } from "react-redux";
+import toastFunction from "./../../utils/toastUtils";
 
 const SingInForm: React.FC = () => {
   const router = useRouter();
@@ -40,18 +41,22 @@ const SingInForm: React.FC = () => {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message);
+        // alert(data.message);
+        toastFunction("error", data.message);
       }
       if (res.ok) {
         const current_user = data.user;
-       // console.log(current_user, ">>>>>Current user");
+        // console.log(current_user, ">>>>>Current user");
         dispatch(login(current_user));
-        await alert("login successfully");
+        await toastFunction("success", "Login Successfully");
 
         document.cookie = `token=${data.token}; path=/; expires=${new Date(
           Date.now() + 7 * 24 * 60 * 60 * 1000
         ).toUTCString()};`;
-        window.location.href = "/main";
+
+        setTimeout(() => {
+          window.location.href = "/main";
+        }, 1000);
       }
     } catch (error) {
       console.error("Error logging in:", error);

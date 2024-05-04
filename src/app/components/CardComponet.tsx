@@ -98,7 +98,11 @@ const Card: React.FC = () => {
             key={item._id}
             className="flex flex-col h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
           >
-            <div className="card w-full bg-base-100 shadow-2xl shadow-neutral-600">
+            <div
+              className="card card-bordered w-full bg-base-100 shadow-lg shadow-neutral-600 "
+              style={{ border: "2px solid white" }}
+              onClick={() => handleShowMore(item._id)}
+            >
               <figure>
                 <img
                   src={item.image}
@@ -111,11 +115,20 @@ const Card: React.FC = () => {
                   }}
                 />
               </figure>
-              <div className="card-normal">
-                <h2 className="card-title p-2">{item.category}</h2>
-                <h3 className="p-1">{item.title.slice(0, 35)}</h3>
-                <h2 className="p-1">{item.enddate}</h2>
-                <div className="p-1">
+              <div
+                className="card-bordered m-2 "
+                style={{ border: "1px solid black", borderRadius: "8px" }}
+              >
+                <h2 className="card-title p-2 font-serif text-xl">
+                  {item.category}
+                </h2>
+                <h3 className="p-1 pl-2 font-sans">
+                  {item.title.slice(0, 35)}
+                </h3>
+                <h2 className="p-1 pl-2 font-sans">
+                  End Date : {item.enddate}
+                </h2>
+                <div className="p-3 mb-3">
                   ₹ {item.amountDonated} Raised of ₹{item.goal} Target
                   <LinearProgress
                     className="mt-1 h-px"
@@ -123,14 +136,6 @@ const Card: React.FC = () => {
                     variant="determinate"
                     value={calculateProgress(item.amountDonated, item.goal)} // Call the function to get the progress value
                   />
-                </div>
-                <div className="card-actions justify-end mb-2 mr-2">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleShowMore(item._id)}
-                  >
-                    Show more
-                  </button>
                 </div>
               </div>
             </div>

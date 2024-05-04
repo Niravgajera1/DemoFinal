@@ -5,10 +5,23 @@ import SendIcon from "@mui/icons-material/Send";
 
 const ContactUs = () => {
   return (
-    <div className="bg-red-200 flex flex-col justify-center items-center h-screen">
-      <div className="text-3xl text-center font-bold  bg-red-300 w-full">
-        Contact Us
+    <>
+      <div className="responsive justify-center item-center  bg-slate-300  p-4 h-screen">
+        <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center ">
+          <div className="responsive card lg:card-side flex flex-row ">
+            <img
+              className="m-2 p-2 w-full lg:w-1/2"
+              src="/images/Contact.png"
+              alt="Campaign Image"
+            />
+          </div>
+        </div>
       </div>
+    </>
+
+    // <div className="bg-slate-300 flex flex-col justify-center items-center h-screen">
+    // {
+    /* <div className="text-3xl text-center font-bold  w-full">Contact Us</div>
       <div className="flex flex-col lg:flex-row justify-center items-center mb-4">
         <div className="lg:w-1/2 xl:w-1/2  p-4 m-2">
           <img
@@ -67,8 +80,9 @@ const ContactUs = () => {
             Send
           </Button>
         </form>
-      </div>
-    </div>
+      </div> */
+    // }
+    // </div>
   );
 };
 

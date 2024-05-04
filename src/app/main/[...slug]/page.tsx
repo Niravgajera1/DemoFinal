@@ -171,7 +171,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
               className="responsive card lg:card-side flex flex-row "
             >
               <img
-                className="m-2 p-2 w-full lg:w-1/2"
+                className="m-2 p-2 w-full lg:w-1/2 rounded-lg object-cover"
                 width="650px"
                 height="600px"
                 src={data.image}

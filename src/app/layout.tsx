@@ -1,5 +1,6 @@
 "use client";
 import type { Metadata } from "next";
+import "react-toastify/dist/ReactToastify.css";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider } from "react-redux";
@@ -7,6 +8,7 @@ import store from "./Redux/store";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({
@@ -26,6 +28,7 @@ export default function RootLayout({
         <Provider store={store}>
           <Navbar />
           {children}
+          <ToastContainer />
           <Footer />
         </Provider>
       </body>
