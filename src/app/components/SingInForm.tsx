@@ -9,6 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import { login } from "./../Redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 import toastFunction from "./../../utils/toastUtils";
+import { ToastContainer } from "react-toastify";
 
 const SingInForm: React.FC = () => {
   const router = useRouter();
@@ -73,6 +74,7 @@ const SingInForm: React.FC = () => {
 
   return (
     <div>
+      <ToastContainer />
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-screen">
         <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center ">
           <div className="responsive card lg:card-side flex flex-row ">
@@ -132,7 +134,7 @@ const SingInForm: React.FC = () => {
                     </button>
                   </p>
                   <p className="mt-2 justify-center  hover:underline focus:outline-none">
-                    New At FundFusion ?{" "}
+                    New At FundFusion ?
                     {
                       <Link href="/signup" className="text-blue-500">
                         SignUp

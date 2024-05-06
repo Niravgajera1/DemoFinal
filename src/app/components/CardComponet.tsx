@@ -96,11 +96,11 @@ const Card: React.FC = () => {
         {data.map((item) => (
           <div
             key={item._id}
-            className="flex flex-col h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
+            className="flex flex-col  h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
           >
             <div
-              className="card card-bordered w-full bg-base-100 shadow-lg shadow-neutral-600 "
-              style={{ border: "2px solid white" }}
+              className="card card-normal w-full bg-base-100 shadow-lg shadow-neutral-600 "
+              // style={{ border: "2px solid white" }}
               onClick={() => handleShowMore(item._id)}
             >
               <figure>

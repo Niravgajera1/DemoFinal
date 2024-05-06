@@ -69,7 +69,7 @@ const Home: React.FC = () => {
             <div className="flex justify-center items-center mb-8">
               <Link
                 href="/main"
-                className="border-2 border-green  text-white py-4 px-8 rounded-lg text-center hover:bg-green-500 hover:text-white transition duration-300"
+                className="border-2 border-green  text-white py-4 px-8 rounded-lg text-center hover:bg-stone-700 hover:text-white transition duration-300"
               >
                 <button className="text-2xl ">Get Started</button>
               </Link>

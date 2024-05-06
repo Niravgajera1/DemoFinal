@@ -71,7 +71,7 @@ const Profile = () => {
             <div className="mx-32 mt-8 flex flex-row justify-between">
               <div className="my-6">
                 <img
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  src="/images/profice.jpg"
                   style={{ height: "300px", width: "428px" }}
                 />
               </div>
@@ -80,7 +80,7 @@ const Profile = () => {
                   <img
                     className="rounded-full w-20"
                     alt="Tailwind CSS Navbar component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                    src="/images/profice.jpg"
                   />
                   <div className="flex items-center pl-6 font-sans text-2xl font-semibold">
                     About Me

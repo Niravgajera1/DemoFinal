@@ -35,6 +35,11 @@ interface CampaignData {
   goal: number;
   image: string;
   contributedUsers: [];
+  reviews: [];
+}
+
+interface Review {
+  review: string;
 }
 
 const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
@@ -47,9 +52,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [review, setReview] = useState("");
   const [copy, setCopy] = useState(false);
   const [data, setData] = useState<CampaignData | null>(null);
+  const [rdata, setRdata] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [donationAmout, setDonationAmount] = useState<Number | null>(null);
 
@@ -70,6 +76,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 
   useEffect(() => {
     fetchData();
+    fetchReview();
   }, []);
 
   const fetchData = async () => {
@@ -83,6 +90,20 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       setLoading(false);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const fetchReview = async () => {
+    try {
+      const resp = await fetch(`http://localhost:3001/review/campaign/${id}`);
+      const rdata = await resp.json();
+      if (!resp.ok) {
+        console.log("failed to load");
+      }
+      // console.log(resp, ">>>>>");
+      // console.log(rdata, ">>>>>>rtdaradrad");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -107,11 +128,13 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       console.error("Error sharing:", error);
     }
   };
+
   // const calculateProgress = () => {
   //   if (!data) return 0;
   //   const percentage = (data.amountDonated / data.goal) * 100;
   //   return Math.min(percentage, 100);
   // };
+
   const redirectToCheckOut = async () => {
     try {
       if (donationAmout === null) {
@@ -148,6 +171,38 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     const amount = prompt("Enter Donation Amount:");
     if (amount !== null && amount !== "") {
       await setDonationAmount(parseFloat(amount));
+    }
+  };
+
+  const handlereview = (e: any) => {
+    setReview(e.target.value);
+  };
+
+  const handlePostClick = async (e: any) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3001/review/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          review: review,
+          user: userId,
+          campaign: id,
+        }),
+      });
+      //console.log(res, ">>>>>>>>RES");
+      const response = await res.json();
+      if (!res.ok) {
+        alert(response.message);
+      }
+      if (res.ok) {
+        alert("Post Successfully");
+        setReview("");
+      }
+    } catch (error: any) {
+      console.log("Error to post :::", error.message);
     }
   };
 
@@ -254,31 +309,39 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   Last Donations
                 </h2>
                 <div className="flex flex-col h-40  w-full">
-                  {data.contributedUsers.map((item: any) => (
-                    <>
-                      <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
-                        <img
-                          src="/images/fund.png"
-                          style={{ width: "60px", height: "60px" }}
-                          className="m-2 p-2"
-                        />
-                        <span>
-                          <p className="text-2xl font-sans mr-6 ml-3 pr-2">
-                            {item.userName}
-                          </p>
-                          <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
-                            ₹ {item.donationAmount}
-                          </p>
-                        </span>
-                      </div>
-                    </>
-                  ))}
+                  {data.contributedUsers.length > 0 ? (
+                    data.contributedUsers.map((item: any) => (
+                      <>
+                        <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
+                          <img
+                            src="/images/fund.png"
+                            style={{ width: "60px", height: "60px" }}
+                            className="m-2 p-2"
+                          />
+                          <span>
+                            <p className="text-2xl font-sans mr-6 ml-3 pr-2">
+                              {item.userName}
+                            </p>
+                            <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
+                              ₹ {item.donationAmount}
+                            </p>
+                          </span>
+                        </div>
+                      </>
+                    ))
+                  ) : (
+                    <div className="flex justify-center items-center h-full">
+                      <p className="text-lg text-gray-500">
+                        No contributions yet. Be the first!
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <div className="flex flex-row pl-2 ml-2 w-full  mb-2">
               <img
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                src="/images/profice.jpg"
                 className="rounded-full w-20 h-20 object-cover mb-4 p-2 mt-2"
               />
               <div className="m-3">
@@ -288,6 +351,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   Contact
                 </Button>
               </div>
+
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -303,7 +367,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     <p className="font-semibold">{`Write a message to ${data.yourname}`}</p>
                     <div className="flex flex-row mt-2">
                       <img
-                        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                        src="/images/profice.jpg"
                         className="rounded-full w-20 h-20 object-cover mb-4 p-2"
                       />
                       <div className="m-3">
@@ -374,6 +438,58 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </Typography>
                 </Box>
               </Modal>
+            </div>
+            <div>
+              <hr className="m-2 p-2" />
+              <p className="text-center p-2 font-serif font-bold text-2xl">
+                Words Of Support
+              </p>
+              <div className=" m-2 p-2 flex flex-row gap-8 items-center">
+                <div className="m-2 p-2 w-1/2">
+                  <TextField
+                    margin="normal"
+                    name="review"
+                    value={review}
+                    onChange={handlereview}
+                    required
+                    fullWidth
+                    size="medium"
+                    id="fullWidth"
+                    variant="outlined"
+                    label="Write Your Words"
+                  />
+                </div>
+                <div className="m-2 mt-2 p-2 w-1/6 justify-center">
+                  <button
+                    className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    type="button"
+                    onClick={handlePostClick}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+              <div className="h-80 overflow-y-auto">
+                {data.reviews.map((item: any) => (
+                  <>
+                    <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
+                      <img
+                        src="/images/fund.png"
+                        style={{ width: "60px", height: "60px" }}
+                        className="m-2 p-2"
+                      />
+                      <span key={item._id}>
+                        <p className="text-2xl font-sans mr-6 ml-3 pr-2">
+                          {item.review}
+                        </p>
+                        <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
+                          {item.user.name}
+                        </p>
+                      </span>
+                    </div>
+                  </>
+                ))}
+              </div>
             </div>
           </div>
         </div>
