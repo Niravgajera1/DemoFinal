@@ -82,6 +82,7 @@ export class AuthService {
     try {
       const user = await this.userModel.findById(id).populate({
         path: 'createdCampaigns',
+        select: 'title goal amountDonated  category',
         options: { strictPopulate: false },
       });
       if (!user) {

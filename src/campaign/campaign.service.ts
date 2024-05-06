@@ -31,7 +31,15 @@ export class CampaignService {
     return result;
   }
   async findByid(id: string) {
-    const found = await this.campaignModel.findById(id);
+    const found = await this.campaignModel.findById(id).populate({
+      path: 'reviews', // Populate the 'reviews' field
+      model: 'Review',
+      populate: {
+        path: 'user', // Populate the 'user' field inside each 'Review'
+        model: 'User',
+        select: 'name', // Specify the model to use for populating 'user'
+      }, // Specify the model to use for population
+    });
     if (!found) {
       throw new NotFoundException('campaign not found with this id');
     }
@@ -59,8 +67,17 @@ export class CampaignService {
       }
       const totalitem = await this.campaignModel.countDocuments(DBquery).exec();
       const data = await this.campaignModel
+
         .find(DBquery)
-        .populate('')
+        .populate({
+          path: 'reviews', // Populate the 'reviews' field
+          model: 'Review',
+          populate: {
+            path: 'user', // Populate the 'user' field inside each 'Review'
+            model: 'User',
+            select: 'name', // Specify the model to use for populating 'user'
+          }, // Specify the model to use for population
+        })
         .limit(resPerPage)
         .skip(skip)
         .exec();

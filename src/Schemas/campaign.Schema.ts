@@ -1,6 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
 import { User } from './auth.Schema';
+import { Review } from './review.Schema';
 
 @Schema({
   timestamps: true,
@@ -38,6 +39,9 @@ export class Campaign extends Document {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   createdBy: User[];
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] })
+  reviews: Review[];
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
