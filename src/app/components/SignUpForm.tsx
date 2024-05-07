@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "./navbar";
 import Footer from "./footer";
+import toastFunction from "@/utils/toastUtils";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -40,14 +41,16 @@ const SignUpForm: React.FC = () => {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message);
-        throw new Error("Failed to post data");
+        toastFunction("error", data.message);
+        // throw new Error("Failed to post data");
       }
       if (res.ok) {
-        alert(data.message);
+        toastFunction("success", data.message);
       }
-      console.log(data); // Handle the response data here
-      router.push("/signin");
+      /// console.log(data);
+      setTimeout(() => {
+        router.push("/signin");
+      }, 1500);
     } catch (error) {
       console.error("Error posting data:", error);
     }
@@ -138,7 +141,7 @@ const SignUpForm: React.FC = () => {
                     Register
                   </button>
                   <p className="mt-2 justify-center hover:underline focus:outline-none">
-                    All Ready Have An Account ?{" "}
+                    All Ready Have An Account ?
                     {
                       <Link href="/signin" className="text-blue-500">
                         SignIn

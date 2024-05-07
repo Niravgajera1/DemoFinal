@@ -25,9 +25,9 @@ export default function RootLayout({
       />
       <script src="https://cdn.tailwindcss.com"></script>
       <body className={inter.className}>
-        {/* <ToastContainer /> */}
         <Provider store={store}>
           <Navbar />
+          <ToastContainer />
           {children}
           <Footer />
         </Provider>

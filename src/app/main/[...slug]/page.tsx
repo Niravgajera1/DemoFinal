@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import toastFunction from "@/utils/toastUtils";
 
 const style = {
   position: "absolute" as "absolute",
@@ -99,9 +100,11 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       const rdata = await resp.json();
       if (!resp.ok) {
         console.log("failed to load");
+      } else {
+        setRdata(rdata);
       }
-      // console.log(resp, ">>>>>");
-      // console.log(rdata, ">>>>>>rtdaradrad");
+
+      console.log(rdata, ">>>>");
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +140,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 
   const redirectToCheckOut = async () => {
     try {
-      if (donationAmout === null) {
+      if (donationAmout === null || donationAmout.valueOf() <= 0) {
         alert("Please Enter a donation Amount");
         return;
       }
@@ -161,19 +164,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
     }
   };
 
-  useEffect(() => {
-    if (donationAmout !== null) {
-      redirectToCheckOut();
-    }
-  }, [donationAmout]);
-
-  const handleDonation = async () => {
-    const amount = prompt("Enter Donation Amount:");
-    if (amount !== null && amount !== "") {
-      await setDonationAmount(parseFloat(amount));
-    }
-  };
-
   const handlereview = (e: any) => {
     setReview(e.target.value);
   };
@@ -192,14 +182,15 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           campaign: id,
         }),
       });
-      //console.log(res, ">>>>>>>>RES");
+
       const response = await res.json();
       if (!res.ok) {
         alert(response.message);
       }
       if (res.ok) {
-        alert("Post Successfully");
+        toastFunction("success", "Post Successfully");
         setReview("");
+        await fetchReview();
       }
     } catch (error: any) {
       console.log("Error to post :::", error.message);
@@ -266,15 +257,38 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </div>
                   <h4>{data.goal}</h4>
                   <div className="card-actions justify-center mt-auto">
-                    <button
-                      className="bg-blue-500 text-black text-xl p-2 w-full rounded-lg text-center hover:border hover:bg-blue-700 hover:border-stone-700 hover:text-white transform duration-300"
-                      onClick={handleDonation}
+                    <form
+                      className="w-full"
+                      onSubmit={(e: any) => {
+                        e.preventDefault();
+                        redirectToCheckOut();
+                      }}
                     >
-                      Donate Now
-                    </button>
+                      <TextField
+                        margin="normal"
+                        name="donationAmount"
+                        required
+                        fullWidth
+                        size="medium"
+                        id="fullWidth"
+                        variant="outlined"
+                        value={donationAmout}
+                        onChange={(e) =>
+                          setDonationAmount(parseFloat(e.target.value))
+                        }
+                        type="number"
+                        label="Enter Donation Amount"
+                      />
+                      <button
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                        type="submit"
+                      >
+                        Donate Now
+                      </button>
+                    </form>
                   </div>
                   <div className=" justify-start">
-                    <p className="jsutify-start font-semibold text-purple mb-2">
+                    <p className="jsutify-start font-semibold text-purple-900 mb-2">
                       {`${data.contributedUsers.length} people have just made a donation`}
                     </p>
                     <button onClick={copyToClipboard}>
@@ -444,8 +458,8 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
               <p className="text-center p-2 font-serif font-bold text-2xl">
                 Words Of Support
               </p>
-              <div className=" m-2 p-2 flex flex-row gap-8 items-center">
-                <div className="m-2 p-2 w-1/2">
+              <div className=" m-2 p-2 flex flex-col gap-1 items-center">
+                <div className="mt-2 w-1/2">
                   <TextField
                     margin="normal"
                     name="review"
@@ -459,9 +473,9 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                     label="Write Your Words"
                   />
                 </div>
-                <div className="m-2 mt-2 p-2 w-1/6 justify-center">
+                <div className="w-1/6 justify-center">
                   <button
-                    className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     type="button"
                     onClick={handlePostClick}
                   >
@@ -469,26 +483,34 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </button>
                 </div>
               </div>
-              <div className="h-80 overflow-y-auto">
-                {data.reviews.map((item: any) => (
-                  <>
-                    <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
-                      <img
-                        src="/images/fund.png"
-                        style={{ width: "60px", height: "60px" }}
-                        className="m-2 p-2"
-                      />
-                      <span key={item._id}>
-                        <p className="text-2xl font-sans mr-6 ml-3 pr-2">
-                          {item.review}
-                        </p>
-                        <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
-                          {item.user.name}
-                        </p>
-                      </span>
-                    </div>
-                  </>
-                ))}
+              <div className="h-80 overflow-y-auto bg-white/30 rounded-lg">
+                {rdata.length === 0 ? (
+                  <div className="flex justify-center items-center h-full">
+                    <p className="text-lg text-gray-500">
+                      No reviews yet. Be the first to post!
+                    </p>
+                  </div>
+                ) : (
+                  rdata.map((item: any) => (
+                    <>
+                      <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
+                        <img
+                          src="/images/fund.png"
+                          style={{ width: "60px", height: "60px" }}
+                          className="m-2 p-2"
+                        />
+                        <span key={item._id}>
+                          <p className="text-2xl font-sans mr-6 ml-3 pr-2">
+                            {item.review}
+                          </p>
+                          <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
+                            {item.user.name}
+                          </p>
+                        </span>
+                      </div>
+                    </>
+                  ))
+                )}
               </div>
             </div>
           </div>

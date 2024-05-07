@@ -85,7 +85,7 @@ const Card: React.FC = () => {
     return (
       <>
         <div className="text-3xl items-center h-screen flex justify-center">
-          Loading...........
+          Loading...
         </div>
       </>
     );
@@ -99,7 +99,7 @@ const Card: React.FC = () => {
             className="flex flex-col  h-full m-2 p-2 card hover:scale-95 transition-transform duration-300 transform-none"
           >
             <div
-              className="card card-normal w-full bg-base-100 shadow-lg shadow-neutral-600 "
+              className="card card-normal w-full bg-base-100 shadow-lg shadow-neutral-700 hover:shadow-xl"
               // style={{ border: "2px solid white" }}
               onClick={() => handleShowMore(item._id)}
             >

@@ -35,7 +35,7 @@ const navbar = () => {
           <div className="flex items-center justify-between text-blue-gray-900 mx-2">
             <Link
               href="/"
-              className="mr-4 block cursor-pointer py-1.5 font-sans text-base font-medium leading-relaxed text-inherit antialiased"
+              className="mr-4 block cursor-pointer py-1.5 font-sans font-medium text-2xl leading-relaxed text-inherit antialiased"
             >
               FundFusion
             </Link>
@@ -43,25 +43,33 @@ const navbar = () => {
               <div className="hidden mr-4 lg:block">
                 <Link
                   href="/"
-                  className="mr-4 block cursor-pointer py-1.5 font-sans text-base font-medium leading-relaxed text-inherit antialiased"
+                  className="mr-4 block cursor-pointer py-1.5 font-sans text-xl font-medium leading-relaxed text-inherit antialiased"
                 >
                   Home
                 </Link>
-                {/* 
-                    <li className="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                      <a href="/" className="flex items-center">
-                        Docs
-                      </a>
-                    </li>
-                  </ul> */}
+
                 {/* <select className="p-2" onChange={handleChange}>
                   <option disabled selected>
-                    Categoryes
+                  Categoryes
                   </option>
                   <option> </option>
                   <option>For Charity</option>
                 </select> */}
               </div>
+              <ul>
+                <li className="block p-1 font-sans text-lg  font-normal leading-normal text-blue-gray-900">
+                  <Link href="/main" className="flex items-center">
+                    Campaigns
+                  </Link>
+                </li>
+              </ul>
+              <select className="p-2" onChange={handleChange}>
+                <option disabled selected>
+                  Category
+                </option>
+                <option>Education</option>
+                <option>Animals</option>
+              </select>
               <div className="flex items-center gap-x-1">
                 {!isAuthenticate && (
                   <Link href="/signup">

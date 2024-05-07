@@ -91,7 +91,7 @@ const createCampaign = () => {
                   id="outlined-basic"
                   label="Enter Your Name"
                   variant="filled"
-                  color="error"
+                  color="info"
                 />
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
@@ -174,6 +174,7 @@ const createCampaign = () => {
                       name="enddate" // Set the name attribute to match the field name
                       value={dayjs(data.enddate)}
                       onChange={handleDateChange}
+                      defaultValue={Date.now()}
                       label="Select End Date"
                       minDate={dayjs(currentDate)}
                       format="DD-MM-YYYY"
