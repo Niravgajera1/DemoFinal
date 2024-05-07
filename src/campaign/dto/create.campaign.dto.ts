@@ -7,7 +7,17 @@ import {
   IsDateString,
   IsOptional,
   IsUrl,
+  IsEnum,
 } from 'class-validator';
+
+enum CampaignCategory {
+  Technology = 'Technology',
+  Medical = 'Medical',
+  Education = 'Education',
+  Animals = 'Animals',
+  Emergency = 'Emergency',
+  Other = 'Other',
+}
 
 export class CreateCampaignDto {
   @IsNotEmpty()
@@ -19,8 +29,8 @@ export class CreateCampaignDto {
   useremail: string;
 
   @IsNotEmpty()
-  @IsString()
-  category: string;
+  @IsEnum(CampaignCategory, { message: 'invalid category' })
+  category: CampaignCategory;
 
   @IsNotEmpty()
   @IsString()

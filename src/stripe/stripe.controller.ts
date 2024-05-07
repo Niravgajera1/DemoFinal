@@ -32,25 +32,26 @@ export class StripeController {
         donationAmount,
         campaignImage,
         campaignName,
+        stringUserId,
       );
 
-      const user = await this.userService.findById(stringUserId);
-      if (user) {
-        const userName = user.name;
-        const userId = stringUserId;
-        // console.log(userId, campaignId, donationAmount, userName);
-        await this.campaignService.updateamountDonated(
-          campaignId,
-          donationAmount,
-        );
-        await this.userService.addContributedCampaign(
-          userId,
-          campaignId,
-          donationAmount,
-          userName,
-          campaignName,
-        );
-      }
+      // const user = await this.userService.findById(stringUserId);
+      // if (user) {
+      //   const userName = user.name;
+      //   const userId = stringUserId;
+      //   // console.log(userId, campaignId, donationAmount, userName);
+      //   await this.campaignService.updateamountDonated(
+      //     campaignId,
+      //     donationAmount,
+      //   );
+      //   await this.userService.addContributedCampaign(
+      //     userId,
+      //     campaignId,
+      //     donationAmount,
+      //     userName,
+      //     campaignName,
+      //   );
+      // }
       return sessionurl;
     } catch (error) {
       console.log('payment Failed', error.message);

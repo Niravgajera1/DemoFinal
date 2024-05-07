@@ -59,6 +59,16 @@ export class ReviewService {
   async getReview(camapigId: string) {
     const review = await this.reviewModel
       .find({ campaign: camapigId })
+      .populate({
+        path: 'user',
+        select: '_id name',
+        options: { strictPopulate: false },
+      })
+      .populate({
+        path: 'campaign',
+        select: 'title',
+        options: { strictPopulate: false },
+      })
       .sort({ createdAt: -1 })
       .exec();
     if (!review) {

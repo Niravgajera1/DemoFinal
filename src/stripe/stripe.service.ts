@@ -15,8 +15,15 @@ export class StripeService {
     donationAmount: number,
     campaignImage: string,
     campaignName: string,
+    stringUserId: string,
   ) {
     // console.log(campaignId, campaignName, campaignImage, '>>>>>>>');
+    const metadata = {
+      campaignId,
+      campaignName,
+      donationAmount,
+      stringUserId,
+    };
     try {
       const session = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -39,6 +46,7 @@ export class StripeService {
             quantity: 1,
           },
         ],
+        metadata: metadata,
         mode: 'payment',
         success_url: `http://localhost:3000/PaymentSuccessfull`,
         // Include donation amount in success URL

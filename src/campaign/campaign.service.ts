@@ -71,6 +71,7 @@ export class CampaignService {
         .find(DBquery)
         .populate({
           path: 'reviews', // Populate the 'reviews' field
+          select: 'review user campaign',
           model: 'Review',
           populate: {
             path: 'user', // Populate the 'user' field inside each 'Review'
@@ -122,7 +123,13 @@ export class CampaignService {
         throw new Error(`Campaign with ID ${id} not found`);
       }
       const currentAmountDonated = Number(campaign.amountDonated);
-      campaign.amountDonated = currentAmountDonated + amount;
+      console.log(typeof amount, amount, 'amount');
+      console.log(
+        typeof currentAmountDonated,
+        currentAmountDonated,
+        'crnamount',
+      );
+      campaign.amountDonated = currentAmountDonated + Number(amount);
       await campaign.save();
     } catch (error) {
       console.error('Error updating amount donated:', error);
