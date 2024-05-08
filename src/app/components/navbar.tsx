@@ -49,12 +49,12 @@ const navbar = () => {
                 </Link>
 
                 {/* <select className="p-2" onChange={handleChange}>
-                  <option disabled selected>
-                  Categoryes
-                  </option>
-                  <option> </option>
-                  <option>For Charity</option>
-                </select> */}
+                <option disabled selected>
+                Categoryes
+                </option>
+                <option> </option>
+                <option>For Charity</option>
+              </select> */}
               </div>
               <ul>
                 <li className="block p-1 font-sans text-lg  font-normal leading-normal text-blue-gray-900">
@@ -92,16 +92,16 @@ const navbar = () => {
                   </Link>
                 )}
                 {/* {isAuthenticate && (
-                  <Link href="/CreateCampaign">
-                    <button
-                      className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
-                      type="button"
-                      onClick={}
-                    >
-                      CreateCampaign
-                    </button>
-                  </Link>
-                )} */}
+                <Link href="/CreateCampaign">
+                  <button
+                    className="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                    type="button"
+                    onClick={}
+                  >
+                    CreateCampaign
+                  </button>
+                </Link>
+              )} */}
 
                 {isAuthenticate && (
                   <select className="p-2" onChange={handleChange}>

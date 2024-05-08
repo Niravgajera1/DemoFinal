@@ -3,8 +3,6 @@ import { useRouter } from "next/navigation";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import Link from "next/link";
-import Navbar from "./navbar";
-import Footer from "./footer";
 import toastFunction from "@/utils/toastUtils";
 
 const SignUpForm: React.FC = () => {
@@ -76,10 +74,10 @@ const SignUpForm: React.FC = () => {
               alt="Campaign Image"
             />
             <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
-              <div className="card-body flex flex-row">
-                <div className="bg-zinc-400 card-title flex flex-row  p-1/2 rounded-lg justify-items-center">
+              <div className="card-body flex">
+                <div className="bg-zinc-400 ml-2 mr-2 card-title flex flex-row  p-1/2 rounded-lg justify-items-center">
                   <h4 className="p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 ">
-                    Sign Up To Your Account
+                    Signup To Your Account
                   </h4>
                 </div>
                 <form onSubmit={handleSubmit} className="m-2">

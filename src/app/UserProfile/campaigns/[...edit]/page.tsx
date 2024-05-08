@@ -25,8 +25,6 @@ const Edit: React.FC<{ params: { edit: string } }> = ({
 }: {
   params: { edit: string };
 }) => {
-
-    
   const id = params.edit[0];
   const router = useRouter();
   const [formdata, setFormdata] = useState({

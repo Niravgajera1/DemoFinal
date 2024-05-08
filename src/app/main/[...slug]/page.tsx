@@ -13,6 +13,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import toastFunction from "@/utils/toastUtils";
+import { parseCookies } from "nookies";
+import Divider from "@mui/material/Divider";
 
 const style = {
   position: "absolute" as "absolute",
@@ -37,6 +39,7 @@ interface CampaignData {
   image: string;
   contributedUsers: [];
   reviews: [];
+  likes: [];
 }
 
 interface Review {
@@ -59,8 +62,14 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const [rdata, setRdata] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [donationAmout, setDonationAmount] = useState<Number | null>(null);
+  const [like, setLike] = useState(false);
 
   const { userId }: { userId: string | null } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  const idu = userId;
+  const { userEmail }: { userEmail: string | null } = useSelector(
     (state: RootState) => state.auth
   );
 
@@ -77,6 +86,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 
   useEffect(() => {
     fetchData();
+    //fetchReview();
+  }, [like]);
+
+  useEffect(() => {
     fetchReview();
   }, []);
 
@@ -88,10 +101,38 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       }
       const data = await response.json();
       setData(data);
+      if (data?.likes.includes(userId)) {
+        setLike(true);
+      }
+      console.log("data");
       setLoading(false);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookies = parseCookies();
+      setToken(cookies["token"]);
+    };
+    getTokenFromCookie();
+  }, []);
+
+  const handlelike = async () => {
+    console.log("i am sending");
+    const res = await fetch(`http://localhost:3001/campaign/${id}/likes`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.ok) {
+      setLike(true);
+    }
+
+    setLike(true);
   };
 
   const fetchReview = async () => {
@@ -103,8 +144,8 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       } else {
         setRdata(rdata);
       }
-
-      console.log(rdata, ">>>>");
+      console.log("review");
+      // console.log(rdata, ">>>>");
     } catch (error) {
       console.log(error);
     }
@@ -155,6 +196,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           campaignImage: data?.image,
           campaignName: data?.title,
           userId: userId,
+          userEmail: userEmail,
         }),
       });
       const sessionUrl = await res.text();
@@ -214,7 +256,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
           <div className="responsive   mx-8  bg-white/40 m-2 rounded-lg">
             <div
               key={data._id}
-              className="responsive card lg:card-side flex flex-row "
+              className="responsive card lg:card-side flex md:flex-row "
             >
               <img
                 className="m-2 p-2 w-full lg:w-1/2 rounded-lg object-cover"
@@ -225,7 +267,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
               />
 
               <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
-                <div className="card-body flex flex-row">
+                <div className="card-body flex">
                   <div className="card-title">
                     <h2 className="flex flex-row font-black text-lg">
                       Campaign Title
@@ -280,7 +322,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                         label="Enter Donation Amount"
                       />
                       <button
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                        className="w-full hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                         type="submit"
                       >
                         Donate Now
@@ -289,19 +331,43 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </div>
                   <div className=" justify-start">
                     <p className="jsutify-start font-semibold text-purple-900 mb-2">
-                      {`${data.contributedUsers.length} people have just made a donation`}
+                      {`${data.contributedUsers.length} people have made a donation`}
                     </p>
-                    <button onClick={copyToClipboard}>
-                      <ContentCopyRoundedIcon />
-                      <p>Copy to clipboard</p>
-                    </button>
-                    <button
-                      onClick={handleShareOnWhatsApp}
-                      className="mx-8 px-8"
-                    >
-                      <WhatsAppIcon />
-                      <p>Share Whatsapp</p>
-                    </button>
+                    <div className="flex justify-evenly">
+                      <button onClick={copyToClipboard}>
+                        <ContentCopyRoundedIcon />
+                        <p>Copy to clipboard</p>
+                      </button>
+                      <button
+                        onClick={handleShareOnWhatsApp}
+                        className="mx-8 px-8"
+                      >
+                        <WhatsAppIcon />
+                        <p>Share Whatsapp</p>
+                      </button>
+                      <div className="flex flex-col  justify-start">
+                        <div>
+                          {like ? (
+                            <button disabled>
+                              <img
+                                src="/images/like.svg"
+                                width="25px"
+                                height="25px"
+                              />
+                            </button>
+                          ) : (
+                            <button onClick={handlelike}>
+                              <img
+                                src="/images/dislike.svg"
+                                width="25px"
+                                height="25px"
+                              />
+                            </button>
+                          )}
+                        </div>
+                        <div>{data.likes.length} Likes</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -312,8 +378,9 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 <h2 className="flex flex-col font-black text-lg">
                   Campaign Story
                 </h2>
-                <p>{data.story}</p>
-                <hr className="mt-4" />
+                <p className="mb-4 text-justify">{data.story}</p>
+                {/* <hr className="mt-2"></hr> */}
+                <Divider className="mt-2 bg-black" />
                 <h2 className="flex flex-col font-black text-lg mt-2">
                   Organiser
                 </h2>
@@ -455,6 +522,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
             </div>
             <div>
               <hr className="m-2 p-2" />
+              <Divider className="bg-black" />
               <p className="text-center p-2 font-serif font-bold text-2xl">
                 Words Of Support
               </p>
@@ -475,7 +543,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 </div>
                 <div className="w-1/6 justify-center">
                   <button
-                    className="w-full bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    className="w-full  hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     type="button"
                     onClick={handlePostClick}
                   >
@@ -483,7 +551,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                   </button>
                 </div>
               </div>
-              <div className="h-80 overflow-y-auto bg-white/30 rounded-lg">
+              <div className="h-80 overflow-y-auto bg-white/30  rounded-lg">
                 {rdata.length === 0 ? (
                   <div className="flex justify-center items-center h-full">
                     <p className="text-lg text-gray-500">
@@ -493,7 +561,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 ) : (
                   rdata.map((item: any) => (
                     <>
-                      <div className="flex flex-row items-center shadow-lg w-full mt-4 ">
+                      <div className="flex flex-row items-center  shadow-md mt-4 ">
                         <img
                           src="/images/fund.png"
                           style={{ width: "60px", height: "60px" }}

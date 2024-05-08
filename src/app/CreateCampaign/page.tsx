@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { UploadButton } from "@/utils/uploadthing";
 import { useSelector } from "react-redux";
+import { parseCookies } from "nookies";
 
 const createCampaign = () => {
   const { userId }: { userId: string | null } = useSelector(
@@ -25,6 +26,7 @@ const createCampaign = () => {
     image: "",
   });
   const router = useRouter();
+
   const currentDate = new Date().toISOString().split("T")[0];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,12 +49,23 @@ const createCampaign = () => {
     }));
   };
 
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookies = parseCookies();
+      setToken(cookies["token"]);
+    };
+
+    getTokenFromCookie();
+  }, []);
+
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await fetch(`http://localhost:3001/campaign/new/${userId}`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -71,6 +84,7 @@ const createCampaign = () => {
 
   return (
     <>
+      {/* <ToastContainer /> */}
       <div className="flex flex-col  justify-center items-center h-screen bg-slate-300">
         <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/70">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
@@ -109,7 +123,7 @@ const createCampaign = () => {
                 />
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
-                <TextField
+                {/* <TextField
                   required
                   value={data.category}
                   onChange={handleChange}
@@ -120,7 +134,13 @@ const createCampaign = () => {
                   label="Enter Campaign Category"
                   variant="filled"
                   color="info"
-                />
+                /> */}
+                <select>
+                  <option>Category</option>
+                  <option>Education</option>
+                  <option>Medical</option>
+                  <option>Other</option>
+                </select>
               </div>
             </div>
             <div className="relative w-full min-w-[200px] font-black mt-4 mb-6">

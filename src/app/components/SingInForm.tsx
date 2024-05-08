@@ -76,8 +76,8 @@ const SingInForm: React.FC = () => {
     <div>
       {/* // <ToastContainer /> */}
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-screen">
-        <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center ">
-          <div className="responsive card lg:card-side flex flex-row ">
+        <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex-col items-center justify-center ">
+          <div className="responsive card lg:card-side md:flex  ">
             <img
               className="m-2 p-2 w-full lg:w-1/2"
               width="650px"
@@ -86,7 +86,7 @@ const SingInForm: React.FC = () => {
               alt="Campaign Image"
             />
             <div className="flex flex-col m-4 p-1/2  bg-white/50 h-full w-full lg:w-1/2 justify-items-center">
-              <div className="card-body flex flex-row">
+              <div className="card-body flex">
                 <div className="bg-zinc-400 card-title flex flex-row  p-1/2 rounded-lg justify-items-center">
                   <h4 className="p-3 font-bold text-black border-bottom border-3 border-success-subtle opacity-75 ">
                     Welcome Again
@@ -119,7 +119,7 @@ const SingInForm: React.FC = () => {
                     label="Enter Your Password"
                   />
                   <button
-                    className="w-full mt-4 bg-blue-600 hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    className="w-full mt-2 bg-transparent hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     type="submit"
                   >
                     SignIn
