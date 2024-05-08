@@ -31,6 +31,9 @@ export class User extends Document {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' }] })
   createdCampaigns: Campaign[];
+
+  @Prop({ default: 'User' })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

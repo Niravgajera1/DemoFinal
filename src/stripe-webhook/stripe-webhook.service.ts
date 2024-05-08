@@ -18,21 +18,18 @@ export class StripeWebhookService {
     });
   }
   async handleEvent(event: any) {
-    //console.log('Heloooooooooooooooooooooooooooooooooooooooo');
     switch (event.type) {
       case 'checkout.session.completed':
         // Handle successful payment
         const session = event?.data?.object;
-        // console.log(session);
 
-        const { metadata, mode, payment_intent, invoice } = session;
-        //console.log(metadata, '>>>METADATA');
+        const { metadata } = session;
 
         const user = await this.userService.findById(metadata.stringUserId);
         if (user) {
           const userName = user.name;
           const userId = metadata.stringUserId;
-          // console.log(userId, campaignId, donationAmount, userName);
+
           await this.campaignService.updateamountDonated(
             metadata.campaignId,
             metadata.donationAmount,

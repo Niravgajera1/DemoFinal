@@ -42,6 +42,9 @@ export class Campaign extends Document {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] })
   reviews: Review[];
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  likes: any[];
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

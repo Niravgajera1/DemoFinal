@@ -136,4 +136,17 @@ export class CampaignService {
       throw new Error('Failed to update amount donated for campaign');
     }
   }
+
+  async addLike(userId: string, campaignId: string) {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new Error('user not found');
+    }
+    const campaign = await this.campaignModel.findById(campaignId);
+    if (!campaign) {
+      throw new Error('campaign not found');
+    }
+    campaign.likes.push(userId);
+    return campaign.save();
+  }
 }

@@ -16,6 +16,7 @@ export class StripeService {
     campaignImage: string,
     campaignName: string,
     stringUserId: string,
+    userEmail: string,
   ) {
     // console.log(campaignId, campaignName, campaignImage, '>>>>>>>');
     const metadata = {
@@ -49,6 +50,7 @@ export class StripeService {
         metadata: metadata,
         mode: 'payment',
         success_url: `http://localhost:3000/PaymentSuccessfull`,
+        customer_email: userEmail,
         // Include donation amount in success URL
         cancel_url: `http://localhost:3000`,
       });

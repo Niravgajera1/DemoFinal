@@ -12,6 +12,8 @@ import {
   UseInterceptors,
   HttpStatus,
   Query,
+  UnauthorizedException,
+  Req,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create.campaign.dto';
@@ -20,10 +22,14 @@ import { UpdateCampaignDto } from './dto/update.campaign.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Campaign } from 'src/Schemas/campaign.Schema';
 import { Query as ExpressQuery } from 'express-serve-static-core';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('campaign')
 export class CampaignController {
-  constructor(private campaignservice: CampaignService) {}
+  constructor(
+    private campaignservice: CampaignService,
+    private jwtsevice: JwtService,
+  ) {}
 
   @Get()
   async getcampaign(@Query() query: ExpressQuery) {
@@ -78,6 +84,7 @@ export class CampaignController {
   }
 
   @Post('/new/:id')
+  @UseGuards(AuthGuard())
   async create(
     @Body() createCampiagnDto: CreateCampaignDto,
     @Param('id') id: string,
@@ -90,5 +97,22 @@ export class CampaignController {
       message: 'Campaign Created Successfully !',
       campaign: CreateCampaign,
     };
+  }
+
+  @Post('/:id/likes')
+  @UseGuards(AuthGuard())
+  async rate(@Req() request, @Param('id') id: string) {
+    console.log('i am recienvefsdngkj');
+    const authHeader = request.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Please, Login First!');
+    }
+
+    const token = authHeader.substring(7);
+    const decodedToken = this.jwtsevice.verify(token);
+    request.token = decodedToken;
+
+    const userId = decodedToken.id;
+    return this.campaignservice.addLike(userId, id);
   }
 }

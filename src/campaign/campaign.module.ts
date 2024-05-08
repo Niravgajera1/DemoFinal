@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Campaign, CampaignSchema } from '../Schemas/campaign.Schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { User, UserSchema } from 'src/Schemas/auth.Schema';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,6 +21,17 @@ import { User, UserSchema } from 'src/Schemas/auth.Schema';
         schema: UserSchema,
       },
     ]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        // Fix useFactory
+        secret: configService.get<string>('JWT_SECRET'), // Retrieve JWT_SECRET from config
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES'),
+        },
+      }),
+    }),
   ],
   controllers: [CampaignController],
   providers: [CampaignService],
