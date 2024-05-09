@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -10,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { UploadButton } from "@/utils/uploadthing";
 import { useSelector } from "react-redux";
 import { parseCookies } from "nookies";
+import { Box, FormControl, Select } from "@mui/material";
+import { ToastContainer } from "react-toastify";
 
 const createCampaign = () => {
   const { userId }: { userId: string | null } = useSelector(
@@ -49,6 +53,14 @@ const createCampaign = () => {
     }));
   };
 
+  const handleCategory = (e: any) => {
+    const category = e.target.value as string;
+    setData((prevData) => ({
+      ...prevData,
+      category: category,
+    }));
+  };
+
   const [token, setToken] = useState<string>("");
   useEffect(() => {
     const getTokenFromCookie = () => {
@@ -84,7 +96,7 @@ const createCampaign = () => {
 
   return (
     <>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <div className="flex flex-col  justify-center items-center h-screen bg-slate-300">
         <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/70">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
@@ -123,24 +135,27 @@ const createCampaign = () => {
                 />
               </div>
               <div className="relative h-11 w-full min-w-[200px]">
-                {/* <TextField
-                  required
-                  value={data.category}
-                  onChange={handleChange}
-                  name="category"
-                  size="small"
-                  fullWidth
-                  id="outlined-basic"
-                  label="Enter Campaign Category"
-                  variant="filled"
-                  color="info"
-                /> */}
-                <select>
-                  <option>Category</option>
-                  <option>Education</option>
-                  <option>Medical</option>
-                  <option>Other</option>
-                </select>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Category
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={data.category}
+                      label="category"
+                      onChange={handleCategory}
+                    >
+                      <MenuItem value="Education">Education</MenuItem>
+                      <MenuItem value="Medical">Medical</MenuItem>
+                      <MenuItem value="Technology">Technology</MenuItem>
+                      <MenuItem value="Animals">Animals</MenuItem>
+                      <MenuItem value="Emergency">Emergency</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </div>
             </div>
             <div className="relative w-full min-w-[200px] font-black mt-4 mb-6">

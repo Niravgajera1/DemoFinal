@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Navbar />
-          <ToastContainer />
+
           {children}
           <Footer />
         </Providers>

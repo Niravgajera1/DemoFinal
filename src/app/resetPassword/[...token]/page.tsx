@@ -1,6 +1,8 @@
 "use client";
+import toastFunction from "@/utils/toastUtils";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 const resetPass: React.FC<{ params: { token: any } }> = ({
   params,
@@ -26,7 +28,7 @@ const resetPass: React.FC<{ params: { token: any } }> = ({
     e.preventDefault();
 
     if (data.password !== data.confirmPassword) {
-      alert("pasword does not match");
+      toastFunction("warning", "pasword does not match");
       return;
     }
 
@@ -38,10 +40,10 @@ const resetPass: React.FC<{ params: { token: any } }> = ({
       });
       const Resdata = await res.json();
       if (!res.ok) {
-        alert(Resdata.message);
+        toastFunction("error", Resdata.message);
       }
       if (res.ok) {
-        alert(Resdata.message);
+        toastFunction("success", Resdata.message);
         window.location.href = "/main";
       }
     } catch (error) {
@@ -51,6 +53,7 @@ const resetPass: React.FC<{ params: { token: any } }> = ({
 
   return (
     <>
+      <ToastContainer />
       <div className="bg-slate-300 h-screen flex flex-col justify-center items-center">
         <h1 className="text-3xl font-semibold"> RESET PASSWORD </h1>
         <p>Enter The Details To Reset Your Password</p>

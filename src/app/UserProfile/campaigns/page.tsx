@@ -1,9 +1,11 @@
 "use client";
 import { deleteCampaign } from "@/app/Redux/slice/userSlice";
 import { RootState } from "@/app/Redux/store";
+import { Divider } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { parseCookies } from "nookies";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Campaigns = () => {
@@ -13,14 +15,41 @@ const Campaigns = () => {
   const { createdCampaigns }: { createdCampaigns: object[] | null } =
     useSelector((state: RootState) => state.user);
 
+  const [activetab, setActivetab] = useState<string>("Campaigns");
+
+  const handleClick = (tabName: string) => {
+    setActivetab(tabName);
+  };
+
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookies = parseCookies();
+      setToken(cookies["token"]);
+    };
+
+    getTokenFromCookie();
+  }, []);
+
   const { name }: { name: string | null } = useSelector(
     (state: RootState) => state.user
   );
 
   const handleDeleteClick = async (id: any) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this campaign?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:3001/campaign/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response.ok) {
         alert("failed to delete");
@@ -41,30 +70,63 @@ const Campaigns = () => {
           <div className="mx-32 pt-20 pb-10  px-2  font-semibold text-3xl font-sans ">
             {name}
           </div>
-          <div className="mx-32 flex flex-row px-2">
+          <div className="mx-32 flex flex-row px-2 text-xl">
             <span>
-              <Link href="/UserProfile" className="font-sans text-xl mr-2">
+              <Link
+                onClick={() => handleClick("Profile")}
+                href="/UserProfile"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Profile"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
+              >
                 Profile
               </Link>
             </span>
             <span>
               <Link
+                onClick={() => handleClick("Campaigns")}
                 href="/UserProfile/campaigns"
-                className="font-sans text-xl ml-10 mr-2"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Campaigns"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
                 Campaigns
               </Link>
             </span>
             <span>
               <Link
+                onClick={() => handleClick("Contributions")}
                 href="/UserProfile/contributaions"
-                className="font-sans text-xl ml-10 mr-2"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Contributions"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
                 Contributions
               </Link>
             </span>
+            <span>
+              <Link
+                onClick={() => handleClick("LikedCampaigns")}
+                href="/UserProfile/likes"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "LikedCampaigns"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
+              >
+                LikedCampaigns
+              </Link>
+            </span>
           </div>
-          <hr className="mx-32 mt-2" style={{ color: "gray" }}></hr>
+          <div className="mx-32 mt-2">
+            <Divider className="bg-gray-600" />
+          </div>
           <div className="flex justify-center mt-7 flex-col">
             <h2 className="text-2xl font-semibold  font-sans mb-2 flex justify-center">
               Created Campaigns Data
@@ -129,7 +191,7 @@ const Campaigns = () => {
                 </table>
               </div>
             ) : (
-              <div className="flex justify-center my-10    font-medium  text-xl">
+              <div className="flex justify-center my-10 text-gray-500 font-medium  text-xl">
                 <p>You Have Not Created Any Campaigns</p>
               </div>
             )}

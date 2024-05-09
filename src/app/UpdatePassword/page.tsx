@@ -1,7 +1,9 @@
 "use client";
 
+import toastFunction from "@/utils/toastUtils";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 const UpdatePass = () => {
   const [password, setPassword] = useState({
@@ -30,10 +32,10 @@ const UpdatePass = () => {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message);
+        toastFunction("error", data.message);
       }
       if (res.ok) {
-        alert(data.message);
+        toastFunction("success", data.message);
         window.location.href = "/main";
       }
     } catch (error) {
@@ -42,6 +44,7 @@ const UpdatePass = () => {
   };
   return (
     <>
+      <ToastContainer />
       <div className="bg-slate-300 h-screen flex flex-col justify-center items-center">
         <h1 className="text-3xl font-semibold"> UPDATE PASSWORD </h1>
         <p>Enter The Details To Update Your Password</p>

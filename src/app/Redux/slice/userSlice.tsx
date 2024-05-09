@@ -6,6 +6,7 @@ interface userData {
   email: string;
   createdCampaigns: object[];
   contributedCampaigns: object[];
+  likedCampaigns: object[];
 }
 
 interface userState {
@@ -14,6 +15,7 @@ interface userState {
   email: string | null;
   createdCampaigns: object[] | null;
   contributedCampaigns: object[] | null;
+  likedCampaigns: object[] | null;
 }
 
 const initialState: userState = {
@@ -22,6 +24,7 @@ const initialState: userState = {
   email: null,
   createdCampaigns: null,
   contributedCampaigns: null,
+  likedCampaigns: null,
 };
 
 const userSlice = createSlice({
@@ -29,13 +32,20 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { _id, name, email, createdCampaigns, contributedCampaigns } =
-        action.payload;
+      const {
+        _id,
+        name,
+        email,
+        createdCampaigns,
+        contributedCampaigns,
+        likedCampaigns,
+      } = action.payload;
       state.id = _id;
       state.name = name;
       state.email = email;
       state.contributedCampaigns = contributedCampaigns;
       state.createdCampaigns = createdCampaigns;
+      state.likedCampaigns = likedCampaigns;
     },
     deleteCampaign: (state, action) => {
       if (state.createdCampaigns) {

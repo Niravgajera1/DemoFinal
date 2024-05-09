@@ -74,7 +74,7 @@ const SingInForm: React.FC = () => {
 
   return (
     <div>
-      {/* // <ToastContainer /> */}
+      <ToastContainer />
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-screen">
         <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex-col items-center justify-center ">
           <div className="responsive card lg:card-side md:flex  ">

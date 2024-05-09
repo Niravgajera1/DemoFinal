@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import Link from "next/link";
 import toastFunction from "@/utils/toastUtils";
+import { ToastContainer } from "react-toastify";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -63,6 +64,7 @@ const SignUpForm: React.FC = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-full">
         <div className="responsive mx-8 my-8 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center">
           <div className="responsive card lg:card-side flex flex-row ">

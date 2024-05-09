@@ -1,10 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Navbar from "@/app/components/navbar";
-import Footer from "../components/footer";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { setUser } from "../Redux/slice/userSlice";
+import { Divider } from "@mui/material";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,11 @@ const Profile = () => {
   );
 
   const [userData, setUserData] = useState<any>(null);
-  const [showtable, setShowtable] = useState(false);
+  const [activetab, setActivetab] = useState<string>("Profile");
+
+  const handleClick = (tabName: string) => {
+    setActivetab(tabName);
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -44,30 +47,63 @@ const Profile = () => {
             <div className="mx-32 pt-20 pb-10  px-2  font-semibold text-3xl font-sans ">
               {userData.name}
             </div>
-            <div className="mx-32 flex flex-row px-2">
+            <div className="mx-32 flex flex-row px-2 text-xl">
               <span>
-                <Link href="/UserProfile" className="font-sans text-xl mr-2">
+                <Link
+                  onClick={() => handleClick("Profile")}
+                  href="/UserProfile"
+                  className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                    activetab === "Profile"
+                      ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                      : "border-transparent text-dark-blue hover:text-saddle-brown"
+                  }`}
+                >
                   Profile
                 </Link>
               </span>
               <span>
                 <Link
+                  onClick={() => handleClick("Campaigns")}
                   href="/UserProfile/campaigns"
-                  className="font-sans text-xl ml-10 mr-2"
+                  className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                    activetab === "Campaigns"
+                      ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                      : "border-transparent text-dark-blue hover:text-saddle-brown"
+                  }`}
                 >
                   Campaigns
                 </Link>
               </span>
               <span>
                 <Link
+                  onClick={() => handleClick("Contributions")}
                   href="/UserProfile/contributaions"
-                  className="font-sans text-xl ml-10 mr-2"
+                  className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                    activetab === "Contributions"
+                      ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                      : "border-transparent text-dark-blue hover:text-saddle-brown"
+                  }`}
                 >
                   Contributions
                 </Link>
               </span>
+              <span>
+                <Link
+                  onClick={() => handleClick("LikedCampaigns")}
+                  href="/UserProfile/likes"
+                  className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                    activetab === "LikedCampaigns"
+                      ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                      : "border-transparent text-dark-blue hover:text-saddle-brown"
+                  }`}
+                >
+                  LikedCampaigns
+                </Link>
+              </span>
             </div>
-            <hr className="mx-32 mt-2" style={{ color: "gray" }}></hr>
+            <div className="mx-32 mt-2">
+              <Divider className="bg-gray-600" />
+            </div>
             <div className="mx-32 mt-8 flex flex-row justify-between">
               <div className="my-6">
                 <img

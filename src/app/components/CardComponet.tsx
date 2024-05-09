@@ -123,7 +123,7 @@ const Card: React.FC = () => {
                   {item.category}
                 </h2>
                 <h3 className="p-1 pl-2 font-sans">
-                  {item.title.slice(0, 35)}
+                  {item.title?.slice(0, 35)}
                 </h3>
                 <h2 className="p-1 pl-2 font-sans">
                   End Date : {item.enddate}

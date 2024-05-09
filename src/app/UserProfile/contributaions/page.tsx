@@ -1,12 +1,19 @@
 "use client";
 import { RootState } from "@/app/Redux/store";
+import { Divider } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Contributions = () => {
   const { contributedCampaigns }: { contributedCampaigns: object[] | null } =
     useSelector((state: RootState) => state.user);
+
+  const [activetab, setActivetab] = useState<string>("Contributions");
+
+  const handleClick = (tabName: string) => {
+    setActivetab(tabName);
+  };
 
   const { name }: { name: string | null } = useSelector(
     (state: RootState) => state.user
@@ -19,30 +26,63 @@ const Contributions = () => {
           <div className="mx-32 pt-20 pb-10  px-2  font-semibold text-3xl font-sans ">
             {name}
           </div>
-          <div className="mx-32 flex flex-row px-2">
+          <div className="mx-32 flex flex-row px-2 text-xl">
             <span>
-              <Link href="/UserProfile" className="font-sans text-xl mr-2">
+              <Link
+                onClick={() => handleClick("Profile")}
+                href="/UserProfile"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Profile"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
+              >
                 Profile
               </Link>
             </span>
             <span>
               <Link
+                onClick={() => handleClick("Campaigns")}
                 href="/UserProfile/campaigns"
-                className="font-sans text-xl ml-10 mr-2"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Campaigns"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
                 Campaigns
               </Link>
             </span>
             <span>
               <Link
+                onClick={() => handleClick("Contributions")}
                 href="/UserProfile/contributaions"
-                className="font-sans text-xl ml-10 mr-2"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Contributions"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
                 Contributions
               </Link>
             </span>
+            <span>
+              <Link
+                onClick={() => handleClick("LikedCampaigns")}
+                href="/UserProfile/likes"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "LikedCampaigns"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
+              >
+                LikedCampaigns
+              </Link>
+            </span>
           </div>
-          <hr className="mx-32 mt-2" style={{ color: "gray" }}></hr>
+          <div className="mx-32 mt-2">
+            <Divider className="bg-gray-600" />
+          </div>
           <div className="flex justify-center mt-7 flex-col">
             <h2 className="text-2xl font-semibold  font-sans mb-2 flex justify-center">
               Contributed Campaigns Data
@@ -82,7 +122,7 @@ const Contributions = () => {
                 </table>
               </div>
             ) : (
-              <div className="flex justify-center my-10    font-medium  text-xl">
+              <div className="flex justify-center my-10    font-medium  text-xl text-gray-500">
                 <p>You Have Not Contribute In Any Campaigns</p>
               </div>
             )}

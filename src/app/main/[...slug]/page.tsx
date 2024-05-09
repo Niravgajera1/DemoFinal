@@ -104,7 +104,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       if (data?.likes.includes(userId)) {
         setLike(true);
       }
-      console.log("data");
+      console.log("data", data.useremail);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -182,7 +182,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
   const redirectToCheckOut = async () => {
     try {
       if (donationAmout === null || donationAmout.valueOf() <= 0) {
-        alert("Please Enter a donation Amount");
+        toastFunction("warning", "Please Enter a donation Amount");
         return;
       }
       const res = await fetch(`http://localhost:3001/stripe/checkout`, {
@@ -227,7 +227,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
 
       const response = await res.json();
       if (!res.ok) {
-        alert(response.message);
+        toastFunction("error", response.message);
       }
       if (res.ok) {
         toastFunction("success", "Post Successfully");
@@ -321,9 +321,20 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                         type="number"
                         label="Enter Donation Amount"
                       />
+
                       <button
                         className="w-full hover:bg-blue-500 text-black font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                         type="submit"
+                        disabled={data.goal <= data.amountDonated}
+                        style={{
+                          backgroundColor:
+                            data.goal <= data.amountDonated ? "#ccc" : "",
+                          cursor:
+                            data.goal <= data.amountDonated
+                              ? "not-allowed"
+                              : "pointer",
+                          color: data.goal <= data.amountDonated ? "#888" : "",
+                        }}
                       >
                         Donate Now
                       </button>
@@ -439,7 +450,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
               >
-                <Box sx={{ ...style, overflowY: "auto" }}>
+                <Box sx={{ ...style, overflowY: "auto", height: "600px" }}>
                   <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -522,7 +533,9 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
             </div>
             <div>
               <hr className="m-2 p-2" />
-              <Divider className="bg-black" />
+              <div className="m-2 p-2">
+                <Divider className="bg-black" />
+              </div>
               <p className="text-center p-2 font-serif font-bold text-2xl">
                 Words Of Support
               </p>

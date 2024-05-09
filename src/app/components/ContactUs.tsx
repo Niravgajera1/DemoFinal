@@ -8,7 +8,7 @@ const ContactUs = () => {
   return (
     <>
       <div className="responsive justify-center items-center  bg-slate-300  p-4 h-screen">
-        <Divider className="mt-12 text-3xl font-semibold">Contact Us</Divider>
+        <Divider className="mt-16 text-3xl font-semibold">Contact Us</Divider>
         <div className="responsive mx-8 my-24 bg-white/50 m-2 rounded-lg flex flex-col items-center justify-center ">
           <div className="responsive card lg:card-side flex flex-row  gap-14 justify-between">
             <img

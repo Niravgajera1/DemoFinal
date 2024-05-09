@@ -8,6 +8,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { UploadButton } from "@/utils/uploadthing";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import toastFunction from "@/utils/toastUtils";
+import { ToastContainer } from "react-toastify";
+import { parseCookies } from "nookies";
 
 interface formdata {
   yourname: string;
@@ -89,22 +92,33 @@ const Edit: React.FC<{ params: { edit: string } }> = ({
     }));
   };
 
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookies = parseCookies();
+      setToken(cookies["token"]);
+    };
+
+    getTokenFromCookie();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3001/campaign/${id}`, {
         method: "PATCH",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formdata),
       });
       const updateData = await response.json();
       if (!response.ok) {
-        alert(updateData.message);
+        toastFunction("warning", updateData.message);
       }
       if (response.ok) {
-        alert("Campaign Updated Successfully");
+        toastFunction("success", updateData.message);
         await router.push("/UserProfile/campaigns");
       }
     } catch (error) {
@@ -114,6 +128,7 @@ const Edit: React.FC<{ params: { edit: string } }> = ({
 
   return (
     <>
+      <ToastContainer />
       <div className="flex flex-col  justify-center items-center h-screen bg-slate-300">
         <div className="flex flex-col gap-6 justify-center items-center p-6 rounded-lg shadow-xl backdrop-blur-xm bg-white/70">
           <div className="bg-zinc-400 flex flex-col justify-center p-1/2 rounded-lg ">
