@@ -56,6 +56,7 @@ export class CampaignService {
     let DBquery: any = {};
 
     try {
+      DBquery.isActive = true;
       if (DBquery?.category) {
         DBquery['category'] = {
           $regexp: '^' + query?.category,
@@ -67,8 +68,7 @@ export class CampaignService {
       }
       const totalitem = await this.campaignModel.countDocuments(DBquery).exec();
       const data = await this.campaignModel
-
-        .find(DBquery)
+        .find({ ...DBquery, isActive: true })
         .populate({
           path: 'reviews', // Populate the 'reviews' field
           select: 'review user campaign',
@@ -105,7 +105,12 @@ export class CampaignService {
   }
 
   async deleteCampaign(id: string): Promise<void> {
-    const deletedCampaign = await this.campaignModel.findByIdAndDelete(id);
+    const deletedCampaign = await this.campaignModel.findByIdAndUpdate(
+      id,
+      { isActive: false }, // Update isActive field to false
+      { new: true }, // Return the updated document after update
+    );
+
     if (!deletedCampaign) {
       throw new NotFoundException('Campaign not found');
     }
@@ -137,7 +142,7 @@ export class CampaignService {
     }
   }
 
-  async addLike(userId: string, campaignId: string) {
+  async addLike(userId: string, campaignId: any) {
     const user = await this.userModel.findById(userId);
     if (!user) {
       throw new Error('user not found');
@@ -146,6 +151,11 @@ export class CampaignService {
     if (!campaign) {
       throw new Error('campaign not found');
     }
+    if (!user.likedCampaigns.includes(campaignId)) {
+      user.likedCampaigns.push(campaignId);
+      await user.save();
+    }
+
     campaign.likes.push(userId);
     return campaign.save();
   }

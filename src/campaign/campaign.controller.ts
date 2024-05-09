@@ -55,6 +55,7 @@ export class CampaignController {
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard())
   async upatecampaign(
     @Param('id') id: string,
     @Body() updatecampaigndto: UpdateCampaignDto,
@@ -71,6 +72,7 @@ export class CampaignController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   async deleteCampaign(@Param('id') id: string): Promise<void> {
     try {
       const isValid: boolean = mongo.ObjectId.isValid(id);

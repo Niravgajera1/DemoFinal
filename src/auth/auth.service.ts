@@ -67,7 +67,7 @@ export class AuthService {
         throw new UnauthorizedException('with this email no user found');
       }
       if (user && (await bcrypt.compare(password, user.password))) {
-        const token = this.jwtService.sign({ id: user._id });
+        const token = this.jwtService.sign({ id: user._id, role: user.role });
         res.cookie('token', token, { httpOnly: true });
         return { token, user };
       } else {
@@ -80,11 +80,18 @@ export class AuthService {
 
   async findById(id: string): Promise<User> {
     try {
-      const user = await this.userModel.findById(id).populate({
-        path: 'createdCampaigns',
-        select: 'title goal amountDonated  category',
-        options: { strictPopulate: false },
-      });
+      const user = await this.userModel
+        .findById(id)
+        .populate({
+          path: 'createdCampaigns',
+          select: 'title goal amountDonated  category',
+          options: { strictPopulate: false },
+        })
+        .populate({
+          path: 'likedCampaigns',
+          select: 'title category',
+          options: { strictPopulate: false },
+        });
       if (!user) {
         throw new NotFoundException('User Not Found');
       }

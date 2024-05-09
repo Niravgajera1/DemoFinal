@@ -32,6 +32,9 @@ export class User extends Document {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' }] })
   createdCampaigns: Campaign[];
 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' }] })
+  likedCampaigns: Campaign[];
+
   @Prop({ default: 'User' })
   role: string;
 }

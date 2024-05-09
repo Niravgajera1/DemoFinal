@@ -34,6 +34,9 @@ export class Campaign extends Document {
   @Prop({ default: 0 })
   amountDonated: number;
 
+  @Prop({ default: true })
+  isActive: true;
+
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
   contributedUsers: Types.ObjectId[];
 
