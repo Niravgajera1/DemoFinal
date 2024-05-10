@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -27,15 +27,21 @@ const Card: React.FC = () => {
   const resPerPage: number = 6;
   //console.log(page, ">>>>page");
 
+  const serchparams = useSearchParams();
+  const category = serchparams.get("category");
+
   useEffect(() => {
     fetchData();
-  }, [page, totalpage]);
+  }, [page, totalpage, category]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/campaign?page=${page}`
-      );
+      let apiurl = `http://localhost:3001/campaign?page=${page}`;
+      if (category) {
+        apiurl += `&category=${category}`;
+      }
+
+      const response = await fetch(apiurl);
       const { data, totalitem } = await response.json();
       const totalpage = Math.ceil(totalitem / resPerPage);
       //      console.log(data.length, "totalpage>>>>>");
@@ -46,14 +52,12 @@ const Card: React.FC = () => {
       setLoading(false);
       settotalPage(totalpage);
       setPageNumbers(Array.from({ length: totalpage }, (_, i) => i + 1));
-      // console.log();
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleShowMore = (id: string) => {
-    //Pass the id parameter to handleShowMore function
     if (isAuthenticate) {
       router.push(`/main/${id}`);
     } else {
@@ -98,7 +102,6 @@ const Card: React.FC = () => {
           >
             <div
               className="card card-normal w-full bg-base-100 shadow-lg shadow-neutral-700 hover:shadow-xl"
-              // style={{ border: "2px solid white" }}
               onClick={() => handleShowMore(item._id)}
             >
               <figure>

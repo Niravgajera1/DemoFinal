@@ -1,16 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Redux/slice/authSlice";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/navigation";
-import { FormControl } from "@mui/material";
 
 const navbar = () => {
   const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate);
 
   const dispatch = useDispatch();
@@ -31,6 +28,7 @@ const navbar = () => {
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value;
+    setSelectedCategory(selectedCategory);
     if (selectedCategory) {
       router.push(`/main/?category=${selectedCategory}`);
     } else {
