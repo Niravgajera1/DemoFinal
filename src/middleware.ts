@@ -33,7 +33,6 @@ export default function middleware(req: NextRequest) {
       }
 
       const requestedRoute = req.nextUrl.pathname;
-      console.log(requestedRoute, ".................");
       if (protectedRoutes.includes(requestedRoute)) {
         const authorizedRoles = authorizedUsers[requestedRoute];
 

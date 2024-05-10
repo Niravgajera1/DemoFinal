@@ -1,11 +1,8 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import Footer from "./footer";
 
 interface CardData {
   _id: string;
@@ -17,6 +14,7 @@ interface CardData {
   amountDonated: number;
   goal: number;
 }
+
 const Card: React.FC = () => {
   const [data, setData] = useState<CardData[]>([]);
   const [totalpage, settotalPage] = useState<number>();
@@ -27,7 +25,7 @@ const Card: React.FC = () => {
   const router = useRouter();
 
   const resPerPage: number = 6;
-  console.log(page, ">>>>page");
+  //console.log(page, ">>>>page");
 
   useEffect(() => {
     fetchData();

@@ -46,11 +46,7 @@ interface Review {
   review: string;
 }
 
-const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
-  params,
-}: {
-  params: { slug: string };
-}) => {
+const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
   //console.log(params, ">>>>>");
   const id = params.slug[0];
   const [open, setOpen] = React.useState(false);
@@ -253,6 +249,14 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({
       )}
       {!loading && data && (
         <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4">
+          <button
+            className=""
+            onClick={() => {
+              window.location.href = "/main";
+            }}
+          >
+            Back
+          </button>
           <div className="responsive   mx-8  bg-white/40 m-2 rounded-lg">
             <div
               key={data._id}

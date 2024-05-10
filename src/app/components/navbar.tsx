@@ -7,6 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/navigation";
+import { FormControl } from "@mui/material";
 
 const navbar = () => {
   const router = useRouter();
@@ -25,6 +26,15 @@ const navbar = () => {
       router.push("/CreateCampaign");
     } else {
       router.push("/");
+    }
+  };
+
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = e.target.value;
+    if (selectedCategory) {
+      router.push(`/main/?category=${selectedCategory}`);
+    } else {
+      router.push("/main");
     }
   };
 
@@ -47,14 +57,6 @@ const navbar = () => {
                 >
                   Home
                 </Link>
-
-                {/* <select className="p-2" onChange={handleChange}>
-                <option disabled selected>
-                Categoryes
-                </option>
-                <option> </option>
-                <option>For Charity</option>
-              </select> */}
               </div>
               <ul>
                 <li className="block p-1 font-sans text-lg  font-normal leading-normal text-blue-gray-900">
@@ -63,12 +65,16 @@ const navbar = () => {
                   </Link>
                 </li>
               </ul>
-              <select className="p-2" onChange={handleChange}>
+              <select className="p-2" onChange={handleSelect}>
                 <option disabled selected>
                   Category
                 </option>
-                <option>Education</option>
-                <option>Animals</option>
+                <option value="Education">Education</option>
+                <option value="Medical">Medical</option>
+                <option value="Technology">Technology</option>
+                <option value="Animals">Animals</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Other">Other</option>
               </select>
               <div className="flex items-center gap-x-1">
                 {!isAuthenticate && (
