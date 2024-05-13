@@ -360,7 +360,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
                         <WhatsAppIcon />
                         <p>Share Whatsapp</p>
                       </button>
-                      <div className="flex flex-col  justify-start">
+                      <div className="flex flex-col  items-center">
                         <div>
                           {like ? (
                             <button disabled>

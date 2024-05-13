@@ -1,70 +1,62 @@
+"use client"
+
 import { Divider } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const admin = () => {
+const admin =() => {
+  const [activetab, setActivetab] = useState<string>("Admin");
+
+  const handleClick = (tabName: string) => {
+    setActivetab(tabName);
+  };
+ 
   return (
     <div>
       <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4 h-screen">
         <div className="responsive   mx-8 my-8 bg-white/40 px-4 py-4 rounded-lg">
-          <div className="mx-32 pt-20 pb-10  px-2  font-semibold text-3xl font-sans ">
-            {/* {userData.name} */}
-          </div>
-          <div className="mx-32 flex flex-row px-2 text-xl">
+          <div className="mx-32 my-12 flex flex-row px-2 text-xl">
             <span>
               <Link
-                // onClick={() => handleClick("Profile")}
-                href="/UserProfile"
-                // className={`inline-block p-4 border-b-2 rounded-t-lg ${
-                //   activetab === "Profile"
-                //     ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
-                //     : "border-transparent text-dark-blue hover:text-saddle-brown"
-                // }`}
+               onClick={() => handleClick("Admin")}
+                href="/admin"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Admin"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
-                Profile
+                Admin
               </Link>
             </span>
             <span>
               <Link
-                // onClick={() => handleClick("Campaigns")}
-                href="/UserProfile/campaigns"
-                // className={`inline-block p-4 border-b-2 rounded-t-lg ${
-                //   activetab === "Campaigns"
-                //     ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
-                //     : "border-transparent text-dark-blue hover:text-saddle-brown"
-                // }`}
+               onClick={() => handleClick("Users")}
+                href="/admin/users"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Users"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
+              >
+                Users
+              </Link>
+            </span>
+            <span>
+              <Link
+               onClick={() => handleClick("Campaigns")}
+                href="/admin/campaigns"
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                  activetab === "Campaigns"
+                    ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
+                    : "border-transparent text-dark-blue hover:text-saddle-brown"
+                }`}
               >
                 Campaigns
               </Link>
             </span>
-            <span>
-              <Link
-                // onClick={() => handleClick("Contributions")}
-                href="/UserProfile/contributaions"
-                // className={`inline-block p-4 border-b-2 rounded-t-lg ${
-                //   activetab === "Contributions"
-                //     ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
-                //     : "border-transparent text-dark-blue hover:text-saddle-brown"
-                // }`}
-              >
-                Contributions
-              </Link>
-            </span>
-            <span>
-              <Link
-                // onClick={() => handleClick("LikedCampaigns")}
-                href="/UserProfile/likes"
-                // className={`inline-block p-4 border-b-2 rounded-t-lg ${
-                //   activetab === "LikedCampaigns"
-                //     ? "text-saddle-brown font-bold font-2xl border-saddle-brown"
-                //     : "border-transparent text-dark-blue hover:text-saddle-brown"
-                // }`}
-              >
-                LikedCampaigns
-              </Link>
-            </span>
           </div>
-          <div className="mx-32 mt-2">
+          <div className="">
             <Divider className="bg-gray-600" />
           </div>
           <div className="mx-32 mt-8 flex flex-row justify-between">
@@ -93,7 +85,7 @@ const admin = () => {
                 <p className="px-2 text-3xl">
                   {/* {userData.createdCampaigns.length} */}
                 </p>
-                <p className="pt-2">Created Fundraisers</p>
+                <p className="pt-2">Registed users</p>
               </div>
               <div className="flex flex-row mr-40">
                 <img
@@ -103,7 +95,7 @@ const admin = () => {
                 <p className="px-2 text-3xl">
                   {/* //     {userData.contributedCampaigns.length} */}
                 </p>
-                <p className="pt-2">Contributed Fundraisers</p>
+                <p className="pt-2">Created FundRaises</p>
               </div>
             </div>
           </div>
