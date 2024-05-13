@@ -207,6 +207,9 @@ export class AuthService {
                 donationAmount: donationAmount,
               },
             },
+            $inc:{
+              totalDonatedamount:donationAmount
+            }
           },
           { new: true },
         )

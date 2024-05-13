@@ -128,12 +128,6 @@ export class CampaignService {
         throw new Error(`Campaign with ID ${id} not found`);
       }
       const currentAmountDonated = Number(campaign.amountDonated);
-      console.log(typeof amount, amount, 'amount');
-      console.log(
-        typeof currentAmountDonated,
-        currentAmountDonated,
-        'crnamount',
-      );
       campaign.amountDonated = currentAmountDonated + Number(amount);
       await campaign.save();
     } catch (error) {
