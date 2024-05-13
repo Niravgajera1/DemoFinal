@@ -207,9 +207,9 @@ export class AuthService {
                 donationAmount: donationAmount,
               },
             },
-            $inc:{
-              totalDonatedamount:donationAmount
-            }
+            $inc: {
+              totalDonatedAmount: donationAmount, // Correct field name: totalDonatedAmount
+            },
           },
           { new: true },
         )
