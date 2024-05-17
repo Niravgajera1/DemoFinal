@@ -20,7 +20,6 @@ const UpdatePass = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(password, ">>>>>>>");
       const res = await fetch("http://localhost:3001/auth/updatePassword", {
         method: "PATCH",
         headers: {

@@ -14,7 +14,6 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //console.log(email, ">>");
     if (!email) {
       alert("Email is required");
       return;
@@ -38,7 +37,6 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    //console.log(setEmail, ".....");
   };
 
   return (

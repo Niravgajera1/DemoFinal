@@ -32,8 +32,6 @@ const Profile = () => {
       }
       dispatch(setUser(data));
       setUserData(data);
-
-      console.log(data, "usedata");
     } catch (error) {
       throw new Error("error : : :");
     }

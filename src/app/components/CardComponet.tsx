@@ -25,7 +25,6 @@ const Card: React.FC = () => {
   const router = useRouter();
 
   const resPerPage: number = 6;
-  //console.log(page, ">>>>page");
 
   const serchparams = useSearchParams();
   const category = serchparams.get("category");
@@ -44,7 +43,7 @@ const Card: React.FC = () => {
       const response = await fetch(apiurl);
       const { data, totalitem } = await response.json();
       const totalpage = Math.ceil(totalitem / resPerPage);
-      //      console.log(data.length, "totalpage>>>>>");
+
       if (!response.ok) {
         throw new Error(data.message);
       }

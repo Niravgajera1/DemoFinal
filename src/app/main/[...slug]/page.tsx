@@ -47,7 +47,6 @@ interface Review {
 }
 
 const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
-  //console.log(params, ">>>>>");
   const id = params.slug[0];
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -69,7 +68,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
     (state: RootState) => state.auth
   );
 
-  //  console.log(String(userId), ">>>>>>>>>>>>>");
   const copyToClipboard = () => {
     const campaignLink = window.location.href;
     navigator.clipboard.writeText(campaignLink).then(() => {
@@ -100,7 +98,7 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
       if (data?.likes.includes(userId)) {
         setLike(true);
       }
-      console.log("data", data.useremail);
+
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -117,7 +115,6 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
   }, []);
 
   const handlelike = async () => {
-    console.log("i am sending");
     const res = await fetch(`http://localhost:3001/campaign/${id}/likes`, {
       method: "POST",
       headers: {
@@ -136,12 +133,9 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
       const resp = await fetch(`http://localhost:3001/review/campaign/${id}`);
       const rdata = await resp.json();
       if (!resp.ok) {
-        console.log("failed to load");
       } else {
         setRdata(rdata);
       }
-      console.log("review");
-      // console.log(rdata, ">>>>");
     } catch (error) {
       console.log(error);
     }
@@ -585,10 +579,10 @@ const CampaignDetail: React.FC<{ params: { slug: string } }> = ({ params }) => {
                           className="m-2 p-2"
                         />
                         <span key={item._id}>
-                          <p className="text-2xl font-sans mr-6 ml-3 pr-2">
+                          <p className="text-2xl font-sans mr-6 ml-3 pr-2 text-purple-800">
                             {item.review}
                           </p>
-                          <p className="text-lg font-sans mr-6 ml-3 pr-2 ">
+                          <p className="text-lg font-sans mr-6 ml-3 pr-2 text-purple-400">
                             {item.user.name}
                           </p>
                         </span>

@@ -11,8 +11,6 @@ const resetPass: React.FC<{ params: { token: any } }> = ({
 }) => {
   const resetToken = params.token[0];
 
-  //console.log(params, ">>>");
-
   const [data, setData] = useState({
     password: "",
     confirmPassword: "",

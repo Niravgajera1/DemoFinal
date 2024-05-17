@@ -21,7 +21,6 @@ const SignUpForm: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log();
     e.preventDefault();
     const { name, email, password, confirmpassword } = User;
     try {
@@ -46,7 +45,7 @@ const SignUpForm: React.FC = () => {
       if (res.ok) {
         toastFunction("success", data.message);
       }
-      /// console.log(data);
+
       setTimeout(() => {
         router.push("/signin");
       }, 1500);
@@ -112,6 +111,7 @@ const SignUpForm: React.FC = () => {
                   <TextField
                     margin="normal"
                     name="password"
+                    type="password"
                     value={User.password}
                     onChange={handleChange}
                     required
@@ -125,6 +125,7 @@ const SignUpForm: React.FC = () => {
                   <TextField
                     margin="normal"
                     name="confirmpassword"
+                    type="password"
                     value={User.confirmpassword}
                     onChange={handleChange}
                     required

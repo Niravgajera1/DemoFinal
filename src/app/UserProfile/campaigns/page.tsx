@@ -20,6 +20,9 @@ const Campaigns = () => {
   const handleClick = (tabName: string) => {
     setActivetab(tabName);
   };
+  const { name }: { name: string | null } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const [token, setToken] = useState<string>("");
   useEffect(() => {
@@ -31,9 +34,6 @@ const Campaigns = () => {
     getTokenFromCookie();
   }, []);
 
-  const { name }: { name: string | null } = useSelector(
-    (state: RootState) => state.user
-  );
 
   const handleDeleteClick = async (id: any) => {
     const confirmed = window.confirm(

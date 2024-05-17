@@ -25,13 +25,11 @@ const SingInForm: React.FC = () => {
     const { name, value } = e.target;
 
     setFormData((pre) => ({ ...pre, [name]: value }));
-    // console.log(formData);
   };
 
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData);
       const res = await fetch("http://localhost:3001/auth/signin", {
         method: "POST",
         headers: {
@@ -47,7 +45,7 @@ const SingInForm: React.FC = () => {
       }
       if (res.ok) {
         const current_user = data.user;
-       console.log(current_user, ">>>>>Current user");
+        console.log(current_user, ">>>>>Current user");
         dispatch(login(current_user));
         await toastFunction("success", "Login Successfully");
 

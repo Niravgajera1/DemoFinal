@@ -5,8 +5,8 @@ interface AuthorizedUsers {
 }
 const protectedRoutes = [
   "/CreateCampaign",
-  "/UserProfile",
-  "/admin"
+  // "/UserProfile",
+  "/admin",
 ];
 const authorizedUsers: AuthorizedUsers = {
   "/UserProfile": ["User"],
@@ -16,12 +16,11 @@ const authorizedUsers: AuthorizedUsers = {
 export default function middleware(req: NextRequest) {
   const cookies = req.cookies.get("token");
   const token = cookies?.value;
-  /// console.log(token, ">>>>>>>>>>>>>>>>>>>>>>>>>>");
 
   if (token) {
     try {
       const decodedToken: any = decode(token);
-      // console.log(decodedToken, ">>>???>>");
+
       const isLoggedIn = decodedToken.id && decodedToken.role ? true : false;
       const userRole = decodedToken.role;
 
@@ -38,30 +37,32 @@ export default function middleware(req: NextRequest) {
           const notAuthorizedUrl = new URL("/", req.nextUrl.origin);
           return NextResponse.redirect(notAuthorizedUrl.toString());
         }
-      }else if (
+      } else if (
         protectedRoutes.some((route) => requestedRoute.startsWith(route))
       ) {
         if (
           userRole === "user" &&
-         ( requestedRoute === "/UserProfile/campaigns"|| requestedRoute === "/UserProfile/contibutions" )
+          (requestedRoute === "/UserProfile/campaigns" ||
+            requestedRoute === "/UserProfile/contibutions")
         ) {
           return NextResponse.next();
         }
         if (
           userRole === "Admin" &&
-         ( requestedRoute === "/admin/campaigns"|| requestedRoute === "/admin/users" )
+          (requestedRoute === "/admin/campaigns" ||
+            requestedRoute === "/admin/users")
         ) {
           return NextResponse.next();
         }
-        if (userRole !== "Admin" ) {
+        if (userRole !== "Admin") {
           const loginUrl = new URL("/signin", req.nextUrl.origin);
           return NextResponse.redirect(loginUrl.toString());
         }
-        if ( (userRole === "Admin" && requestedRoute.startsWith("/UserProfile")  )) {
+        if (userRole === "Admin" && requestedRoute.startsWith("/UserProfile")) {
           const notAuthorizedUrl = new URL("/", req.nextUrl.origin);
           return NextResponse.redirect(notAuthorizedUrl.toString());
-        }
-      }
+        }
+      }
     } catch (error) {
       console.error("Error decoding token:", error);
     }

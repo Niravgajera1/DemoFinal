@@ -1,6 +1,7 @@
 "use client";
 import { Divider } from "@mui/material";
 import Link from "next/link";
+import { parseCookies } from "nookies";
 import React, { useEffect, useState } from "react";
 
 const users = () => {
@@ -24,19 +25,54 @@ const users = () => {
       }
       if (res.ok) {
         setData(resdata);
-        console.log(">>resdta", resdata);
       }
     } catch (error) {
       alert(error);
     }
   };
 
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookies = parseCookies();
+      setToken(cookies["token"]);
+    };
+
+    getTokenFromCookie();
+  }, []);
+
+  const handleDeleteClick = async (id: any) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this campaign?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/auth/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        alert("failed to delete");
+      }
+      if (response.ok) {
+        alert("deleted Successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div>
-      <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4">
-        <div className="responsive relative h-auto  mx-8 my-8 bg-white/40 px-4 py-4 rounded-lg">
-
+        <div className="responsive justify-center item-center  bg-slate-300 mt-2 p-4">
+          <div className="responsive relative h-auto  mx-8 my-8 bg-white/40 px-4 py-4 rounded-lg">
             <div className="mx-32 my-12 flex flex-row px-2 text-xl">
               <span>
                 <Link
@@ -134,12 +170,12 @@ const users = () => {
                             </p>
                           </td>
                           <td className="p-3 px-5 flex justify-end">
-                          <button
-                            className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                            onClick={() => handleDeleteClick(campaign._id)}
-                          >
-                            Delete
-                          </button>
+                            <button
+                              className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                              onClick={() => handleDeleteClick(users._id)}
+                            >
+                              Delete
+                            </button>
                           </td>
                         </tr>
                       ))}
