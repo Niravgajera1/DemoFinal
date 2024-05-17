@@ -38,6 +38,9 @@ export class User extends Document {
   @Prop({ default: 'User' })
   role: string;
 
+  @Prop({ default: 'true' })
+  isActive: true;
+
   @Prop({ default: 0 })
   totalDonatedAmount: number;
 }

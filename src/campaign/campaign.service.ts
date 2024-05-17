@@ -154,7 +154,8 @@ export class CampaignService {
     return campaign.save();
   }
 
-  async getall(){
-    await this.campaignModel.find()
+  async findalls() {
+    const campaigns = await this.campaignModel.find().exec();
+    return campaigns;
   }
 }

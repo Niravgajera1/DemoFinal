@@ -40,14 +40,15 @@ export class CampaignController {
     }
   }
 
-  @Get("/all")
- async getall(){
-   try {
-     return await this.campaignservice.getall()
-   } catch (error) {
-     throw error.message
-   }
- }
+  @Get('/all')
+  async getall() {
+    try {
+      const campaigns = await this.campaignservice.findalls();
+      return campaigns;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
 
   @Get('/:id')
   async getUserbyId(@Param('id') id: string) {

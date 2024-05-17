@@ -43,11 +43,12 @@ export class AuthService {
       }
 
       const hasedpassword = await bcrypt.hash(password, 10);
+      const hasedpassword1 = await bcrypt.hash(confirmpassword, 10);
       const createuser = await this.userModel.create({
         name,
         email,
         password: hasedpassword,
-        confirmpassword,
+        confirmpassword: hasedpassword1,
       });
       const token = this.jwtService.sign({ id: createuser._id });
       return { message: 'User Successfully Registered!', token };
@@ -102,7 +103,7 @@ export class AuthService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userModel.find();
+    return await this.userModel.find({ isActive: true });
   }
 
   async resetToken(
@@ -244,13 +245,14 @@ export class AuthService {
     );
   }
 
-  async deleteUser(id:string):Promise<void>{
-    const deleteuser = await this.userModel.findByIdAndUpdate(id,
-      {isActive:false},
-      {new:true}
-    )
-     if(!deleteuser){
-      throw new NotFoundException("user not found")
-     }
+  async deleteUser(id: string): Promise<void> {
+    const deleteuser = await this.userModel.findByIdAndUpdate(
+      id,
+      { isActive: false },
+      { new: true },
+    );
+    if (!deleteuser) {
+      throw new NotFoundException('user not found');
+    }
   }
 }
