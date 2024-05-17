@@ -9,6 +9,12 @@ const navbar = () => {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const isAuthenticate = useSelector((state: any) => state.auth.isAuthenticate);
+ 
+  const { role }: { role: string | null } = useSelector(
+    (state: any) => state.auth
+  );
+
+console.log(role,">>>")
 
   const dispatch = useDispatch();
   const handleLogOut = () => {
@@ -135,7 +141,7 @@ const navbar = () => {
                       className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                     >
                       <li>
-                        <Link href="/UserProfile" className="justify-between">
+                        <Link href={`${role ==="Admin"?"/admin":"/UserProfile" }`} className="justify-between">
                           Profile
                         </Link>
                       </li>

@@ -133,6 +133,14 @@ const users = () => {
                               {users.totalDonatedAmount}
                             </p>
                           </td>
+                          <td className="p-3 px-5 flex justify-end">
+                          <button
+                            className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                            onClick={() => handleDeleteClick(campaign._id)}
+                          >
+                            Delete
+                          </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

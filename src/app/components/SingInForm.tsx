@@ -47,7 +47,7 @@ const SingInForm: React.FC = () => {
       }
       if (res.ok) {
         const current_user = data.user;
-        // console.log(current_user, ">>>>>Current user");
+       console.log(current_user, ">>>>>Current user");
         dispatch(login(current_user));
         await toastFunction("success", "Login Successfully");
 

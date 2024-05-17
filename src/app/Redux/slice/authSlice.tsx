@@ -11,6 +11,7 @@ interface authState {
   user: user | null;
   userId: string | null;
   userEmail: string | null;
+  role:string | null;
 }
 
 const initialState: authState = {
@@ -18,6 +19,7 @@ const initialState: authState = {
   user: null,
   userId: null,
   userEmail: null,
+  role:null
 };
 
 const authSlice = createSlice({
@@ -34,11 +36,13 @@ const authSlice = createSlice({
       //  console.log(state.userId, ">>>>>USerId");
       state.userEmail = data.email;
       //  console.log(state.userEmail, ">>>>>USerEmail");
+      state.role = data.role
     },
     logout: (state) => {
       state.isAuthenticate = false;
       state.user = null;
       state.userId = null;
+      state.role = null;
     },
   },
 });
