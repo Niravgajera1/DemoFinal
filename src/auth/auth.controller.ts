@@ -9,6 +9,8 @@ import {
   HttpException,
   HttpStatus,
   Patch,
+  Delete,
+  UseGuards,
   // BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -18,6 +20,8 @@ import { Response } from 'express';
 import { emailDto } from './dto/email.dto';
 import { EmailService } from './email.service';
 import { UpdatePasswordDto, resetPassworddto } from './dto/resetPassword.dto';
+import { AuthGuard } from '@nestjs/passport';
+import {mongo } from "mongoose"
 // import { ForgotPasswordDto } from './dto/forgotpassword.dto';
 // import { resetPassworddto } from './dto/resetPassword.dto';
 
@@ -88,4 +92,19 @@ export class AuthController {
       );
     }
   }
+
+ @Delete("/:id")
+ //@UseGuards(AuthGuard())
+ async deleteuser(@Param("id") id:string ):Promise<void>{
+  try {
+    const isValid: boolean = mongo.ObjectId.isValid(id);
+    if (!isValid) {
+      throw new HttpException('Invalid id', 404);
+    }
+    await this.authservice.deleteUser(id);
+  } catch (error) {
+    throw error.message;
+  }
 }
+ }
+

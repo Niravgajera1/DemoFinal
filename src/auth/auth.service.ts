@@ -243,4 +243,14 @@ export class AuthService {
       { new: true },
     );
   }
+
+  async deleteUser(id:string):Promise<void>{
+    const deleteuser = await this.userModel.findByIdAndUpdate(id,
+      {isActive:false},
+      {new:true}
+    )
+     if(!deleteuser){
+      throw new NotFoundException("user not found")
+     }
+  }
 }

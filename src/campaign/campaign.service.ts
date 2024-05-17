@@ -153,4 +153,8 @@ export class CampaignService {
     campaign.likes.push(userId);
     return campaign.save();
   }
+
+  async getall(){
+    await this.campaignModel.find()
+  }
 }
